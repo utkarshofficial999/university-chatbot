@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: jaipuria_pgvector
+    restart: always
+    environment:
+      POSTGRES_USER: jaipuria_user
+      POSTGRES_PASSWORD: jaipuria_password_2026
+      POSTGRES_DB: jaipuria_rag_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgvector_data:/var/lib/postgresql/data
+      - ./backend/scripts/init_pgvector.sql:/docker-entrypoint-initdb.d/init_pgvector.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jaipuria_user -d jaipuria_rag_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgvector_data:
