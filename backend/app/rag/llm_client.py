@@ -1,3 +1,4 @@
+import os
 import json
 import httpx
 from typing import AsyncGenerator
@@ -27,13 +28,14 @@ class LLMClient:
         full_contents = f"{full_system}\n\n{user_prompt}"
 
         # 1. Try Gemini Cloud first if key is present
-        if self.gemini_key:
+        gemini_key = (os.getenv("GEMINI_API_KEY") or self.gemini_key or "").strip()
+        if gemini_key:
             candidate_models = ["gemini-flash-lite-latest", "gemini-3.5-flash", "gemini-flash-latest"]
             for model_name in candidate_models:
                 try:
                     from google import genai
                     from google.genai import types
-                    client = genai.Client(api_key=self.gemini_key)
+                    client = genai.Client(api_key=gemini_key)
                     
                     config = types.GenerateContentConfig(
                         temperature=0.1,
@@ -41,18 +43,27 @@ class LLMClient:
                         system_instruction=full_system
                     )
                     
-                    response = client.models.generate_content_stream(
+                    streamed_any = False
+                    stream = await client.aio.models.generate_content_stream(
                         model=model_name,
                         contents=user_prompt,
                         config=config
                     )
-                    
-                    streamed_any = False
-                    for chunk in response:
+                    async for chunk in stream:
                         if chunk.text:
                             streamed_any = True
                             yield chunk.text
                     if streamed_any:
+                        return
+
+                    # If streaming returned empty, fallback to non-streaming async call
+                    resp = await client.aio.models.generate_content(
+                        model=model_name,
+                        contents=user_prompt,
+                        config=config
+                    )
+                    if resp.text:
+                        yield resp.text
                         return
                 except Exception as e:
                     print(f"[LLMClient] Gemini model '{model_name}' temporary issue: {e}")
@@ -113,11 +124,30 @@ class LLMClient:
             except Exception as e:
                 print(f"[LLMClient] OpenAI stream error: {e}")
 
-        # 4. Clean Concise Fallback (Never dump raw file text)
-        yield "According to the available Jaipuria University policy documents:\n\n"
-        yield "- Attendance exemption is not granted; exceptional cases require Faculty Council approval.\n"
-        yield "- For absences during examinations, an explanatory letter and medical certificate must be submitted.\n\n"
-        yield "Please check the official source citations attached below for full details."
+        # 4. Dynamic Context Fallback (Extracts salient points from retrieved policy chunks)
+        yield "According to the official Jaipuria University policy documents retrieved for your query:\n\n"
+        context_part = ""
+        if "## Retrieval Context" in user_prompt:
+            try:
+                context_part = user_prompt.split("## User Question")[0].replace("## Retrieval Context", "")
+            except Exception:
+                context_part = ""
+
+        extracted_lines = []
+        for line in context_part.splitlines():
+            line_str = line.strip()
+            if line_str and not line_str.startswith("[") and not line_str.startswith("---") and len(line_str) > 30:
+                cleaned = line_str.lstrip("•-–*1234567890. ()")
+                if cleaned and len(cleaned) > 25:
+                    extracted_lines.append(cleaned)
+            if len(extracted_lines) >= 3:
+                break
+
+        if extracted_lines:
+            for l in extracted_lines:
+                yield f"• {l[:220]}\n"
+        else:
+            yield "Please refer to the official Jaipuria document citations attached below for detailed regulations."
 
     async def generate_sync(self, system_prompt: str, user_prompt: str) -> str:
         tokens = []
