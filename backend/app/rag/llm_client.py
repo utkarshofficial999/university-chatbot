@@ -148,7 +148,9 @@ class LLMClient:
         import re
 
         # Clean metadata noise and internal labels
-        text = re.sub(r'\[Document:.*?\]', '', context_part)
+        text = re.sub(r'Official Reference Information:?', '', context_part, flags=re.IGNORECASE)
+        text = re.sub(r'User Question:.*$', '', text, flags=re.DOTALL | re.IGNORECASE)
+        text = re.sub(r'\[Document:.*?\]', '', text)
         text = re.sub(r'Verification:\s*[\w_]+', '', text)
         text = re.sub(r'Source:\s*https?://\S+', '', text)
         text = re.sub(r'/\s*TYPICAL\s*-\s*CONFIRM WITH ABES\]?', '', text, flags=re.IGNORECASE)
@@ -171,8 +173,14 @@ class LLMClient:
                     p = p.rstrip(' ,;:')
                     # Filter out short fragments or header-only lines
                     if len(p) > 25 and not p.startswith('http'):
-                        if not p.lower().startswith('abes engineering college — admission route'):
-                            raw_statements.append(p)
+                        lower_p = p.lower()
+                        if lower_p.startswith('abes engineering college — admission route'):
+                            continue
+                        if 'official reference information' in lower_p or 'user question' in lower_p:
+                            continue
+                        if lower_p.endswith('?') and len(p) < 60:
+                            continue
+                        raw_statements.append(p)
 
         # Deduplicate while preserving flow
         seen = set()
