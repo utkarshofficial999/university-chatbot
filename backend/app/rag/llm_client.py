@@ -29,6 +29,11 @@ class LLMClient:
 
         # 1. Try Gemini Cloud first if key is present
         gemini_key = (os.getenv("GEMINI_API_KEY") or self.gemini_key or "").strip()
+        if "\n" in gemini_key or "\r" in gemini_key:
+            gemini_key = gemini_key.splitlines()[0].strip()
+        if "PINECONE" in gemini_key:
+            gemini_key = gemini_key.split("PINECONE")[0].strip()
+
         if gemini_key:
             candidate_models = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-flash-latest"]
             for model_name in candidate_models:

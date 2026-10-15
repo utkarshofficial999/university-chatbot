@@ -85,6 +85,10 @@ async def debug_llm():
     from backend.app.rag.llm_client import llm_client
     debug_info = {}
     gemini_key = (os.getenv("GEMINI_API_KEY") or llm_client.gemini_key or "").strip()
+    if "\n" in gemini_key or "\r" in gemini_key:
+        gemini_key = gemini_key.splitlines()[0].strip()
+    if "PINECONE" in gemini_key:
+        gemini_key = gemini_key.split("PINECONE")[0].strip()
     debug_info["key_present"] = bool(gemini_key)
     debug_info["key_prefix"] = gemini_key[:10] if gemini_key else ""
     try:

@@ -27,13 +27,16 @@ class Settings(BaseSettings):
     OLLAMA_BASE_URL: str = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
     OLLAMA_MODEL: str = os.getenv("OLLAMA_MODEL", "llama3.2:latest")
     
-    # Safely load Gemini token with fallback
+    # Safely load Gemini token with fallback and sanitize any accidental newline concatenations
     _DEFAULT_GEMINI_KEY: str = (
         __import__("base64")
         .b64decode(b"QVEuQWI4Uk42SkxQU1NwY0hkdUR0dFpBRXlsbUZUZXIxaU9YTFpuc2F5eTl3N2dZTkszbWc=")
         .decode("utf-8")
     )
-    GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY", _DEFAULT_GEMINI_KEY)
+    _raw_key = os.getenv("GEMINI_API_KEY", _DEFAULT_GEMINI_KEY)
+    if _raw_key and ("\n" in _raw_key or "\r" in _raw_key):
+        _raw_key = _raw_key.splitlines()[0].strip()
+    GEMINI_API_KEY: Optional[str] = _raw_key.strip() if _raw_key else _DEFAULT_GEMINI_KEY
     GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
     
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY", None)
