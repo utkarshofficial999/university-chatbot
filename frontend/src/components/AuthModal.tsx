@@ -31,12 +31,12 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  const handleQuickDemo = async (roleType: 'student' | 'admin') => {
+  const handleQuickDemo = async (roleType: 'student' | 'admin' | 'utkarsh') => {
     setError(null);
     setLoading(true);
     try {
-      if (roleType === 'admin') {
-        await login('admin@abes.ac.in', 'abes2026');
+      if (roleType === 'utkarsh' || roleType === 'admin') {
+        await login('utkarsh@24b0101464@abes.ac.in', 'admin123');
       } else {
         await login('student@abes.ac.in', 'student2026');
       }
@@ -109,9 +109,30 @@ export const AuthModal: React.FC = () => {
         {/* Quick Demo Login Cards */}
         <div style={{ padding: '20px 24px 0 24px' }}>
           <div style={{ fontSize: '0.72rem', color: 'var(--accent-gold)', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
-            One-Click Quick Switch:
+            One-Click Verified Authentication:
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <button
+              type="button"
+              onClick={() => handleQuickDemo('utkarsh')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '9px 12px',
+                borderRadius: '8px',
+                background: 'linear-gradient(135deg, rgba(118, 43, 42, 0.4) 0%, rgba(118, 43, 42, 0.2) 100%)',
+                border: '1px solid #e5a958',
+                color: '#fed7aa',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                cursor: 'pointer'
+              }}
+            >
+              <ShieldCheck size={16} color="#e5a958" />
+              <span>Utkarsh (Admin 24B0101464)</span>
+            </button>
+
             <button
               type="button"
               onClick={() => handleQuickDemo('student')}
@@ -119,37 +140,18 @@ export const AuthModal: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '8px 12px',
+                padding: '9px 12px',
                 borderRadius: '8px',
                 background: 'rgba(56, 189, 248, 0.1)',
                 border: '1px solid rgba(56, 189, 248, 0.3)',
                 color: '#38bdf8',
-                fontSize: '0.8rem',
-                fontWeight: 600
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                cursor: 'pointer'
               }}
             >
               <GraduationCap size={16} />
-              Demo Student
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('admin')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '8px 12px',
-                borderRadius: '8px',
-                background: 'rgba(229, 169, 88, 0.12)',
-                border: '1px solid rgba(229, 169, 88, 0.35)',
-                color: 'var(--accent-gold)',
-                fontSize: '0.8rem',
-                fontWeight: 600
-              }}
-            >
-              <ShieldCheck size={16} />
-              Policy Admin
+              <span>ABES Student</span>
             </button>
           </div>
         </div>

@@ -10,6 +10,7 @@ from backend.app.db.models import Document, DocumentChunk, DocumentCategory
 from backend.app.db.vector_store import vector_store
 from backend.app.ingestion.pipeline import IngestionPipeline
 from backend.app.core.config import settings
+from backend.app.api.auth import require_admin
 
 router = APIRouter(prefix="/admin", tags=["Admin Dashboard"])
 
@@ -21,7 +22,8 @@ class CategoryCreate(BaseModel):
 @router.get("/status")
 def get_system_status(
     university_id: Optional[str] = "abes",
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    admin_user = Depends(require_admin)
 ):
     total_docs = db.query(Document).filter(Document.university_id == university_id).count()
     total_chunks = db.query(DocumentChunk).filter(DocumentChunk.university_id == university_id).count()
@@ -46,7 +48,8 @@ async def upload_document(
     category: str = Form("General"),
     title: Optional[str] = Form(None),
     university_id: str = Form("abes"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    admin_user = Depends(require_admin)
 ):
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF documents are supported")
@@ -84,7 +87,8 @@ async def upload_document(
 @router.delete("/documents/{document_id}")
 def delete_document(
     document_id: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    admin_user = Depends(require_admin)
 ):
     doc = db.query(Document).filter(Document.id == document_id).first()
     if not doc:
@@ -102,7 +106,8 @@ def delete_document(
 @router.post("/reindex/{document_id}")
 def reindex_document(
     document_id: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    admin_user = Depends(require_admin)
 ):
     doc = db.query(Document).filter(Document.id == document_id).first()
     if not doc or not os.path.exists(doc.file_path):
@@ -127,7 +132,8 @@ def reindex_document(
 @router.post("/categories")
 def add_category(
     data: CategoryCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    admin_user = Depends(require_admin)
 ):
     existing = db.query(DocumentCategory).filter(
         DocumentCategory.name == data.name,
@@ -147,7 +153,8 @@ def add_category(
 
 @router.post("/sync-local")
 def sync_local_abes_policies(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    admin_user = Depends(require_admin)
 ):
     """
     Scans the workspace directory for the official ABES PDFs and ingests them into the knowledge base.

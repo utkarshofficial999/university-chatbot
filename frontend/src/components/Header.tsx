@@ -6,7 +6,8 @@ import {
   LogOut, 
   LogIn, 
   Building2,
-  ExternalLink
+  ExternalLink,
+  Lock
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -153,7 +154,14 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
           </button>
 
           <button
-            onClick={() => onViewChange('admin')}
+            onClick={() => {
+              if (user?.role === 'admin') {
+                onViewChange('admin');
+              } else {
+                openAuthModal();
+              }
+            }}
+            title={user?.role === 'admin' ? "Policy Manager Dashboard" : "Admin JWT authentication required"}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -164,12 +172,24 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
               fontSize: '0.84rem',
               fontWeight: 600,
               background: currentView === 'admin' ? 'linear-gradient(135deg, #762b2a, #983837)' : 'transparent',
-              color: currentView === 'admin' ? '#ffffff' : 'var(--text-muted)',
+              color: currentView === 'admin' ? '#ffffff' : (user?.role === 'admin' ? 'var(--text-muted)' : '#94a3b8'),
               boxShadow: currentView === 'admin' ? '0 2px 10px rgba(118, 43, 42, 0.5)' : 'none'
             }}
           >
-            <ShieldCheck size={15} />
-            Policy Manager
+            {user?.role === 'admin' ? <ShieldCheck size={15} /> : <Lock size={14} color="#e5a958" />}
+            <span>Policy Manager</span>
+            {user?.role !== 'admin' && (
+              <span style={{
+                fontSize: '0.65rem',
+                background: 'rgba(229, 169, 88, 0.2)',
+                color: '#e5a958',
+                padding: '1px 5px',
+                borderRadius: '4px',
+                fontWeight: 700
+              }}>
+                LOCKED
+              </span>
+            )}
           </button>
         </div>
 

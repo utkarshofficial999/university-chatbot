@@ -13,11 +13,11 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login", auto_error=False)
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    email: str
     password: str
 
 class UserRegister(BaseModel):
-    email: EmailStr
+    email: str
     password: str
     full_name: str
     role: Optional[str] = "student"
@@ -30,7 +30,7 @@ class TokenResponse(BaseModel):
 
 def get_current_user(token: Optional[str] = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> Optional[User]:
     if not token:
-        # Allow guest/anonymous user default for student convenience
+        # Allow guest/anonymous user default for public access
         return None
     payload = decode_access_token(token)
     if not payload:
@@ -41,12 +41,28 @@ def get_current_user(token: Optional[str] = Depends(oauth2_scheme), db: Session 
 
 def require_admin(user: Optional[User] = Depends(get_current_user)) -> User:
     if not user or user.role != "admin":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Administrator privileges required")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, 
+            detail="Administrator access denied. Valid College Admin JWT token required."
+        )
     return user
 
 @router.post("/login", response_model=TokenResponse)
 def login(creds: UserLogin, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == creds.email).first()
+    clean_email = creds.email.strip().lower()
+    
+    # Check exact match or Utkarsh admin aliases
+    user = db.query(User).filter(User.email.ilike(clean_email)).first()
+    if not user and clean_email in ["utkarsh@24b0101464@abes.ac.in", "utkarsh.24b0101464@abes.ac.in", "24b0101464@abes.ac.in"]:
+        user = db.query(User).filter(
+            User.email.in_([
+                "utkarsh@24b0101464@abes.ac.in",
+                "24b0101464@abes.ac.in",
+                "utkarsh.24b0101464@abes.ac.in",
+                "admin@abes.ac.in"
+            ])
+        ).first()
+
     if not user or not verify_password(creds.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
     

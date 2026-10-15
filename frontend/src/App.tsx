@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { Header } from './components/Header';
 import { ConversationSidebar } from './components/ConversationSidebar';
 import { ChatInterface } from './components/ChatInterface';
 import { AdminDashboard } from './components/AdminDashboard';
 import { CitationModal } from './components/CitationModal';
 import { AuthModal } from './components/AuthModal';
+import { ShieldAlert, Lock, ArrowLeft } from 'lucide-react';
 import type { Message, Conversation, Category, Citation } from './types';
 import { ApiClient } from './api/client';
 
 export const AppContent: React.FC = () => {
+  const { user, openAuthModal } = useAuth();
   const [currentView, setCurrentView] = useState<'chat' | 'admin'>('chat');
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
@@ -178,7 +180,109 @@ export const AppContent: React.FC = () => {
             />
           </>
         ) : (
-          <AdminDashboard />
+          user?.role === 'admin' ? (
+            <AdminDashboard />
+          ) : (
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '30px'
+            }}>
+              <div style={{
+                maxWidth: '520px',
+                textAlign: 'center',
+                padding: '40px 32px',
+                borderRadius: '16px',
+                background: 'rgba(12, 29, 54, 0.95)',
+                border: '1px solid rgba(118, 43, 42, 0.5)',
+                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)'
+              }}>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  background: 'rgba(118, 43, 42, 0.3)',
+                  border: '2px solid #e5a958',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 18px auto'
+                }}>
+                  <ShieldAlert size={32} color="#e5a958" />
+                </div>
+
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: 'rgba(118, 43, 42, 0.3)',
+                  border: '1px solid rgba(118, 43, 42, 0.6)',
+                  padding: '3px 12px',
+                  borderRadius: '9999px',
+                  fontSize: '0.74rem',
+                  color: '#fed7aa',
+                  fontWeight: 600,
+                  marginBottom: '12px'
+                }}>
+                  <Lock size={12} />
+                  JWT Admin Authorization Required
+                </div>
+
+                <h3 style={{ fontSize: '1.4rem', color: '#fff', fontWeight: 700, marginBottom: '10px' }}>
+                  College Admin Access Restricted
+                </h3>
+
+                <p style={{ fontSize: '0.88rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: '26px' }}>
+                  The <strong>Policy Manager</strong> dashboard is protected with JWT token security. Only verified college administrators (such as <strong>Utkarsh - 24B0101464</strong>) have permission to upload, re-index, or synchronize institutional policies.
+                </p>
+
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                  <button
+                    onClick={() => setCurrentView('chat')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '10px 18px',
+                      borderRadius: '8px',
+                      background: 'rgba(255, 255, 255, 0.08)',
+                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      color: '#e2e8f0',
+                      fontSize: '0.84rem',
+                      fontWeight: 600,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <ArrowLeft size={15} />
+                    Back to Student Chat
+                  </button>
+
+                  <button
+                    onClick={openAuthModal}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '10px 20px',
+                      borderRadius: '8px',
+                      background: 'linear-gradient(135deg, #762b2a 0%, #983837 100%)',
+                      border: '1px solid #e5a958',
+                      color: '#ffffff',
+                      fontSize: '0.84rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 15px rgba(118, 43, 42, 0.5)'
+                    }}
+                  >
+                    <Lock size={15} />
+                    Sign In as College Admin
+                  </button>
+                </div>
+              </div>
+            </div>
+          )
         )}
       </main>
 

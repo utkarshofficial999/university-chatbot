@@ -34,7 +34,20 @@ def init_db():
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
-        # Check if default admin exists
+        # 1. Seed Utkarsh as Verified College Admin (24B0101464)
+        for admin_email in ["utkarsh@24b0101464@abes.ac.in", "24b0101464@abes.ac.in", "utkarsh.24b0101464@abes.ac.in"]:
+            utkarsh_admin = db.query(User).filter(User.email == admin_email).first()
+            if not utkarsh_admin:
+                utkarsh_admin = User(
+                    email=admin_email,
+                    hashed_password=hash_password("admin123"),
+                    full_name="Utkarsh (College Admin - 24B0101464)",
+                    role="admin",
+                    university_id=settings.DEFAULT_UNIVERSITY_ID
+                )
+                db.add(utkarsh_admin)
+
+        # 2. Check if default generic admin exists
         admin = db.query(User).filter(User.email == "admin@abes.ac.in").first()
         if not admin:
             admin = User(
@@ -46,7 +59,7 @@ def init_db():
             )
             db.add(admin)
         
-        # Check student demo user
+        # 3. Check student demo user
         student = db.query(User).filter(User.email == "student@abes.ac.in").first()
         if not student:
             student = User(
