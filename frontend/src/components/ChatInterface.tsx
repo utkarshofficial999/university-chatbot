@@ -89,13 +89,15 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           width: '100%',
           margin: '0 auto',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          flex: messages.length === 0 ? 1 : undefined,
+          justifyContent: messages.length === 0 ? 'center' : undefined
         }}>
           {messages.length === 0 ? (
             <div style={{
-              margin: 'auto',
+              margin: '0 auto',
               textAlign: 'center',
-              padding: '40px 10px 20px 10px'
+              padding: '10px 10px 20px 10px'
             }}>
               {/* Institutional Crest */}
               <div style={{
@@ -151,21 +153,21 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               </h2>
 
               <p style={{ 
-                fontSize: '0.96rem', 
+                fontSize: '0.92rem', 
                 color: '#64748b', 
-                lineHeight: 1.6, 
-                marginBottom: '32px', 
+                lineHeight: 1.5, 
+                marginBottom: '20px', 
                 maxWidth: '560px', 
-                margin: '0 auto 32px auto' 
+                margin: '0 auto 20px auto' 
               }}>
                 Ask any question about academic guidelines, autonomous regulations, hostel rules, fees, or examination policies.
               </p>
 
-              {/* Starter Question Cards */}
+              {/* Starter Question Cards (2x2 Grid) */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '12px',
+                gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+                gap: '10px',
                 textAlign: 'left'
               }}>
                 {starterPrompts.map((p, idx) => (
@@ -173,7 +175,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     key={idx}
                     onClick={() => onSendMessage(p.prompt)}
                     style={{
-                      padding: '14px 16px',
+                      padding: '10px 14px',
                       borderRadius: '10px',
                       backgroundColor: '#ffffff',
                       border: '1px solid #e2e8f0',
