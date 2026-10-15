@@ -19,7 +19,11 @@ export const AuthModal: React.FC = () => {
     try {
       await login(email.trim(), password);
     } catch (err: any) {
-      setError(err.message || 'Authentication failed. Please verify administrator credentials.');
+      if (err.message === 'Failed to fetch') {
+        setError('Connecting to server... Please click Sign In again.');
+      } else {
+        setError(err.message || 'Authentication failed. Please verify administrator credentials.');
+      }
     } finally {
       setLoading(false);
     }
