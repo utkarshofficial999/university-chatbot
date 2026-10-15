@@ -157,7 +157,7 @@ def run():
     # 4. Ingest ABES Detailed Student Handbook (Unofficial, v2.0)
     v2_handbook_path = os.path.join(workspace_dir, "ABES Engineering College, Ghaziabad - Detailed Student Handbook (Unofficial, v2.0).pdf")
     if os.path.exists(v2_handbook_path):
-        print("\n[4/4] Processing ABES Detailed Student Handbook (Unofficial, v2.0) (89 pages)...")
+        print("\n[4/5] Processing ABES Detailed Student Handbook (Unofficial, v2.0) (89 pages)...")
         doc = pipeline.process_pdf(
             file_path=v2_handbook_path,
             title="ABES Detailed Student Handbook (v2.0)",
@@ -165,6 +165,19 @@ def run():
             university_id=univ_id
         )
         print(f"[OK] Ingested ABES Detailed Student Handbook v2.0 (Chunks: {len(doc.chunks)})")
+        total_chunks += len(doc.chunks)
+
+    # 5. Ingest Academic Calendar Odd Sem 2026-27.pdf
+    calendar_path = os.path.join(workspace_dir, "Academic Calendar Odd Sem 2026-27.pdf")
+    if os.path.exists(calendar_path):
+        print("\n[5/5] Processing Academic Calendar Odd Sem 2026-27.pdf (with OCR)...")
+        doc = pipeline.process_pdf(
+            file_path=calendar_path,
+            title="ABES Academic Calendar (Odd Semester 2026-27)",
+            category="Academic & Curriculum",
+            university_id=univ_id
+        )
+        print(f"[OK] Ingested Academic Calendar Odd Sem 2026-27 (Chunks: {len(doc.chunks)})")
         total_chunks += len(doc.chunks)
 
     db.close()
