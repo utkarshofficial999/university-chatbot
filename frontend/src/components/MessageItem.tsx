@@ -24,6 +24,82 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Guarantees ChatGPT-style structured, spacious, non-congested answers
+  const formatStructuredContent = (raw: string): string => {
+    if (!raw) return '';
+    let text = raw;
+
+    // 1. Remove internal metadata artifacts if any leaked into the text
+    text = text.replace(/Verification:\s*[\w_]+/gi, '');
+    text = text.replace(/Source:\s*https?:\/\/\S+/gi, '');
+    text = text.replace(/\[Document:.*?\]/gi, '');
+    text = text.replace(/\/ ?TYPICAL - CONFIRM WITH ABES\]?/gi, '');
+    text = text.replace(/\b(VERIFIED\/secondary|VERIFIED|UNAVAILABLE)\b/g, '');
+    text = text.replace(/\|\s*Source:[^•\n]*/gi, '');
+
+    // 2. Clean dangling incomplete clauses at the end (e.g. "(commonly")
+    text = text.replace(/\([a-zA-Z\s]*$/, '').trim();
+
+    // 3. Format inline bullet points into structured markdown cards
+    if (text.includes('•')) {
+      const parts = text.split(/[•\n]+/).map(p => p.trim()).filter(p => p.length > 0);
+      if (parts.length > 1) {
+        let intro = '';
+        let startIndex = 0;
+
+        if (parts[0].toLowerCase().includes('official') || parts[0].toLowerCase().includes('regarding') || parts[0].toLowerCase().includes('policies') || parts[0].toLowerCase().includes('guidelines')) {
+          intro = parts[0];
+          startIndex = 1;
+        } else {
+          intro = 'Based on official ABES Engineering College regulations:';
+          startIndex = 0;
+        }
+
+        const formattedBullets: string[] = [];
+        for (let i = startIndex; i < parts.length; i++) {
+          let p = parts[i].replace(/^[-–*•\s]+/, '').trim();
+          p = p.replace(/[,;:]+$/, '').trim();
+          if (p.toLowerCase().startsWith('abes engineering college — admission route')) continue;
+          if (p.length < 15) continue;
+          if (!p.endsWith('.')) p += '.';
+
+          // Add bold topic title if not already present
+          if (!p.startsWith('**') && !p.startsWith('- **')) {
+            let title = 'Key Policy Detail';
+            if (/eligib|class 12|physics|aggregate|marks/i.test(p)) {
+              title = 'Eligibility Criteria';
+            } else if (/admission|uptac|cuet|counselling|seat/i.test(p)) {
+              title = 'Admission Route & Counselling';
+            } else if (/programme|course|b\.tech|mca|m\.tech|branch/i.test(p)) {
+              title = 'Academic Programmes';
+            } else if (/enquiry|apply|portal|online|register/i.test(p)) {
+              title = 'Online Registration & Enquiry';
+            } else if (/fee|tuition|scholarship/i.test(p)) {
+              title = 'Fee Guidelines';
+            } else if (/hostel|mess|curfew|room/i.test(p)) {
+              title = 'Hostel & Accommodation Rules';
+            } else if (/attendance|75%|medical/i.test(p)) {
+              title = 'Attendance Requirement';
+            }
+            formattedBullets.push(`- **${title}:** ${p}`);
+          } else {
+            formattedBullets.push(p.startsWith('-') ? p : `- ${p}`);
+          }
+        }
+
+        if (formattedBullets.length > 0) {
+          return `${intro}\n\n${formattedBullets.join('\n\n')}`;
+        }
+      }
+    }
+
+    // 4. Ensure ample spacing before standard markdown list items
+    text = text.replace(/([^\n])\n(-|\*|\d+\.) /g, '$1\n\n$2 ');
+    return text;
+  };
+
+  const formattedContent = isAssistant ? formatStructuredContent(message.content) : message.content;
+
   return (
     <div style={{
       display: 'flex',
@@ -74,7 +150,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
 
             {/* Markdown Body */}
             <div className="prose">
-              <ReactMarkdown>{message.content}</ReactMarkdown>
+              <ReactMarkdown>{formattedContent}</ReactMarkdown>
             </div>
 
             {/* Verified Citations List */}

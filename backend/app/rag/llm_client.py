@@ -30,7 +30,7 @@ class LLMClient:
         # 1. Try Gemini Cloud first if key is present
         gemini_key = (os.getenv("GEMINI_API_KEY") or self.gemini_key or "").strip()
         if gemini_key:
-            candidate_models = ["gemini-flash-lite-latest", "gemini-3.5-flash", "gemini-flash-latest"]
+            candidate_models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-2.0-flash-lite"]
             for model_name in candidate_models:
                 try:
                     from google import genai
@@ -39,7 +39,7 @@ class LLMClient:
                     
                     config = types.GenerateContentConfig(
                         temperature=0.1,
-                        max_output_tokens=350,
+                        max_output_tokens=450,
                         system_instruction=full_system
                     )
                     
@@ -77,7 +77,7 @@ class LLMClient:
                 "stream": True,
                 "options": {
                     "temperature": 0.1,
-                    "num_predict": 300
+                    "num_predict": 350
                 }
             }
             async with httpx.AsyncClient(timeout=30.0) as client:
@@ -114,7 +114,7 @@ class LLMClient:
                     ],
                     stream=True,
                     temperature=0.1,
-                    max_tokens=300
+                    max_tokens=350
                 )
                 async for chunk in stream:
                     content = chunk.choices[0].delta.content or ""
@@ -124,8 +124,8 @@ class LLMClient:
             except Exception as e:
                 print(f"[LLMClient] OpenAI stream error: {e}")
 
-        # 4. Dynamic Context Fallback (Extracts salient points from policy chunks)
-        yield "Here is the official information regarding your query:\n\n"
+        # 4. Intelligent Structured Synthesis Fallback
+        # Synthesizes clean, spaced, ChatGPT-style structured bullets from policy context
         context_part = ""
         if "Official Reference Information:" in user_prompt:
             try:
@@ -138,21 +138,85 @@ class LLMClient:
             except Exception:
                 context_part = ""
 
-        extracted_lines = []
-        for line in context_part.splitlines():
-            line_str = line.strip()
-            if line_str and not line_str.startswith("[") and not line_str.startswith("---") and len(line_str) > 30:
-                cleaned = line_str.lstrip("•-–*1234567890. ()")
-                if cleaned and len(cleaned) > 25:
-                    extracted_lines.append(cleaned)
-            if len(extracted_lines) >= 4:
-                break
+        structured_response = self.synthesize_structured_fallback(context_part, user_prompt)
+        # Stream structured response in smooth readable chunks
+        words = structured_response.split(" ")
+        for i in range(0, len(words), 4):
+            yield " ".join(words[i:i+4]) + " "
 
-        if extracted_lines:
-            for l in extracted_lines:
-                yield f"• {l[:220]}\n"
-        else:
-            yield "Please refer to the official document citations attached below for detailed guidelines."
+    def synthesize_structured_fallback(self, context_part: str, user_prompt: str) -> str:
+        import re
+
+        # Clean metadata noise and internal labels
+        text = re.sub(r'\[Document:.*?\]', '', context_part)
+        text = re.sub(r'Verification:\s*[\w_]+', '', text)
+        text = re.sub(r'Source:\s*https?://\S+', '', text)
+        text = re.sub(r'/\s*TYPICAL\s*-\s*CONFIRM WITH ABES\]?', '', text, flags=re.IGNORECASE)
+        text = re.sub(r'\b(VERIFIED/secondary|VERIFIED|UNAVAILABLE)\b', '', text)
+        text = re.sub(r'\|', '', text)
+
+        # Split into distinct statements by bullet, newline, or major separator
+        raw_statements = []
+        for chunk in text.split('---'):
+            for line in chunk.splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                # Split inline bullets
+                parts = [p.strip() for p in re.split(r'[•\n]+', line) if p.strip()]
+                for p in parts:
+                    p = p.strip(' -–*•\t')
+                    # Remove trailing incomplete parentheses or clauses
+                    p = re.sub(r'\([a-zA-Z\s]*$', '', p).strip()
+                    p = p.rstrip(' ,;:')
+                    # Filter out short fragments or header-only lines
+                    if len(p) > 25 and not p.startswith('http'):
+                        if not p.lower().startswith('abes engineering college — admission route'):
+                            raw_statements.append(p)
+
+        # Deduplicate while preserving flow
+        seen = set()
+        unique_points = []
+        for s in raw_statements:
+            norm = re.sub(r'\W+', '', s.lower())[:35]
+            if norm not in seen:
+                seen.add(norm)
+                unique_points.append(s)
+
+        if not unique_points:
+            return "Official details for this query are catalogued in the college policy records. Please consult the verified document citations attached below for complete guidelines."
+
+        # Assign structured topic titles and format into ChatGPT-style spaced bullets
+        items = []
+        for s in unique_points[:4]:
+            lower = s.lower()
+            if any(k in lower for k in ['eligib', 'class 12', 'physics', 'aggregate', 'marks']):
+                title = "Eligibility Criteria"
+            elif any(k in lower for k in ['admission', 'uptac', 'cuet', 'counselling', 'seat']):
+                title = "Admission Route & Counselling"
+            elif any(k in lower for k in ['programme', 'course', 'b.tech', 'mca', 'm.tech', 'branch']):
+                title = "Academic Programmes"
+            elif any(k in lower for k in ['enquiry', 'apply', 'portal', 'online', 'register']):
+                title = "Online Registration & Enquiry"
+            elif any(k in lower for k in ['fee', 'tuition', 'scholarship', 'refund']):
+                title = "Fee Structure & Guidelines"
+            elif any(k in lower for k in ['hostel', 'mess', 'curfew', 'room']):
+                title = "Hostel & Accommodation Rules"
+            elif any(k in lower for k in ['attendance', '75%', 'leave', 'medical']):
+                title = "Attendance Policy"
+            else:
+                title = "Policy Overview"
+
+            # Clean up question artifacts like "How do I apply?" or "What are the fees?"
+            clean_body = re.sub(r'^(How do I apply\?|What are the fees\?)\s*', '', s).strip()
+            clean_body = clean_body.strip(' .')
+            if clean_body:
+                items.append(f"- **{title}:** {clean_body}.")
+
+        result = "Based on official ABES Engineering College regulations, here are the key details:\n\n"
+        result += "\n\n".join(items)
+        result += "\n\n---\n*Please refer to the verified official citations below for full statutory details.*"
+        return result
 
     async def generate_sync(self, system_prompt: str, user_prompt: str) -> str:
         tokens = []
@@ -161,3 +225,4 @@ class LLMClient:
         return "".join(tokens)
 
 llm_client = LLMClient()
+
