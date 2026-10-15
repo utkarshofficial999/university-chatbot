@@ -74,6 +74,88 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     }
   ];
 
+  const renderInputForm = (isCentered: boolean = false) => (
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
+        borderRadius: '28px',
+        border: '1px solid #E5E7EB',
+        boxShadow: isCentered 
+          ? '0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03)'
+          : '0 2px 8px rgba(0, 0, 0, 0.04)',
+        padding: isCentered ? '6px 8px 6px 20px' : '4px 6px 4px 16px',
+        transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+        minHeight: isCentered ? '54px' : '48px',
+        width: '100%'
+      }}
+    >
+      <input
+        className="chat-input-field"
+        type="text"
+        placeholder={
+          selectedCategory !== 'All' 
+            ? `Ask about ${selectedCategory}...`
+            : "Ask about ABES policies, attendance, fees, exams..."
+        }
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        disabled={isLoading}
+        autoFocus={isCentered}
+        style={{
+          flex: 1,
+          background: 'transparent',
+          border: 'none',
+          outline: 'none',
+          color: '#1F2937',
+          fontSize: isCentered ? '0.96rem' : '0.92rem',
+          padding: '8px 4px'
+        }}
+      />
+
+      {selectedCategory !== 'All' && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          fontSize: '0.7rem',
+          color: '#8B1E2D',
+          backgroundColor: '#FDF2F4',
+          border: '1px solid #FCE7E9',
+          padding: '2px 7px',
+          borderRadius: '6px',
+          marginRight: '6px',
+          whiteSpace: 'nowrap'
+        }}>
+          {selectedCategory}
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={!input.trim() || isLoading}
+        aria-label="Send message"
+        style={{
+          width: isCentered ? '40px' : '38px',
+          height: isCentered ? '40px' : '38px',
+          borderRadius: '50%',
+          border: 'none',
+          backgroundColor: input.trim() && !isLoading ? '#8B1E2D' : '#F3F4F6',
+          color: input.trim() && !isLoading ? '#ffffff' : '#9CA3AF',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
+          transition: 'all 0.15s ease',
+          flexShrink: 0
+        }}
+      >
+        <ArrowUp size={isCentered ? 19 : 18} />
+      </button>
+    </form>
+  );
+
   return (
     <div style={{
       display: 'flex',
@@ -109,19 +191,22 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           justifyContent: messages.length === 0 ? 'center' : undefined
         }}>
           {messages.length === 0 ? (
-            /* Clean Minimalist Empty State */
+            /* Centered ChatGPT / LLM Style Landing */
             <div style={{
               margin: 'auto auto',
               textAlign: 'center',
-              padding: '12px 12px 20px 12px',
-              maxWidth: '560px',
-              width: '100%'
+              padding: '20px 12px',
+              maxWidth: '640px',
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
             }}>
               {/* College Crest */}
               <div style={{
-                width: '54px',
-                height: '54px',
-                borderRadius: '14px',
+                width: '56px',
+                height: '56px',
+                borderRadius: '16px',
                 backgroundColor: '#ffffff',
                 border: '1px solid #E5E7EB',
                 display: 'flex',
@@ -144,7 +229,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
               <h2 style={{ 
                 fontFamily: 'var(--font-sans)',
-                fontSize: '1.55rem', 
+                fontSize: '1.65rem', 
                 color: '#111827', 
                 fontWeight: 650, 
                 marginBottom: '8px',
@@ -157,15 +242,19 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 fontSize: '0.88rem', 
                 color: '#6B7280', 
                 lineHeight: 1.5, 
-                marginBottom: '20px', 
-                maxWidth: '420px', 
-                margin: '0 auto 20px auto' 
+                marginBottom: '24px', 
+                maxWidth: '420px'
               }}>
                 Ask any question about ABES college policies, attendance, exams, or hostel rules.
               </p>
 
+              {/* Textbox IN THE MIDDLE like ChatGPT */}
+              <div style={{ width: '100%', maxWidth: '620px', marginBottom: '20px' }}>
+                {renderInputForm(true)}
+              </div>
+
               {/* Clean Scannable Prompt Cards */}
-              <div className="clean-prompt-grid">
+              <div className="clean-prompt-grid" style={{ width: '100%', maxWidth: '620px' }}>
                 {suggestionChips.map((chip, idx) => (
                   <button
                     key={idx}
@@ -178,6 +267,16 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     <span className="clean-prompt-text">{chip.label}</span>
                   </button>
                 ))}
+              </div>
+
+              <div style={{
+                textAlign: 'center',
+                marginTop: '18px',
+                fontSize: '0.72rem',
+                color: '#9CA3AF',
+                letterSpacing: '0.01em'
+              }}>
+                We are continuously improving to give accurate answers.
               </div>
             </div>
           ) : (
@@ -219,101 +318,30 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         </div>
       </div>
 
-      {/* Compact Floating Input Bar (Never Covers Content, Keyboard Friendly) */}
-      <div style={{
-        padding: '8px 14px',
-        paddingBottom: 'max(10px, env(safe-area-inset-bottom))',
-        backgroundColor: '#F8F9FB',
-        borderTop: '1px solid rgba(229, 231, 235, 0.7)',
-        flexShrink: 0
-      }}>
-        <div style={{ maxWidth: '820px', margin: '0 auto' }}>
-          <form
-            onSubmit={handleSubmit}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              backgroundColor: '#ffffff',
-              borderRadius: '28px',
-              border: '1px solid #E5E7EB',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-              padding: '4px 6px 4px 16px',
-              transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-              minHeight: '48px'
-            }}
-          >
-            <input
-              className="chat-input-field"
-              type="text"
-              placeholder={
-                selectedCategory !== 'All' 
-                  ? `Ask about ${selectedCategory}...`
-                  : "Ask about ABES policies, attendance, fees..."
-              }
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={isLoading}
-              style={{
-                flex: 1,
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
-                color: '#1F2937',
-                fontSize: '0.92rem',
-                padding: '8px 4px'
-              }}
-            />
+      {/* Bottom Docked Input Bar (Only visible during active conversation, like ChatGPT) */}
+      {messages.length > 0 && (
+        <div style={{
+          padding: '8px 14px',
+          paddingBottom: 'max(10px, env(safe-area-inset-bottom))',
+          backgroundColor: '#F8F9FB',
+          borderTop: '1px solid rgba(229, 231, 235, 0.7)',
+          flexShrink: 0
+        }}>
+          <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+            {renderInputForm(false)}
 
-            {selectedCategory !== 'All' && (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                fontSize: '0.7rem',
-                color: '#8B1E2D',
-                backgroundColor: '#FDF2F4',
-                border: '1px solid #FCE7E9',
-                padding: '2px 7px',
-                borderRadius: '6px',
-                marginRight: '6px'
-              }}>
-                {selectedCategory}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={!input.trim() || isLoading}
-              aria-label="Send message"
-              style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '50%',
-                border: 'none',
-                backgroundColor: input.trim() && !isLoading ? '#8B1E2D' : '#F3F4F6',
-                color: input.trim() && !isLoading ? '#ffffff' : '#9CA3AF',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
-                transition: 'all 0.15s ease',
-                flexShrink: 0
-              }}
-            >
-              <ArrowUp size={18} />
-            </button>
-          </form>
-
-          <div style={{
-            textAlign: 'center',
-            marginTop: '8px',
-            fontSize: '0.72rem',
-            color: '#9CA3AF',
-            letterSpacing: '0.01em'
-          }}>
-            We are continuously improving to give accurate answers.
+            <div style={{
+              textAlign: 'center',
+              marginTop: '8px',
+              fontSize: '0.72rem',
+              color: '#9CA3AF',
+              letterSpacing: '0.01em'
+            }}>
+              We are continuously improving to give accurate answers.
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
