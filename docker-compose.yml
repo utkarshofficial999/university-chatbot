@@ -1,24 +1,37 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: pgvector/pgvector:pg16
-    container_name: jaipuria_pgvector
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: jaipuria_backend
     restart: always
-    environment:
-      POSTGRES_USER: jaipuria_user
-      POSTGRES_PASSWORD: jaipuria_password_2026
-      POSTGRES_DB: jaipuria_rag_db
     ports:
-      - "5432:5432"
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-flash-lite-latest}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - PINECONE_INDEX_NAME=${PINECONE_INDEX_NAME:-jaipuria-policies}
+      - VECTOR_DB_PROVIDER=${VECTOR_DB_PROVIDER:-pinecone}
+      - LLM_PROVIDER=${LLM_PROVIDER:-gemini}
+      - SECRET_KEY=${SECRET_KEY:-jaipuria-prod-secret-key-change-this}
+      - STORAGE_DIR=/app/data/documents
+      - POLICIES_SOURCE_DIR=/app
     volumes:
-      - pgvector_data:/var/lib/postgresql/data
-      - ./backend/scripts/init_pgvector.sql:/docker-entrypoint-initdb.d/init_pgvector.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U jaipuria_user -d jaipuria_rag_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - backend_data:/app/data
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: jaipuria_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 
 volumes:
-  pgvector_data:
+  backend_data:
