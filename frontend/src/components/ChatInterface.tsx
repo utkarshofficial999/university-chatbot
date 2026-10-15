@@ -278,7 +278,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               placeholder={
                 selectedCategory !== 'All' 
                   ? `Ask about ${selectedCategory}...`
-                  : "Ask a question about ABES policies, attendance, fees, hostel, syllabus..."
+                  : "Ask about ABES policies, attendance, fees, exams..."
               }
               value={input}
               onChange={(e) => setInput(e.target.value)}

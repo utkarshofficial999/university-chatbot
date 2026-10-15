@@ -345,14 +345,31 @@ input, textarea, select {
   color: #0f172a;
 }
 
-/* Tablet & Mobile Screens (< 768px) */
-@media (max-width: 768px) {
+/* View Switcher Visibility Defaults */
+.desktop-view-switcher {
+  display: flex !important;
+}
+
+.mobile-view-nav {
+  display: none !important;
+}
+
+/* Tablet & Mobile Screens (<= 860px) */
+@media (max-width: 860px) {
   .mobile-menu-btn {
-    display: inline-flex;
+    display: inline-flex !important;
   }
 
   .sidebar-close-btn {
-    display: inline-flex;
+    display: inline-flex !important;
+  }
+
+  .desktop-view-switcher {
+    display: none !important;
+  }
+
+  .mobile-view-nav {
+    display: block !important;
   }
 
   .header-top-bar {
@@ -383,6 +400,12 @@ input, textarea, select {
 
   .header-view-label {
     display: none !important;
+  }
+
+  .header-admin-btn {
+    padding: 5px 9px !important;
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
   }
 
   /* Slide-over Mobile Drawer */
@@ -439,14 +462,30 @@ input, textarea, select {
   }
 }
 
-/* Extra Small Screens (< 480px) */
-@media (max-width: 480px) {
+/* Small Mobile Screens (<= 540px) */
+@media (max-width: 540px) {
+  .header-admin-login-suffix {
+    display: none !important;
+  }
+
+  .header-admin-btn {
+    padding: 4px 8px !important;
+    font-size: 0.74rem !important;
+  }
+
+  .header-brand-title {
+    font-size: 0.98rem !important;
+  }
+}
+
+/* Extra Small Screens (<= 420px) */
+@media (max-width: 420px) {
   .header-top-bar {
     display: none !important;
   }
 
   .header-main-nav {
-    height: 52px !important;
+    height: 50px !important;
     padding: 0 8px !important;
   }
 
@@ -468,3 +507,4 @@ input, textarea, select {
     margin: 8px !important;
   }
 }
+

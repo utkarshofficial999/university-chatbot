@@ -5,9 +5,12 @@ import {
   Trash2, 
   Search, 
   Layers,
-  X
+  X,
+  ShieldCheck,
+  Lock
 } from 'lucide-react';
 import type { Conversation, Category } from '../types';
+import { useAuth } from '../context/AuthContext';
 
 interface ConversationSidebarProps {
   conversations: Conversation[];
@@ -21,6 +24,8 @@ interface ConversationSidebarProps {
   totalIndexedDocs: number;
   isOpenMobile?: boolean;
   onCloseMobile?: () => void;
+  currentView?: 'chat' | 'admin';
+  onViewChange?: (view: 'chat' | 'admin') => void;
 }
 
 export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
@@ -34,8 +39,11 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
   onSelectCategory,
   totalIndexedDocs,
   isOpenMobile,
-  onCloseMobile
+  onCloseMobile,
+  currentView = 'chat',
+  onViewChange
 }) => {
+  const { user, openAuthModal } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredConversations = conversations.filter(c => 
@@ -115,6 +123,71 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
                 <X size={18} />
               </button>
             )}
+          </div>
+
+          {/* Mobile View Switcher (Visible on Mobile & Tablet Drawer) */}
+          <div className="mobile-view-nav" style={{ marginTop: '10px' }}>
+            <div style={{
+              display: 'flex',
+              backgroundColor: '#f1f5f9',
+              border: '1px solid #e2e8f0',
+              borderRadius: '8px',
+              padding: '2px'
+            }}>
+              <button
+                onClick={() => {
+                  onViewChange?.('chat');
+                  onCloseMobile?.();
+                }}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '7px 8px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  fontSize: '0.78rem',
+                  fontWeight: currentView === 'chat' ? 600 : 500,
+                  backgroundColor: currentView === 'chat' ? '#ffffff' : 'transparent',
+                  color: currentView === 'chat' ? '#0f172a' : '#64748b',
+                  boxShadow: currentView === 'chat' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
+                }}
+              >
+                <MessageSquare size={13} />
+                <span>Student Chat</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  if (user?.role === 'admin') {
+                    onViewChange?.('admin');
+                    onCloseMobile?.();
+                  } else {
+                    openAuthModal();
+                  }
+                }}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '7px 8px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  fontSize: '0.78rem',
+                  fontWeight: currentView === 'admin' ? 600 : 500,
+                  backgroundColor: currentView === 'admin' ? '#ffffff' : 'transparent',
+                  color: currentView === 'admin' ? '#0f172a' : '#64748b',
+                  boxShadow: currentView === 'admin' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
+                }}
+              >
+                {user?.role === 'admin' ? <ShieldCheck size={13} color="#851926" /> : <Lock size={12} color="#94a3b8" />}
+                <span>Policy Manager</span>
+              </button>
+            </div>
           </div>
 
         {/* Minimal Search Bar */}

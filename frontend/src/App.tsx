@@ -180,6 +180,8 @@ export const AppContent: React.FC = () => {
               totalIndexedDocs={totalIndexedDocs}
               isOpenMobile={isMobileSidebarOpen}
               onCloseMobile={() => setIsMobileSidebarOpen(false)}
+              currentView={currentView}
+              onViewChange={setCurrentView}
             />
 
             <ChatInterface

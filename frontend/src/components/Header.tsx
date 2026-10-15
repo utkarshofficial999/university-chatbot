@@ -128,8 +128,8 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Minimalist Segmented View Switcher (Notion / Claude style) */}
-        <div style={{
+        {/* Minimalist Segmented View Switcher (Notion / Claude style - Desktop only) */}
+        <div className="desktop-view-switcher" style={{
           display: 'flex',
           alignItems: 'center',
           backgroundColor: '#f1f5f9',
@@ -270,22 +270,24 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <button
               onClick={openAuthModal}
+              className="header-admin-btn"
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
+                gap: '5px',
                 backgroundColor: '#ffffff',
                 border: '1px solid #e2e8f0',
                 color: '#0f172a',
-                padding: '6px 14px',
+                padding: '6px 12px',
                 borderRadius: '6px',
                 fontSize: '0.8rem',
                 fontWeight: 500,
-                boxShadow: 'var(--shadow-subtle)'
+                boxShadow: 'var(--shadow-subtle)',
+                whiteSpace: 'nowrap'
               }}
             >
               <Lock size={13} color="#851926" />
-              Admin Login
+              <span>Admin<span className="header-admin-login-suffix"> Login</span></span>
             </button>
           )}
         </div>
