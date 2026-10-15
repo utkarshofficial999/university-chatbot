@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { X, ShieldCheck, GraduationCap } from 'lucide-react';
+import { X, ShieldCheck, Lock, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const AuthModal: React.FC = () => {
-  const { isAuthModalOpen, closeAuthModal, login, register } = useAuth();
-  const [isRegister, setIsRegister] = useState(false);
+  const { isAuthModalOpen, closeAuthModal, login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [role, setRole] = useState('student');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,29 +17,9 @@ export const AuthModal: React.FC = () => {
     setLoading(true);
 
     try {
-      if (isRegister) {
-        await register(email, password, fullName, role);
-      } else {
-        await login(email, password);
-      }
+      await login(email.trim(), password);
     } catch (err: any) {
-      setError(err.message || 'Authentication failed');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleQuickDemo = async (roleType: 'student' | 'admin' | 'utkarsh') => {
-    setError(null);
-    setLoading(true);
-    try {
-      if (roleType === 'utkarsh' || roleType === 'admin') {
-        await login('utkarsh@24b0101464@abes.ac.in', 'admin123');
-      } else {
-        await login('student@abes.ac.in', 'student2026');
-      }
-    } catch (err: any) {
-      setError(err.message || 'Demo login failed');
+      setError(err.message || 'Authentication failed. Please verify administrator credentials.');
     } finally {
       setLoading(false);
     }
@@ -66,7 +43,7 @@ export const AuthModal: React.FC = () => {
       <div 
         style={{
           width: '100%',
-          maxWidth: '430px',
+          maxWidth: '400px',
           backgroundColor: '#ffffff',
           borderRadius: '12px',
           border: '1px solid #e2e8f0',
@@ -85,13 +62,27 @@ export const AuthModal: React.FC = () => {
           alignItems: 'center',
           backgroundColor: '#f8fafc'
         }}>
-          <div>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', color: '#0f172a', fontWeight: 600 }}>
-              {isRegister ? 'Register Account' : 'Sign In'}
-            </h3>
-            <p style={{ fontSize: '0.76rem', color: '#64748b' }}>
-              ABES College Assistant & Policy Manager
-            </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              backgroundColor: '#fdf2f2',
+              border: '1px solid #fecdd3',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <ShieldCheck size={18} color="#851926" />
+            </div>
+            <div>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.12rem', color: '#0f172a', fontWeight: 600 }}>
+                Administrator Sign In
+              </h3>
+              <p style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                ABES Policy Management Portal
+              </p>
+            </div>
           </div>
 
           <button
@@ -108,74 +99,25 @@ export const AuthModal: React.FC = () => {
           </button>
         </div>
 
-        {/* Quick Demo Login Cards */}
-        <div style={{ padding: '18px 22px 0 22px' }}>
-          <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
-            One-Click Verified Authentication:
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('utkarsh')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '9px 12px',
-                borderRadius: '8px',
-                backgroundColor: '#fdf2f2',
-                border: '1px solid #fecdd3',
-                color: '#851926',
-                fontSize: '0.76rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                textAlign: 'left'
-              }}
-            >
-              <ShieldCheck size={16} color="#851926" />
-              <span>Utkarsh (Admin)</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('student')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '9px 12px',
-                borderRadius: '8px',
-                backgroundColor: '#f0f9ff',
-                border: '1px solid #bae6fd',
-                color: '#0369a1',
-                fontSize: '0.76rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                textAlign: 'left'
-              }}
-            >
-              <GraduationCap size={16} />
-              <span>ABES Student</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Divider */}
+        {/* Security Notice */}
         <div style={{
+          margin: '18px 22px 4px 22px',
+          padding: '10px 12px',
+          borderRadius: '6px',
+          backgroundColor: '#f8fafc',
+          border: '1px solid #e2e8f0',
           display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          padding: '14px 22px',
-          color: '#94a3b8',
-          fontSize: '0.72rem'
+          gap: '8px',
+          alignItems: 'flex-start'
         }}>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }} />
-          <span>or sign in with email</span>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }} />
+          <Lock size={14} color="#851926" style={{ marginTop: '2px', flexShrink: 0 }} />
+          <p style={{ fontSize: '0.74rem', color: '#475569', lineHeight: 1.5 }}>
+            Restricted to authorized college administrators. Students and visitors can use the campus assistant freely without signing in.
+          </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ padding: '0 22px 22px 22px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <form onSubmit={handleSubmit} style={{ padding: '16px 22px 22px 22px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {error && (
             <div style={{
               padding: '10px 12px',
@@ -183,62 +125,45 @@ export const AuthModal: React.FC = () => {
               backgroundColor: '#fef2f2',
               border: '1px solid #fecdd3',
               color: '#b91c1c',
-              fontSize: '0.78rem'
+              fontSize: '0.78rem',
+              display: 'flex',
+              gap: '6px',
+              alignItems: 'center'
             }}>
-              {error}
-            </div>
-          )}
-
-          {isRegister && (
-            <div>
-              <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
-                Full Name
-              </label>
-              <input
-                type="text"
-                required
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Dr. Rajesh Kumar / Sneha Sharma"
-                style={{
-                  width: '100%',
-                  padding: '8px 12px',
-                  borderRadius: '6px',
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #cbd5e1',
-                  color: '#0f172a',
-                  fontSize: '0.85rem',
-                  outline: 'none'
-                }}
-              />
+              <AlertCircle size={14} style={{ flexShrink: 0 }} />
+              <span>{error}</span>
             </div>
           )}
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
-              Email
+            <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '5px', fontWeight: 500 }}>
+              Administrator Email
             </label>
             <input
-              type="text"
+              type="email"
               required
+              autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="utkarsh@24b0101464@abes.ac.in"
+              placeholder="admin@abes.ac.in"
               style={{
                 width: '100%',
-                padding: '8px 12px',
+                padding: '9px 12px',
                 borderRadius: '6px',
                 backgroundColor: '#ffffff',
                 border: '1px solid #cbd5e1',
                 color: '#0f172a',
                 fontSize: '0.85rem',
-                outline: 'none'
+                outline: 'none',
+                transition: 'border-color 0.15s ease'
               }}
+              onFocus={(e) => e.target.style.borderColor = '#851926'}
+              onBlur={(e) => e.target.style.borderColor = '#cbd5e1'}
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
+            <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '5px', fontWeight: 500 }}>
               Password
             </label>
             <input
@@ -249,79 +174,49 @@ export const AuthModal: React.FC = () => {
               placeholder="••••••••"
               style={{
                 width: '100%',
-                padding: '8px 12px',
+                padding: '9px 12px',
                 borderRadius: '6px',
                 backgroundColor: '#ffffff',
                 border: '1px solid #cbd5e1',
                 color: '#0f172a',
                 fontSize: '0.85rem',
-                outline: 'none'
+                outline: 'none',
+                transition: 'border-color 0.15s ease'
               }}
+              onFocus={(e) => e.target.style.borderColor = '#851926'}
+              onBlur={(e) => e.target.style.borderColor = '#cbd5e1'}
             />
           </div>
-
-          {isRegister && (
-            <div>
-              <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
-                Role
-              </label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '8px 12px',
-                  borderRadius: '6px',
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #cbd5e1',
-                  color: '#0f172a',
-                  fontSize: '0.85rem',
-                  outline: 'none'
-                }}
-              >
-                <option value="student">Student</option>
-                <option value="faculty">Faculty Member</option>
-                <option value="admin">Policy Administrator</option>
-              </select>
-            </div>
-          )}
 
           <button
             type="submit"
             disabled={loading}
             style={{
-              marginTop: '4px',
-              padding: '10px',
+              marginTop: '6px',
+              padding: '11px',
               borderRadius: '6px',
               backgroundColor: '#0f172a',
               color: '#ffffff',
               fontWeight: 600,
               border: 'none',
               fontSize: '0.88rem',
-              cursor: loading ? 'not-allowed' : 'pointer'
+              cursor: loading ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              transition: 'background-color 0.15s ease'
+            }}
+            onMouseEnter={(e) => {
+              if (!loading) e.currentTarget.style.backgroundColor = '#1e293b';
+            }}
+            onMouseLeave={(e) => {
+              if (!loading) e.currentTarget.style.backgroundColor = '#0f172a';
             }}
           >
-            {loading ? 'Authenticating...' : isRegister ? 'Register Account' : 'Sign In'}
+            <ShieldCheck size={16} />
+            <span>{loading ? 'Verifying Credentials...' : 'Sign In as Administrator'}</span>
           </button>
-
-          <div style={{ textAlign: 'center', marginTop: '4px' }}>
-            <button
-              type="button"
-              onClick={() => {
-                setIsRegister(!isRegister);
-                setError(null);
-              }}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#64748b',
-                fontSize: '0.76rem',
-                cursor: 'pointer'
-              }}
-            >
-              {isRegister ? 'Already have an account? Sign In' : "Don't have an account? Register"}
-            </button>
-          </div>
         </form>
       </div>
     </div>

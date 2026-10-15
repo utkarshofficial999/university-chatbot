@@ -4,7 +4,6 @@ import {
   ShieldCheck, 
   MessageSquare, 
   LogOut, 
-  LogIn, 
   Building2,
   ExternalLink,
   Lock
@@ -265,8 +264,8 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
                 boxShadow: 'var(--shadow-subtle)'
               }}
             >
-              <LogIn size={14} />
-              Sign In
+              <Lock size={13} color="#851926" />
+              Admin Login
             </button>
           )}
         </div>
