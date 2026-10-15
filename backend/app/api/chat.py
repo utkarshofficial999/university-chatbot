@@ -1,5 +1,5 @@
 import json
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
@@ -16,6 +16,7 @@ router = APIRouter(prefix="/chat", tags=["Chat & RAG"])
 class ChatRequest(BaseModel):
     query: str
     conversation_id: Optional[str] = None
+    session_id: Optional[str] = None
     category: Optional[str] = None
     university_id: Optional[str] = "abes"
 
@@ -27,21 +28,30 @@ class ChatResponse(BaseModel):
 @router.post("/query", response_model=ChatResponse)
 async def query_chat(
     req: ChatRequest,
+    x_session_id: Optional[str] = Header(None, alias="X-Session-ID"),
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
     univ_id = req.university_id or settings.DEFAULT_UNIVERSITY_ID
+    sid = req.session_id or x_session_id
     
-    # Manage conversation
+    # Manage conversation with session isolation
     conv = None
     if req.conversation_id:
         conv = db.query(Conversation).filter(Conversation.id == req.conversation_id).first()
+        if conv:
+            # Prevent tampering with other users' conversations
+            if conv.user_id and (not current_user or current_user.id != conv.user_id):
+                conv = None
+            elif conv.session_id and (not sid or conv.session_id != sid):
+                conv = None
     
     if not conv:
         user_id = current_user.id if current_user else None
         title = req.query[:40] + ("..." if len(req.query) > 40 else "")
         conv = Conversation(
             user_id=user_id,
+            session_id=sid,
             title=title,
             university_id=univ_id
         )
@@ -85,21 +95,30 @@ async def query_chat(
 @router.post("/stream")
 async def stream_chat(
     req: ChatRequest,
+    x_session_id: Optional[str] = Header(None, alias="X-Session-ID"),
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
     univ_id = req.university_id or settings.DEFAULT_UNIVERSITY_ID
+    sid = req.session_id or x_session_id
 
-    # Manage conversation
+    # Manage conversation with session isolation
     conv = None
     if req.conversation_id:
         conv = db.query(Conversation).filter(Conversation.id == req.conversation_id).first()
+        if conv:
+            # Prevent tampering with other users' conversations
+            if conv.user_id and (not current_user or current_user.id != conv.user_id):
+                conv = None
+            elif conv.session_id and (not sid or conv.session_id != sid):
+                conv = None
     
     if not conv:
         user_id = current_user.id if current_user else None
         title = req.query[:40] + ("..." if len(req.query) > 40 else "")
         conv = Conversation(
             user_id=user_id,
+            session_id=sid,
             title=title,
             university_id=univ_id
         )

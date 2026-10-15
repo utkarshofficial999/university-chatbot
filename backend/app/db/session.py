@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
 from backend.app.core.config import settings
 from backend.app.db.models import Base, User, DocumentCategory
@@ -32,6 +32,21 @@ def get_db():
 def init_db():
     """Initialize database tables and seed default admin & categories"""
     Base.metadata.create_all(bind=engine)
+
+    # Automatic migration: Ensure session_id column exists on conversations table
+    with engine.begin() as conn:
+        try:
+            if "sqlite" in (settings.DATABASE_URL or ""):
+                res = conn.execute(text("PRAGMA table_info(conversations)")).fetchall()
+                col_names = [r[1] for r in res]
+                if "session_id" not in col_names:
+                    conn.execute(text("ALTER TABLE conversations ADD COLUMN session_id VARCHAR(100)"))
+            else:
+                conn.execute(text("ALTER TABLE conversations ADD COLUMN IF NOT EXISTS session_id VARCHAR(100)"))
+                conn.execute(text("CREATE INDEX IF NOT EXISTS idx_conversations_session_id ON conversations(session_id)"))
+        except Exception as e:
+            print(f"[init_db] Note on migration check: {e}")
+
     db = SessionLocal()
     try:
         # 1. Seed Utkarsh as Verified College Admin (24B0101464)

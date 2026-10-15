@@ -60,6 +60,7 @@ class Conversation(Base):
     
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
+    session_id = Column(String(100), nullable=True, index=True)
     title = Column(String(255), default="New ABES Query")
     university_id = Column(String(50), default="abes", index=True)
     created_at = Column(DateTime(timezone=True), default=get_utc_now)

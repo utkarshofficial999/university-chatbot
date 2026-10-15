@@ -4,6 +4,27 @@ const API_BASE = (import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_B
 
 export class ApiClient {
   private static token: string | null = localStorage.getItem('abes_auth_token');
+  private static sessionId: string = ApiClient.getOrCreateSessionId();
+
+  private static getOrCreateSessionId(): string {
+    let sid = localStorage.getItem('abes_session_id');
+    if (!sid) {
+      sid = 'sess_' + (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).substring(2)));
+      localStorage.setItem('abes_session_id', sid);
+    }
+    return sid;
+  }
+
+  static getSessionId(): string {
+    return this.sessionId || this.getOrCreateSessionId();
+  }
+
+  static resetSession(): string {
+    const newSid = 'sess_' + (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).substring(2)));
+    localStorage.setItem('abes_session_id', newSid);
+    this.sessionId = newSid;
+    return newSid;
+  }
 
   static setToken(token: string | null) {
     this.token = token;
@@ -21,6 +42,7 @@ export class ApiClient {
   private static headers(): HeadersInit {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      'X-Session-ID': this.getSessionId()
     };
     const t = this.getToken();
     if (t) {
@@ -135,6 +157,7 @@ export class ApiClient {
       body: JSON.stringify({
         query,
         conversation_id: conversationId,
+        session_id: this.getSessionId(),
         category: category && category !== 'All' ? category : undefined,
         university_id: 'abes'
       }),

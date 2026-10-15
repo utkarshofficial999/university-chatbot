@@ -54,6 +54,7 @@ export const AppContent: React.FC = () => {
       setMessages(data.messages || []);
     } catch (e) {
       console.error("Error fetching conversation:", e);
+      setCurrentConversationId(null);
       setMessages([]);
     }
   };
