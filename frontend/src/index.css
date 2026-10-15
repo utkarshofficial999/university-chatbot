@@ -1,25 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg-deep: #070d19;
-  --bg-canvas: #0b1528;
-  --bg-card: rgba(17, 31, 56, 0.75);
-  --bg-card-hover: rgba(23, 42, 75, 0.9);
-  --bg-input: rgba(13, 25, 46, 0.85);
-  
-  --border-subtle: rgba(212, 163, 115, 0.15);
-  --border-light: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(212, 163, 115, 0.45);
+  /* ABES Engineering College Official Brand Palette */
+  --abes-maroon: #762b2a;
+  --abes-maroon-dark: #551e1d;
+  --abes-maroon-light: #983837;
+  --abes-maroon-glow: rgba(118, 43, 42, 0.35);
 
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --abes-navy: #002147;
+  --abes-navy-dark: #071325;
+  --abes-navy-surface: #0c1d36;
+  --abes-navy-card: #0f2442;
+  --abes-navy-border: rgba(118, 43, 42, 0.28);
 
   --accent-gold: #e5a958;
   --accent-gold-glow: rgba(229, 169, 88, 0.25);
   --accent-blue: #38bdf8;
   --accent-emerald: #10b981;
   --accent-rose: #f43f5e;
+
+  --bg-deep: #060e1a;
+  --bg-canvas: #091526;
+  --bg-card: rgba(12, 29, 54, 0.85);
+  --bg-card-hover: rgba(18, 40, 72, 0.95);
+  --bg-input: rgba(9, 21, 38, 0.9);
+
+  --border-subtle: rgba(118, 43, 42, 0.35);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-active: rgba(229, 169, 88, 0.5);
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
 
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -29,8 +41,8 @@
   --radius-lg: 20px;
   --radius-full: 9999px;
 
-  --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(229, 169, 88, 0.05);
-  --shadow-glow: 0 0 25px rgba(229, 169, 88, 0.2);
+  --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(118, 43, 42, 0.15);
+  --shadow-glow: 0 0 25px rgba(118, 43, 42, 0.3);
 }
 
 * {
@@ -47,9 +59,10 @@ body {
   overflow-x: hidden;
   line-height: 1.6;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(229, 169, 88, 0.07) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.05) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(11, 21, 40, 0.5) 0px, transparent 100%);
+    radial-gradient(at 0% 0%, rgba(118, 43, 42, 0.18) 0px, transparent 55%),
+    radial-gradient(at 100% 0%, rgba(0, 33, 71, 0.35) 0px, transparent 60%),
+    radial-gradient(at 50% 100%, rgba(118, 43, 42, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(7, 19, 37, 0.7) 0px, transparent 100%);
   background-attachment: fixed;
 }
 
@@ -77,11 +90,11 @@ input, textarea, select {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(118, 43, 42, 0.4);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-gold);
+  background: var(--abes-maroon-light);
 }
 
 /* Layout Container */
@@ -103,8 +116,8 @@ input, textarea, select {
 /* Glass Card */
 .glass-panel {
   background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
 }
@@ -127,6 +140,12 @@ input, textarea, select {
   border: 1px solid rgba(229, 169, 88, 0.3);
 }
 
+.badge-maroon {
+  background: rgba(118, 43, 42, 0.25);
+  color: #ff9b9a;
+  border: 1px solid rgba(118, 43, 42, 0.5);
+}
+
 .badge-blue {
   background: rgba(56, 189, 248, 0.15);
   color: var(--accent-blue);
@@ -139,47 +158,90 @@ input, textarea, select {
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-/* Pulsing Streaming Dot */
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; transform: scale(0.9); }
-  50% { opacity: 1; transform: scale(1.1); }
+/* Pulsing Online Dot */
+@keyframes pulse-live {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
-.pulse-dot {
+.online-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-live 2s infinite;
+}
+
+/* Chatbot Thinking Dots */
+@keyframes bounce-delay {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+
+.typing-indicator span {
+  display: inline-block;
   width: 8px;
   height: 8px;
+  background-color: #e5a958;
   border-radius: 50%;
-  background-color: var(--accent-gold);
-  animation: pulse-glow 1.4s infinite ease-in-out;
-  display: inline-block;
+  margin: 0 2px;
+  animation: bounce-delay 1.4s infinite ease-in-out both;
 }
+
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0s; }
 
 /* Markdown prose styling */
 .prose {
-  color: #e2e8f0;
+  color: #f1f5f9;
   font-size: 0.95rem;
   line-height: 1.7;
 }
+
 .prose p {
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.75rem;
 }
+
 .prose p:last-child {
   margin-bottom: 0;
 }
+
 .prose strong {
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 700;
 }
+
 .prose ul, .prose ol {
-  margin: 0.5rem 0 0.85rem 1.4rem;
+  margin: 0.6rem 0 0.85rem 0.5rem;
+  padding-left: 1.25rem;
+  list-style-type: none;
 }
+
 .prose li {
-  margin-bottom: 0.35rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  line-height: 1.6;
 }
+
+.prose li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #e5a958;
+  font-size: 1.25rem;
+  line-height: 1;
+  top: 0.15rem;
+}
+
 .prose code {
-  background: rgba(0, 0, 0, 0.35);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.85em;
-  color: var(--accent-gold);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 0.88em;
+  color: #ffb4b3;
+  border: 1px solid rgba(118, 43, 42, 0.4);
 }

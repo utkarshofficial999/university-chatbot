@@ -4,7 +4,8 @@ import {
   GraduationCap, 
   BookOpen, 
   Home, 
-  Scale
+  ShieldAlert,
+  Sparkles
 } from 'lucide-react';
 import type { Message, Citation } from '../types';
 import { MessageItem } from './MessageItem';
@@ -45,24 +46,24 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const starterPrompts = [
     {
-      title: "Attendance Criteria",
-      prompt: "What is the minimum attendance requirement at ABES Engineering College?",
-      icon: <GraduationCap size={16} color="var(--accent-gold)" />
+      title: "Exam Attendance Rules",
+      prompt: "What is the minimum attendance required to appear in semester exams at ABES?",
+      icon: <GraduationCap size={16} color="#e5a958" />
     },
     {
-      title: "Programmes & Intake",
-      prompt: "What are the B.Tech programmes offered and their intake at ABES?",
+      title: "Programmes & College Code",
+      prompt: "What are the B.Tech programmes offered and what is the college code for ABES?",
       icon: <BookOpen size={16} color="#38bdf8" />
     },
     {
-      title: "Hostel & Facilities",
-      prompt: "What are the hostel rules, mess facilities, and timings at ABES?",
+      title: "Hostel Rules & Curfew",
+      prompt: "What are the hostel rules, night-out leaves, and curfew timings at ABES?",
       icon: <Home size={16} color="#10b981" />
     },
     {
-      title: "Anti-Ragging Policy",
-      prompt: "What is the official anti-ragging policy and helpline at ABES?",
-      icon: <Scale size={16} color="#f43f5e" />
+      title: "Anti-Ragging & Helplines",
+      prompt: "What is the anti-ragging policy, grievance mechanism, and helpline numbers?",
+      icon: <ShieldAlert size={16} color="#f43f5e" />
     }
   ];
 
@@ -86,34 +87,52 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         {messages.length === 0 ? (
           <div style={{
             margin: 'auto',
-            maxWidth: '680px',
+            maxWidth: '700px',
             textAlign: 'center',
-            padding: '30px 10px'
+            padding: '20px 10px'
           }}>
+            {/* College Crest Emblem */}
             <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '16px',
-              background: 'linear-gradient(135deg, rgba(229, 169, 88, 0.2) 0%, rgba(200, 130, 40, 0.05) 100%)',
-              border: '1px solid rgba(229, 169, 88, 0.4)',
+              width: '64px',
+              height: '64px',
+              borderRadius: '18px',
+              background: 'linear-gradient(135deg, #762b2a 0%, #4a1514 100%)',
+              border: '2px solid #e5a958',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              margin: '0 auto 18px auto',
-              boxShadow: '0 0 25px rgba(229, 169, 88, 0.2)'
+              margin: '0 auto 16px auto',
+              boxShadow: '0 0 25px rgba(118, 43, 42, 0.45)'
             }}>
-              <GraduationCap size={30} color="var(--accent-gold)" />
+              <GraduationCap size={34} color="#ffffff" />
             </div>
 
-            <h2 style={{ fontSize: '1.7rem', color: '#fff', fontWeight: 700, marginBottom: '8px' }}>
-              Welcome to ABES Knowledge Assistant
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: 'rgba(118, 43, 42, 0.25)',
+              border: '1px solid rgba(118, 43, 42, 0.5)',
+              padding: '3px 12px',
+              borderRadius: 'var(--radius-full)',
+              fontSize: '0.75rem',
+              color: '#fca5a5',
+              fontWeight: 600,
+              marginBottom: '12px'
+            }}>
+              <Sparkles size={12} color="#e5a958" />
+              Official Campus AI Assistant • AKTU Code 032
+            </div>
+
+            <h2 style={{ fontSize: '1.85rem', color: '#fff', fontWeight: 700, marginBottom: '8px' }}>
+              Welcome to ABES Engineering College
             </h2>
 
-            <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '28px' }}>
-              Ask questions directly against official, verified <strong>ABES Engineering College</strong> Student Handbooks, Quick Reference Guides, and academic regulations (AKTU Code 032).
+            <p style={{ fontSize: '0.94rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: '28px', maxWidth: '580px', margin: '0 auto 28px auto' }}>
+              Hello! I am your AI campus advisor. Ask me anything about courses, academic regulations, examination criteria, hostel policies, or fee details.
             </p>
 
-            {/* Starter Prompts Grid */}
+            {/* Quick Questions Grid */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -124,34 +143,39 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 <button
                   key={idx}
                   onClick={() => onSendMessage(p.prompt)}
-                  className="glass-panel"
                   style={{
                     padding: '14px 16px',
-                    border: '1px solid var(--border-light)',
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(12, 29, 54, 0.85)',
+                    border: '1px solid rgba(118, 43, 42, 0.35)',
+                    backdropFilter: 'blur(10px)',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '6px',
                     cursor: 'pointer',
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.2s ease',
+                    textAlign: 'left'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(229, 169, 88, 0.45)';
+                    e.currentTarget.style.borderColor = '#e5a958';
+                    e.currentTarget.style.backgroundColor = 'rgba(18, 42, 76, 0.95)';
                     e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 6px 18px rgba(0,0,0,0.4)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.4)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--border-light)';
+                    e.currentTarget.style.borderColor = 'rgba(118, 43, 42, 0.35)';
+                    e.currentTarget.style.backgroundColor = 'rgba(12, 29, 54, 0.85)';
                     e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     {p.icon}
-                    <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#fff' }}>
+                    <span style={{ fontSize: '0.84rem', fontWeight: 600, color: '#fff' }}>
                       {p.title}
                     </span>
                   </div>
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+                  <span style={{ fontSize: '0.78rem', color: '#94a3b8', lineHeight: 1.4 }}>
                     "{p.prompt}"
                   </span>
                 </button>
@@ -168,22 +192,27 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           ))
         )}
 
-        {/* Streaming / Loading Indicator */}
+        {/* Realistic Chatbot Typing / Thinking Indicator */}
         {isLoading && (
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
-            padding: '14px 20px',
+            gap: '12px',
+            padding: '12px 18px',
             margin: '12px 0',
-            maxWidth: '380px',
-            background: 'rgba(17, 31, 56, 0.7)',
-            borderRadius: '12px',
-            border: '1px solid var(--border-light)'
+            maxWidth: '340px',
+            background: 'rgba(12, 29, 54, 0.9)',
+            borderRadius: '16px',
+            border: '1px solid rgba(118, 43, 42, 0.4)',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)'
           }}>
-            <span className="pulse-dot" />
-            <span style={{ fontSize: '0.84rem', color: 'var(--accent-gold)', fontWeight: 500 }}>
-              Retrieving & verifying ABES regulations...
+            <div className="typing-indicator" style={{ display: 'flex', alignItems: 'center' }}>
+              <span />
+              <span />
+              <span />
+            </div>
+            <span style={{ fontSize: '0.84rem', color: '#fed7aa', fontWeight: 500 }}>
+              Checking official ABES records...
             </span>
           </div>
         )}
@@ -193,10 +222,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
       {/* Input Form Bar */}
       <div style={{
-        padding: '16px 32px 24px 32px',
-        backgroundColor: 'rgba(7, 13, 25, 0.9)',
-        borderTop: '1px solid var(--border-light)',
-        backdropFilter: 'blur(12px)'
+        padding: '16px 32px 20px 32px',
+        backgroundColor: 'rgba(6, 14, 26, 0.92)',
+        borderTop: '1px solid rgba(118, 43, 42, 0.3)',
+        backdropFilter: 'blur(16px)'
       }}>
         <form
           onSubmit={handleSubmit}
@@ -206,10 +235,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             position: 'relative',
             display: 'flex',
             alignItems: 'center',
-            backgroundColor: 'var(--bg-input)',
+            backgroundColor: 'rgba(10, 24, 44, 0.9)',
             borderRadius: '16px',
-            border: '1px solid var(--border-subtle)',
-            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.4)',
+            border: '1px solid rgba(118, 43, 42, 0.45)',
+            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.45)',
             padding: '6px 8px 6px 16px'
           }}
         >
@@ -218,7 +247,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             placeholder={
               selectedCategory !== 'All' 
                 ? `Ask anything about ${selectedCategory}...`
-                : "Ask any question about ABES rules, B.Tech programmes, attendance, hostel, fees, exams..."
+                : "Ask anything about ABES rules, programmes, attendance, hostel curfew, exams..."
             }
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -239,10 +268,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               display: 'flex',
               alignItems: 'center',
               fontSize: '0.72rem',
-              color: 'var(--accent-gold)',
-              background: 'rgba(229, 169, 88, 0.12)',
-              border: '1px solid rgba(229, 169, 88, 0.25)',
-              padding: '4px 8px',
+              color: '#fed7aa',
+              background: 'rgba(118, 43, 42, 0.35)',
+              border: '1px solid rgba(118, 43, 42, 0.6)',
+              padding: '4px 10px',
               borderRadius: '6px',
               marginRight: '8px'
             }}>
@@ -254,18 +283,19 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             type="submit"
             disabled={!input.trim() || isLoading}
             style={{
-              width: '40px',
-              height: '40px',
+              width: '42px',
+              height: '42px',
               borderRadius: '12px',
               border: 'none',
-              background: input.trim() && !isLoading ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.08)',
-              color: input.trim() && !isLoading ? '#070d19' : 'var(--text-dim)',
+              background: input.trim() && !isLoading ? 'linear-gradient(135deg, #762b2a 0%, #983837 100%)' : 'rgba(255, 255, 255, 0.08)',
+              color: input.trim() && !isLoading ? '#ffffff' : 'var(--text-dim)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
               transition: 'all 0.2s ease',
-              flexShrink: 0
+              flexShrink: 0,
+              boxShadow: input.trim() && !isLoading ? '0 2px 10px rgba(118, 43, 42, 0.5)' : 'none'
             }}
           >
             <Send size={18} />
@@ -275,10 +305,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <div style={{
           textAlign: 'center',
           marginTop: '8px',
-          fontSize: '0.72rem',
-          color: 'var(--text-dim)'
+          fontSize: '0.73rem',
+          color: '#64748b'
         }}>
-          ABES RAG Engine answers strictly based on official indexed policies. Citations indicate source document and page number.
+          Official AI Campus Assistant for ABES Engineering College (AKTU Code: 032). Responses are verified from institutional handbooks.
         </div>
       </div>
     </div>

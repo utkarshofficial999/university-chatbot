@@ -57,18 +57,18 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
-            background: 'linear-gradient(135deg, var(--accent-gold) 0%, #c88937 100%)',
-            color: '#070d19',
-            border: 'none',
+            background: 'linear-gradient(135deg, #762b2a 0%, #983837 100%)',
+            color: '#ffffff',
+            border: '1px solid rgba(229, 169, 88, 0.4)',
             borderRadius: 'var(--radius-sm)',
             padding: '10px 16px',
             fontSize: '0.88rem',
             fontWeight: 700,
-            boxShadow: '0 4px 14px rgba(229, 169, 88, 0.25)'
+            boxShadow: '0 4px 14px rgba(118, 43, 42, 0.4)'
           }}
         >
           <Plus size={18} />
-          New ABES Query
+          New ABES Question
         </button>
 
         {/* Search */}

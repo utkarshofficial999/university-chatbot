@@ -124,10 +124,15 @@ class LLMClient:
             except Exception as e:
                 print(f"[LLMClient] OpenAI stream error: {e}")
 
-        # 4. Dynamic Context Fallback (Extracts salient points from retrieved policy chunks)
-        yield "According to the official ABES Engineering College policy documents retrieved for your query:\n\n"
+        # 4. Dynamic Context Fallback (Extracts salient points from policy chunks)
+        yield "Here is the official information regarding your query:\n\n"
         context_part = ""
-        if "## Retrieval Context" in user_prompt:
+        if "Official Reference Information:" in user_prompt:
+            try:
+                context_part = user_prompt.split("User Question:")[0].replace("Official Reference Information:", "")
+            except Exception:
+                context_part = ""
+        elif "## Retrieval Context" in user_prompt:
             try:
                 context_part = user_prompt.split("## User Question")[0].replace("## Retrieval Context", "")
             except Exception:
@@ -140,14 +145,14 @@ class LLMClient:
                 cleaned = line_str.lstrip("•-–*1234567890. ()")
                 if cleaned and len(cleaned) > 25:
                     extracted_lines.append(cleaned)
-            if len(extracted_lines) >= 3:
+            if len(extracted_lines) >= 4:
                 break
 
         if extracted_lines:
             for l in extracted_lines:
                 yield f"• {l[:220]}\n"
         else:
-            yield "Please refer to the official ABES Engineering College document citations attached below for detailed regulations."
+            yield "Please refer to the official document citations attached below for detailed guidelines."
 
     async def generate_sync(self, system_prompt: str, user_prompt: str) -> str:
         tokens = []
