@@ -16,11 +16,11 @@ router = APIRouter(prefix="/admin", tags=["Admin Dashboard"])
 class CategoryCreate(BaseModel):
     name: str
     description: Optional[str] = None
-    university_id: Optional[str] = "jaipuria"
+    university_id: Optional[str] = "abes"
 
 @router.get("/status")
 def get_system_status(
-    university_id: Optional[str] = "jaipuria",
+    university_id: Optional[str] = "abes",
     db: Session = Depends(get_db)
 ):
     total_docs = db.query(Document).filter(Document.university_id == university_id).count()
@@ -45,7 +45,7 @@ async def upload_document(
     file: UploadFile = File(...),
     category: str = Form("General"),
     title: Optional[str] = Form(None),
-    university_id: str = Form("jaipuria"),
+    university_id: str = Form("abes"),
     db: Session = Depends(get_db)
 ):
     if not file.filename.lower().endswith(".pdf"):
@@ -139,18 +139,18 @@ def add_category(
     cat = DocumentCategory(
         name=data.name,
         description=data.description,
-        university_id=data.university_id or "jaipuria"
+        university_id=data.university_id or "abes"
     )
     db.add(cat)
     db.commit()
     return {"status": "success", "id": cat.id, "name": cat.name}
 
 @router.post("/sync-local")
-def sync_local_jaipuria_policies(
+def sync_local_abes_policies(
     db: Session = Depends(get_db)
 ):
     """
-    Scans the workspace directory for the official Jaipuria PDFs and ingests them into the knowledge base.
+    Scans the workspace directory for the official ABES PDFs and ingests them into the knowledge base.
     """
     # Look in the parent dir or current dir for .pdf files
     search_dirs = [
@@ -173,29 +173,24 @@ def sync_local_jaipuria_policies(
 
     # Intelligent categorization mapping based on policy filename
     category_map = {
-        "academic": "Academic Regulations",
-        "examination": "Examination & Assessment",
-        "assessment": "Examination & Assessment",
-        "calendar": "Academic Regulations",
-        "audit": "Academic Regulations",
-        "hostel": "Hostel Regulations",
-        "library": "Library Policy",
-        "admission": "Admission Policy",
-        "brochure": "Admission Policy",
-        "placement": "Placement & Internship",
-        "anti-ragging": "Discipline & Grievance",
-        "sexual-harassment": "Discipline & Grievance",
-        "grievance": "Discipline & Grievance",
-        "it-policy": "Campus & Facilities",
-        "two-wheeler": "Campus & Facilities",
-        "council": "Campus & Facilities"
+        "handbook": "Student Regulations",
+        "reference": "Quick Reference & Guide",
+        "academic": "Academic & Curriculum",
+        "examination": "Examination & Evaluation",
+        "assessment": "Examination & Evaluation",
+        "calendar": "Academic & Curriculum",
+        "hostel": "Hostel & Facilities",
+        "library": "Campus & Facilities",
+        "admission": "Admission & Programmes",
+        "placement": "Placements & Career",
+        "anti-ragging": "Discipline & Anti-Ragging",
+        "grievance": "Discipline & Anti-Ragging"
     }
 
     pipeline = IngestionPipeline(db)
     indexed_docs = []
 
     for full_path, fname in found_pdfs:
-        # Determine category
         cat = "General"
         fname_lower = fname.lower()
         for kw, mapped_cat in category_map.items():
@@ -203,7 +198,6 @@ def sync_local_jaipuria_policies(
                 cat = mapped_cat
                 break
         
-        # Clean title
         title = fname.replace(".pdf", "").replace("-", " ").replace("_", " ").title()
         
         try:
@@ -211,7 +205,7 @@ def sync_local_jaipuria_policies(
                 file_path=full_path,
                 title=title,
                 category=cat,
-                university_id="jaipuria"
+                university_id="abes"
             )
             indexed_docs.append({
                 "filename": fname,
@@ -225,7 +219,7 @@ def sync_local_jaipuria_policies(
 
     return {
         "status": "success",
-        "message": f"Successfully synchronized and indexed {len(indexed_docs)} Jaipuria policy documents",
+        "message": f"Successfully synchronized and indexed {len(indexed_docs)} ABES policy documents",
         "indexed_count": len(indexed_docs),
         "documents": indexed_docs
     }

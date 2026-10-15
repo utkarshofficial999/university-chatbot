@@ -68,7 +68,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
           }}
         >
           <Plus size={18} />
-          New Jaipuria Query
+          New ABES Query
         </button>
 
         {/* Search */}
@@ -129,7 +129,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
             outline: 'none'
           }}
         >
-          <option value="All">All Jaipuria Knowledge Base</option>
+          <option value="All">All ABES Knowledge Base</option>
           {categories.map((c) => (
             <option key={c.id} value={c.name}>{c.name}</option>
           ))}
@@ -168,7 +168,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
             color: 'var(--text-dim)',
             fontSize: '0.8rem'
           }}>
-            No conversation history found. Ask your first Jaipuria question!
+            No conversation history found. Ask your first ABES question!
           </div>
         ) : (
           filteredConversations.map((c) => {

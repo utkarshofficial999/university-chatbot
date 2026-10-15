@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend code and policy documents
 COPY backend/ ./backend/
-COPY *.pdf ./
+COPY *.pdf *.json ./
 
 ENV PYTHONUNBUFFERED=1
 

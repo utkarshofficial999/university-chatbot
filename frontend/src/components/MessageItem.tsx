@@ -57,7 +57,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
           {isAssistant ? <GraduationCap size={13} /> : <User size={13} />}
         </div>
         <span style={{ fontWeight: 600, color: isAssistant ? 'var(--accent-gold)' : '#e2e8f0' }}>
-          {isAssistant ? 'Jaipuria Knowledge Assistant' : 'You'}
+          {isAssistant ? 'ABES Knowledge Assistant' : 'You'}
         </span>
       </div>
 
@@ -104,7 +104,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
               marginBottom: '8px'
             }}>
               <BookmarkCheck size={13} />
-              Authoritative Jaipuria Sources Cited ({message.citations.length})
+              Authoritative ABES Sources Cited ({message.citations.length})
             </div>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>

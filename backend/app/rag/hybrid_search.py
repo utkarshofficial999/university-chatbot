@@ -66,7 +66,7 @@ class HybridSearchEngine:
         query: str,
         top_k_vector: int = 8,
         top_k_bm25: int = 8,
-        university_id: str = "jaipuria",
+        university_id: str = "abes",
         category: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         # Always make sure BM25 index has current chunks

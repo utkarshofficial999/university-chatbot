@@ -15,7 +15,7 @@ if settings.DATABASE_URL and settings.DATABASE_URL.startswith("sqlite"):
 # Create engine
 connect_args = {"check_same_thread": False} if settings.DATABASE_URL and "sqlite" in settings.DATABASE_URL else {}
 engine = create_engine(
-    settings.DATABASE_URL or "sqlite:///./data/jaipuria_assistant.db",
+    settings.DATABASE_URL or "sqlite:///./data/abes_assistant.db",
     connect_args=connect_args,
     pool_pre_ping=True
 )
@@ -35,39 +35,39 @@ def init_db():
     db = SessionLocal()
     try:
         # Check if default admin exists
-        admin = db.query(User).filter(User.email == "admin@jaipuria.edu").first()
+        admin = db.query(User).filter(User.email == "admin@abes.ac.in").first()
         if not admin:
             admin = User(
-                email="admin@jaipuria.edu",
-                hashed_password=hash_password("jaipuria2026"),
-                full_name="Jaipuria Policy Administrator",
+                email="admin@abes.ac.in",
+                hashed_password=hash_password("abes2026"),
+                full_name="ABES College Administrator",
                 role="admin",
                 university_id=settings.DEFAULT_UNIVERSITY_ID
             )
             db.add(admin)
         
         # Check student demo user
-        student = db.query(User).filter(User.email == "student@jaipuria.edu").first()
+        student = db.query(User).filter(User.email == "student@abes.ac.in").first()
         if not student:
             student = User(
-                email="student@jaipuria.edu",
+                email="student@abes.ac.in",
                 hashed_password=hash_password("student2026"),
-                full_name="Jaipuria Scholar",
+                full_name="ABES Student",
                 role="student",
                 university_id=settings.DEFAULT_UNIVERSITY_ID
             )
             db.add(student)
 
-        # Seed initial categories
+        # Seed initial categories for ABES
         initial_categories = [
-            ("Academic Regulations", "Course curriculum, grading criteria, academic audit, and regulations"),
-            ("Examination & Assessment", "Exam procedures, backlogs, grading scales, and evaluation"),
-            ("Hostel Regulations", "Rules of residence, timings, curfew, code of conduct"),
-            ("Library Policy", "Borrowing rights, book bank, timings, and literature access"),
-            ("Admission Policy", "Eligibility, admission cycles, brochure, and criteria"),
-            ("Placement & Internship", "Placement policies, eligibility for recruitment, companies"),
-            ("Discipline & Grievance", "Anti-ragging, sexual harassment prevention, grievance redressal"),
-            ("Campus & Facilities", "IT policy, vehicle parking, two-wheeler policy, councils")
+            ("Academic & Curriculum", "Programmes, syllabus, autonomous/AKTU regulations, and curriculum"),
+            ("Admission & Programmes", "B.Tech, M.Tech, MCA eligibility, intake, and admission procedures"),
+            ("Hostel & Facilities", "Boys & girls hostels, mess, timings, curfew, campus amenities"),
+            ("Examination & Evaluation", "Continuous assessments, end-semester exams, grading, and promotions"),
+            ("Fees & Scholarships", "Tuition fees, hostel charges, payment methods, and scholarship schemes"),
+            ("Placement & Career", "Placement statistics, recruiting partners, training, and internships"),
+            ("Discipline & Anti-Ragging", "Anti-ragging committees, zero tolerance rules, and student conduct"),
+            ("Clubs & Student Societies", "Technical clubs, cultural events, sports, and student activities")
         ]
         for cat_name, desc in initial_categories:
             exists = db.query(DocumentCategory).filter(DocumentCategory.name == cat_name).first()

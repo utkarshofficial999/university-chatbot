@@ -75,7 +75,7 @@ class LocalVectorStore:
         self,
         query_embedding: List[float],
         top_k: int = 5,
-        university_id: str = "jaipuria",
+        university_id: str = "abes",
         category: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         if self.embeddings_matrix is None or len(self.chunks) == 0:
@@ -116,10 +116,10 @@ class LocalVectorStore:
             self.embeddings_matrix = None
         self._save()
 
-    def count(self, university_id: str = "jaipuria") -> int:
+    def count(self, university_id: str = "abes") -> int:
         if not self.chunks:
             return 0
-        return sum(1 for c in self.chunks if c.get("university_id", "jaipuria") == university_id)
+        return sum(1 for c in self.chunks if c.get("university_id", "abes") == university_id)
 
 
 class PineconeVectorStore:
@@ -171,7 +171,7 @@ class PineconeVectorStore:
                         "chunk_index": int(chunk.get("chunk_index", 0)),
                         "category": str(chunk.get("category", "General")),
                         "version_year": str(chunk.get("version_year", "2025-26")),
-                        "university_id": str(chunk.get("university_id", "jaipuria")),
+                        "university_id": str(chunk.get("university_id", "abes")),
                         "context_header": str(chunk.get("context_header", "")),
                         "content": str(chunk.get("content", ""))[:950]
                     }
@@ -194,7 +194,7 @@ class PineconeVectorStore:
         self,
         query_embedding: List[float],
         top_k: int = 5,
-        university_id: str = "jaipuria",
+        university_id: str = "abes",
         category: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         if self.index is not None:
@@ -243,7 +243,7 @@ class PineconeVectorStore:
             except Exception:
                 pass
 
-    def count(self, university_id: str = "jaipuria") -> int:
+    def count(self, university_id: str = "abes") -> int:
         if self.index is not None:
             try:
                 stats = self.index.describe_index_stats()

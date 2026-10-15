@@ -12,7 +12,7 @@ router = APIRouter(prefix="/documents", tags=["Documents"])
 
 @router.get("/")
 def list_documents(
-    university_id: Optional[str] = "jaipuria",
+    university_id: Optional[str] = "abes",
     category: Optional[str] = None,
     search: Optional[str] = None,
     db: Session = Depends(get_db)
@@ -44,7 +44,7 @@ def list_documents(
 
 @router.get("/categories")
 def get_categories(
-    university_id: Optional[str] = "jaipuria",
+    university_id: Optional[str] = "abes",
     db: Session = Depends(get_db)
 ):
     cats = db.query(DocumentCategory).filter(

@@ -17,7 +17,7 @@ class ChatRequest(BaseModel):
     query: str
     conversation_id: Optional[str] = None
     category: Optional[str] = None
-    university_id: Optional[str] = "jaipuria"
+    university_id: Optional[str] = "abes"
 
 class ChatResponse(BaseModel):
     answer: str

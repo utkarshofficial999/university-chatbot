@@ -25,7 +25,7 @@ class DocumentChunker:
         document_id: str,
         category: str = "General",
         version_year: str = "2025-26",
-        university_id: str = "jaipuria"
+        university_id: str = "abes"
     ) -> List[Dict[str, Any]]:
         chunks = []
         global_chunk_idx = 0

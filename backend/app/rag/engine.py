@@ -1,7 +1,7 @@
 from typing import Dict, Any, List, AsyncGenerator, Optional
 from backend.app.core.prompts import (
-    JAIPURIA_SYSTEM_PROMPT,
-    JAIPURIA_USER_PROMPT_TEMPLATE,
+    ABES_SYSTEM_PROMPT,
+    ABES_USER_PROMPT_TEMPLATE,
     UNKNOWN_FALLBACK_TEXT
 )
 from backend.app.rag.hybrid_search import HybridSearchEngine
@@ -16,7 +16,7 @@ class RAGEngine:
     def retrieve_context(
         self,
         query: str,
-        university_id: str = "jaipuria",
+        university_id: str = "abes",
         category: Optional[str] = None,
         top_k: int = 4
     ) -> List[Dict[str, Any]]:
@@ -63,7 +63,7 @@ class RAGEngine:
     async def query_stream(
         self,
         query: str,
-        university_id: str = "jaipuria",
+        university_id: str = "abes",
         category: Optional[str] = None
     ) -> AsyncGenerator[Dict[str, Any], None]:
         """
@@ -95,13 +95,13 @@ class RAGEngine:
             context_blocks.append(f"{header}\n{c.get('content')}")
         
         retrieved_context_str = "\n\n---\n\n".join(context_blocks)
-        user_prompt = JAIPURIA_USER_PROMPT_TEMPLATE.format(
+        user_prompt = ABES_USER_PROMPT_TEMPLATE.format(
             retrieved_context=retrieved_context_str,
             user_query=query
         )
 
         async for token in llm_client.generate_stream(
-            system_prompt=JAIPURIA_SYSTEM_PROMPT,
+            system_prompt=ABES_SYSTEM_PROMPT,
             user_prompt=user_prompt
         ):
             yield {"type": "token", "data": token}
@@ -111,7 +111,7 @@ class RAGEngine:
     async def query_sync(
         self,
         query: str,
-        university_id: str = "jaipuria",
+        university_id: str = "abes",
         category: Optional[str] = None
     ) -> Dict[str, Any]:
         chunks = self.retrieve_context(
@@ -133,13 +133,13 @@ class RAGEngine:
             context_blocks.append(f"{header}\n{c.get('content')}")
         
         retrieved_context_str = "\n\n---\n\n".join(context_blocks)
-        user_prompt = JAIPURIA_USER_PROMPT_TEMPLATE.format(
+        user_prompt = ABES_USER_PROMPT_TEMPLATE.format(
             retrieved_context=retrieved_context_str,
             user_query=query
         )
 
         answer = await llm_client.generate_sync(
-            system_prompt=JAIPURIA_SYSTEM_PROMPT,
+            system_prompt=ABES_SYSTEM_PROMPT,
             user_prompt=user_prompt
         )
 

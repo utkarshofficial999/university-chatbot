@@ -16,7 +16,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     key = hashlib.pbkdf2_hmac('sha256', plain_password.encode('utf-8'), salt, 100000)
     return hmac.compare_digest(key.hex(), hashed_password)
 
-def create_access_token(subject: Union[str, Any], expires_delta: Optional[timedelta] = None, role: str = "student", university_id: str = "jaipuria") -> str:
+def create_access_token(subject: Union[str, Any], expires_delta: Optional[timedelta] = None, role: str = "student", university_id: str = "abes") -> str:
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:

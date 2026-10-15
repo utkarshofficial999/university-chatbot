@@ -10,15 +10,15 @@ from backend.app.api.auth import get_current_user
 router = APIRouter(prefix="/conversations", tags=["Conversations"])
 
 class ConversationCreate(BaseModel):
-    title: Optional[str] = "New Jaipuria Query"
-    university_id: Optional[str] = "jaipuria"
+    title: Optional[str] = "New ABES Query"
+    university_id: Optional[str] = "abes"
 
 class ConversationRename(BaseModel):
     title: str
 
 @router.get("/")
 def list_conversations(
-    university_id: Optional[str] = "jaipuria",
+    university_id: Optional[str] = "abes",
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
@@ -48,7 +48,7 @@ def create_conversation(
     conv = Conversation(
         user_id=current_user.id if current_user else None,
         title=data.title,
-        university_id=data.university_id or "jaipuria"
+        university_id=data.university_id or "abes"
     )
     db.add(conv)
     db.commit()

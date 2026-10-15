@@ -141,7 +141,7 @@ export const AppContent: React.FC = () => {
             m.id === assistantMsgId
               ? {
                   ...m,
-                  content: "I couldn't find an official Jaipuria University document confirming this information. Please verify it with the relevant university department or official university source."
+                  content: "I couldn't find an official ABES Engineering College document confirming this information. Please verify it with the relevant college department or official administrative source."
                 }
               : m
           )

@@ -68,7 +68,7 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
                 Official Document Source
               </h3>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                Verified Jaipuria University Regulatory Context
+                Verified ABES Engineering College Regulatory Context
               </p>
             </div>
           </div>

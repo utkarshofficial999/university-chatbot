@@ -1,0 +1,256 @@
+{
+  "institution": "ABES Engineering College, Ghaziabad (code 032, not ABESIT 290)",
+  "generated": "2026-10-15",
+  "records": [
+    {
+      "id": "KB001",
+      "category": "overview",
+      "title": "Institution identity",
+      "text": "ABES Engineering College, Ghaziabad, est. 2000; private self-financed, non-minority, co-ed; society: Society for Educational Excellence; AKTU college code 032.",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Mandatory Disclosure dated 18-Mar-2025"
+    },
+    {
+      "id": "KB002",
+      "category": "overview",
+      "title": "Address and phone",
+      "text": "19th KM Stone, NH-09 (formerly NH-24), Ghaziabad-201009, UP. Phone 0120-7135112. Email info@abes.ac.in.",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB003",
+      "category": "overview",
+      "title": "Autonomy status",
+      "text": "Homepage states 'Autonomous College since 2025'. Mandatory Disclosure (Mar 2025) says affiliated to AKTU. Confirm governing scheme.",
+      "source_url": "https://www.abes.ac.in/",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Conflict C-1"
+    },
+    {
+      "id": "KB004",
+      "category": "overview",
+      "title": "Accreditation",
+      "text": "NAAC grade A; NBA accreditation for CSE, ECE, ME was listed for 01-07-2022 to 30-06-2025 (expired; renewal not verified); AICTE EOA 30-06-2024 for AY 2024-25.",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Possibly outdated"
+    },
+    {
+      "id": "KB005",
+      "category": "programmes",
+      "title": "Programmes offered (AICTE list, Mar 2025)",
+      "text": "B.Tech CSE, CSE-AIML, CSE-DS, ELCE, ECE, ME; M.Tech CSE and ECE; MCA; working-professional B.Tech CSE/ECE. Closed: IT, EN, CS, CE.",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB006",
+      "category": "programmes",
+      "title": "Intake 2024-25",
+      "text": "CSE 1080 UG/12 PG; AIML 180; DS 180; ECE 180 UG/6 PG; ELCE 120; ME 60; MCA 180; WP CSE 30; WP ECE 30.",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Homepage shows different seat counts (C-2)"
+    },
+    {
+      "id": "KB007",
+      "category": "admission",
+      "title": "Admission route",
+      "text": "B.Tech admission as per UP Government/University norms; secondary sources say UPTAC counselling; MCA via CUET (per cut-off table). Enquiry: https://erp.abes.ac.in/onlineenquiry",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB008",
+      "category": "admission",
+      "title": "Cut-offs 2024 (CSE, JEE rank, General)",
+      "text": "Opening-closing 169549-300882 (2024); 79019-805027 (2023); 27629-681430 (2022).",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB009",
+      "category": "fees",
+      "title": "Official fee pages",
+      "text": "Fee structures are published at abes.ac.in/fee-structure.php, fee-m.tech.php and abesec.in/fee-structure.php; pages could not be retrieved.",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "No official amounts available"
+    },
+    {
+      "id": "KB010",
+      "category": "fees",
+      "title": "Reported B.Tech fee (secondary)",
+      "text": "About Rs 5.01 lakh over 4 years (counselling seats, 2025-26) per third-party portals.",
+      "source_url": "https://articles.findmycollege.com/abes-btech-fees/",
+      "verification_status": "secondary_unverified",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Do not use for payment"
+    },
+    {
+      "id": "KB011",
+      "category": "attendance",
+      "title": "Attendance rule",
+      "text": "Student reviews report a 75% minimum; no official ABES document found. 75% is also the common AICTE/AKTU norm.",
+      "source_url": "https://collegedunia.com/reviews/903620-atharav-agarwal-review-on-abes-engineering-college-ghaziabad",
+      "verification_status": "secondary_unverified",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Confirm in writing"
+    },
+    {
+      "id": "KB012",
+      "category": "clubs",
+      "title": "Clubs",
+      "text": "Homepage says 11 clubs and highlights TEDx, Genero, TechFest, Utsaah. Categories on Life@ABES include yoga, literature, cultural, sports, debate, publication, environment, social activity, NSS, photography, mental well-being, tourism.",
+      "source_url": "https://www.abes.ac.in/life-at-abes.html",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Full list not published"
+    },
+    {
+      "id": "KB013",
+      "category": "clubs",
+      "title": "NCC unit",
+      "text": "NCC unit established 25-Nov-2024 under 37 UP Battalion, Ghaziabad; 40 cadets; ANO Dr. Neha Singh Raghuvanshi.",
+      "source_url": "https://www.abes.ac.in/life-at-abes.html",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB014",
+      "category": "clubs",
+      "title": "Unnat Bharat Abhiyaan",
+      "text": "UBA wing established 2-Oct-2018; five adopted villages.",
+      "source_url": "https://www.abes.ac.in/life-at-abes.html",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB015",
+      "category": "hostel",
+      "title": "Hostel capacity",
+      "text": "Mandatory Disclosure: 4 boys' buildings (1033 seats), 3 girls' buildings (458 seats). Life@ABES: 6 boys' and 2 girls' hostels.",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Conflict C-4"
+    },
+    {
+      "id": "KB016",
+      "category": "facilities",
+      "title": "Library",
+      "text": "Life@ABES: 1384 sq.m, 250 seats, KOHA, 112,334 books. Mandatory Disclosure: 115,122 books.",
+      "source_url": "https://www.abes.ac.in/life-at-abes.html",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Conflict C-6"
+    },
+    {
+      "id": "KB017",
+      "category": "facilities",
+      "title": "Sports and health",
+      "text": "Swimming pool, floodlit stadium, multiple courts; medical room with doctor and ambulance; 'Your Dost' counselling.",
+      "source_url": "https://www.abes.ac.in/life-at-abes.html",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB018",
+      "category": "placement",
+      "title": "Placement statistics",
+      "text": "Homepage: 2025 highest 60 LPA, 1692 offers; 2026 glimpses: 1289 placed, 45 LPA highest, 4.50 LPA median, 80.06%.",
+      "source_url": "https://www.abes.ac.in/",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Promotional; definitions not given (C-7)"
+    },
+    {
+      "id": "KB019",
+      "category": "grievance",
+      "title": "Grievance Redressal Cell",
+      "text": "Formed as per AICTE directions; handles grievances of students and staff; objectives include confidentiality and no victimisation; Chair is the Director; AKTU Ombudsman listed.",
+      "source_url": "https://www.abes.ac.in/GRC-grievance-redressal-cell.php",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "No response timeline published"
+    },
+    {
+      "id": "KB020",
+      "category": "anti_ragging",
+      "title": "Anti-Ragging Committee",
+      "text": "Published in Mandatory Disclosure with Director, Proctors, DM/SSP representatives, NGO, faculty, parents and students.",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Member list from Mar 2025"
+    },
+    {
+      "id": "KB021",
+      "category": "harassment",
+      "title": "Internal Complaints Committee",
+      "text": "Presiding Officer Dr. Bhanumati Panda; external NGO member; Registrar; student members (Mar 2025).",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB022",
+      "category": "support",
+      "title": "Equal Opportunity Facilities Cell",
+      "text": "Nodal Officer Dr. Amita Tripathy; contact fyc@abes.ac.in.",
+      "source_url": "https://abes.abes.ac.in/pdf/Mandatory-Disclosure-March-2025.pdf",
+      "verification_status": "verified_official",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB023",
+      "category": "national",
+      "title": "National Anti-Ragging Helpline",
+      "text": "1800-180-5522 (24x7), helpline@antiragging.in.",
+      "source_url": "https://www.antiragging.in",
+      "verification_status": "national_rule",
+      "last_checked": "15-Oct-2026",
+      "caveat": "Verify at antiragging.in"
+    },
+    {
+      "id": "KB024",
+      "category": "generic",
+      "title": "Typical examination eligibility",
+      "text": "Typically requires attendance threshold, dues clear and exam form; confirm with ABES/AKTU.",
+      "source_url": "n/a",
+      "verification_status": "generic_unverified",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    },
+    {
+      "id": "KB025",
+      "category": "generic",
+      "title": "Typical hostel rules",
+      "text": "Curfew, visitor restrictions, appliance bans; confirm with warden.",
+      "source_url": "n/a",
+      "verification_status": "generic_unverified",
+      "last_checked": "15-Oct-2026",
+      "caveat": ""
+    }
+  ]
+}

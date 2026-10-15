@@ -32,26 +32,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(u);
         } else {
           setUser({
-            email: 'student@jaipuria.edu',
-            full_name: 'Jaipuria Student',
+            email: 'student@abes.ac.in',
+            full_name: 'ABES Student',
             role: 'student',
-            university_id: 'jaipuria'
+            university_id: 'abes'
           });
         }
       } else {
         setUser({
-          email: 'student@jaipuria.edu',
-          full_name: 'Jaipuria Student',
+          email: 'student@abes.ac.in',
+          full_name: 'ABES Student',
           role: 'student',
-          university_id: 'jaipuria'
+          university_id: 'abes'
         });
       }
     } catch {
       setUser({
-        email: 'student@jaipuria.edu',
-        full_name: 'Jaipuria Student',
+        email: 'student@abes.ac.in',
+        full_name: 'ABES Student',
         role: 'student',
-        university_id: 'jaipuria'
+        university_id: 'abes'
       });
     } finally {
       setLoading(false);
@@ -73,10 +73,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     ApiClient.setToken(null);
     setUser({
-      email: 'student@jaipuria.edu',
-      full_name: 'Jaipuria Student',
+      email: 'student@abes.ac.in',
+      full_name: 'ABES Student',
       role: 'student',
-      university_id: 'jaipuria'
+      university_id: 'abes'
     });
   };
 

@@ -3,19 +3,19 @@ import type { User, Message, Conversation, DocumentItem, Category, SystemStatus,
 const API_BASE = (import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace(/\/$/, '') : '') + '/api/v1';
 
 export class ApiClient {
-  private static token: string | null = localStorage.getItem('jaipuria_auth_token');
+  private static token: string | null = localStorage.getItem('abes_auth_token');
 
   static setToken(token: string | null) {
     this.token = token;
     if (token) {
-      localStorage.setItem('jaipuria_auth_token', token);
+      localStorage.setItem('abes_auth_token', token);
     } else {
-      localStorage.removeItem('jaipuria_auth_token');
+      localStorage.removeItem('abes_auth_token');
     }
   }
 
   static getToken(): string | null {
-    return this.token || localStorage.getItem('jaipuria_auth_token');
+    return this.token || localStorage.getItem('abes_auth_token');
   }
 
   private static headers(): HeadersInit {
@@ -136,7 +136,7 @@ export class ApiClient {
         query,
         conversation_id: conversationId,
         category: category && category !== 'All' ? category : undefined,
-        university_id: 'jaipuria'
+        university_id: 'abes'
       }),
       signal: controller.signal
     })
@@ -200,7 +200,7 @@ export class ApiClient {
     formData.append('file', file);
     formData.append('category', category);
     if (title) formData.append('title', title);
-    formData.append('university_id', 'jaipuria');
+    formData.append('university_id', 'abes');
 
     const t = this.getToken();
     const headers: Record<string, string> = {};

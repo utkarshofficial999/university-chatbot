@@ -125,7 +125,7 @@ class LLMClient:
                 print(f"[LLMClient] OpenAI stream error: {e}")
 
         # 4. Dynamic Context Fallback (Extracts salient points from retrieved policy chunks)
-        yield "According to the official Jaipuria University policy documents retrieved for your query:\n\n"
+        yield "According to the official ABES Engineering College policy documents retrieved for your query:\n\n"
         context_part = ""
         if "## Retrieval Context" in user_prompt:
             try:
@@ -147,7 +147,7 @@ class LLMClient:
             for l in extracted_lines:
                 yield f"• {l[:220]}\n"
         else:
-            yield "Please refer to the official Jaipuria document citations attached below for detailed regulations."
+            yield "Please refer to the official ABES Engineering College document citations attached below for detailed regulations."
 
     async def generate_sync(self, system_prompt: str, user_prompt: str) -> str:
         tokens = []

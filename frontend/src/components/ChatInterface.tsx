@@ -45,23 +45,23 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const starterPrompts = [
     {
-      title: "Attendance Regulations",
-      prompt: "What is the minimum attendance requirement according to Jaipuria regulations?",
+      title: "Attendance Criteria",
+      prompt: "What is the minimum attendance requirement at ABES Engineering College?",
       icon: <GraduationCap size={16} color="var(--accent-gold)" />
     },
     {
-      title: "Library Entitlement",
-      prompt: "What is the library book borrowing entitlement for students and faculty?",
+      title: "Programmes & Intake",
+      prompt: "What are the B.Tech programmes offered and their intake at ABES?",
       icon: <BookOpen size={16} color="#38bdf8" />
     },
     {
-      title: "Hostel Residence Rules",
-      prompt: "What are the rules, curfew timings, and conduct regulations for the hostel?",
+      title: "Hostel & Facilities",
+      prompt: "What are the hostel rules, mess facilities, and timings at ABES?",
       icon: <Home size={16} color="#10b981" />
     },
     {
-      title: "Anti-Ragging & Safety",
-      prompt: "What is Jaipuria's official anti-ragging policy and grievance redressal process?",
+      title: "Anti-Ragging Policy",
+      prompt: "What is the official anti-ragging policy and helpline at ABES?",
       icon: <Scale size={16} color="#f43f5e" />
     }
   ];
@@ -106,11 +106,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
 
             <h2 style={{ fontSize: '1.7rem', color: '#fff', fontWeight: 700, marginBottom: '8px' }}>
-              Welcome to Jaipuria Knowledge Assistant
+              Welcome to ABES Knowledge Assistant
             </h2>
 
             <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '28px' }}>
-              Ask questions directly against official, verified <strong>Jaipuria Institute of Management</strong> policy documents, academic handbooks, hostel regulations, library procedures, and calendars.
+              Ask questions directly against official, verified <strong>ABES Engineering College</strong> Student Handbooks, Quick Reference Guides, and academic regulations (AKTU Code 032).
             </p>
 
             {/* Starter Prompts Grid */}
@@ -183,7 +183,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           }}>
             <span className="pulse-dot" />
             <span style={{ fontSize: '0.84rem', color: 'var(--accent-gold)', fontWeight: 500 }}>
-              Retrieving & verifying Jaipuria regulations...
+              Retrieving & verifying ABES regulations...
             </span>
           </div>
         )}
@@ -218,7 +218,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             placeholder={
               selectedCategory !== 'All' 
                 ? `Ask anything about ${selectedCategory}...`
-                : "Ask any question about Jaipuria rules, academic policy, attendance, hostel, exams..."
+                : "Ask any question about ABES rules, B.Tech programmes, attendance, hostel, fees, exams..."
             }
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -278,7 +278,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           fontSize: '0.72rem',
           color: 'var(--text-dim)'
         }}>
-          Jaipuria RAG Engine answers strictly based on official indexed policies. Citations indicate source document and page number.
+          ABES RAG Engine answers strictly based on official indexed policies. Citations indicate source document and page number.
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(255), nullable=False)
     role = Column(String(50), default="student")  # 'student', 'faculty', 'admin'
-    university_id = Column(String(50), default="jaipuria", index=True)
+    university_id = Column(String(50), default="abes", index=True)
     created_at = Column(DateTime(timezone=True), default=get_utc_now)
     
     conversations = relationship("Conversation", back_populates="user", cascade="all, delete-orphan")
@@ -34,7 +34,7 @@ class Document(Base):
     total_pages = Column(Integer, default=0)
     total_chunks = Column(Integer, default=0)
     status = Column(String(50), default="indexed") # 'processing', 'indexed', 'failed'
-    university_id = Column(String(50), default="jaipuria", index=True)
+    university_id = Column(String(50), default="abes", index=True)
     created_at = Column(DateTime(timezone=True), default=get_utc_now)
     updated_at = Column(DateTime(timezone=True), default=get_utc_now, onupdate=get_utc_now)
     
@@ -50,7 +50,7 @@ class DocumentChunk(Base):
     content = Column(Text, nullable=False)
     token_count = Column(Integer, default=0)
     metadata_json = Column(JSON, default=dict)
-    university_id = Column(String(50), default="jaipuria", index=True)
+    university_id = Column(String(50), default="abes", index=True)
     created_at = Column(DateTime(timezone=True), default=get_utc_now)
     
     document = relationship("Document", back_populates="chunks")
@@ -60,8 +60,8 @@ class Conversation(Base):
     
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
-    title = Column(String(255), default="New Jaipuria Query")
-    university_id = Column(String(50), default="jaipuria", index=True)
+    title = Column(String(255), default="New ABES Query")
+    university_id = Column(String(50), default="abes", index=True)
     created_at = Column(DateTime(timezone=True), default=get_utc_now)
     updated_at = Column(DateTime(timezone=True), default=get_utc_now, onupdate=get_utc_now)
     
@@ -86,5 +86,5 @@ class DocumentCategory(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = Column(String(100), unique=True, nullable=False)
     description = Column(Text, nullable=True)
-    university_id = Column(String(50), default="jaipuria", index=True)
+    university_id = Column(String(50), default="abes", index=True)
     created_at = Column(DateTime(timezone=True), default=get_utc_now)

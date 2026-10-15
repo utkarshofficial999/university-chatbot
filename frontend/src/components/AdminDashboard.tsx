@@ -115,7 +115,7 @@ export const AdminDashboard: React.FC = () => {
       }}>
         <div>
           <h2 style={{ fontSize: '1.6rem', color: '#fff', fontWeight: 700 }}>
-            Jaipuria Knowledge Base Administration
+            ABES Knowledge Base Administration
           </h2>
           <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>
             Manage policy documents, monitor vector embeddings, and re-index regulatory materials.
@@ -141,7 +141,7 @@ export const AdminDashboard: React.FC = () => {
             }}
           >
             <FolderSync size={16} className={syncing ? 'pulse-dot' : ''} />
-            {syncing ? 'Syncing Local Policies...' : 'Sync All Jaipuria Folder Policies'}
+            {syncing ? 'Syncing ABES Documents...' : 'Sync All ABES Documents'}
           </button>
 
           <button
@@ -195,7 +195,7 @@ export const AdminDashboard: React.FC = () => {
             {status?.total_documents ?? 0}
           </div>
           <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Official Jaipuria PDFs
+            Official ABES Documents
           </div>
         </div>
 
@@ -234,7 +234,7 @@ export const AdminDashboard: React.FC = () => {
             {status?.llm_provider?.toUpperCase() || 'OLLAMA'}
           </div>
           <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            llama3.2:latest (Local & Private)
+            Google Gemini Cloud (High Availability)
           </div>
         </div>
       </div>
@@ -245,7 +245,7 @@ export const AdminDashboard: React.FC = () => {
           Upload New Policy Document
         </h3>
         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '18px' }}>
-          Upload an official Jaipuria PDF. The ingestion pipeline will extract pages, generate semantic chunks, compute embeddings, and store them into the vector database.
+          Upload an official ABES PDF. The ingestion pipeline will extract pages, generate semantic chunks, compute embeddings, and store them into the vector database.
         </p>
 
         <form onSubmit={handleUpload} style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', alignItems: 'flex-end' }}>
@@ -345,7 +345,7 @@ export const AdminDashboard: React.FC = () => {
 
         {documents.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '30px', color: 'var(--text-dim)' }}>
-            No documents indexed yet. Click "Sync All Jaipuria Folder Policies" to automatically ingest existing PDFs.
+            No documents indexed yet. Click "Sync All ABES Documents" to automatically ingest materials.
           </div>
         ) : (
           <div style={{ overflowX: 'auto' }}>

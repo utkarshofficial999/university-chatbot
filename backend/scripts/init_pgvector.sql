@@ -1,11 +1,11 @@
--- Initialize pgvector extension for Jaipuria University RAG Engine
+-- Initialize pgvector extension for ABES Engineering College RAG Engine
 CREATE EXTENSION IF NOT EXISTS vector;
 
 -- Initial table for multi-tenant pgvector chunks
 CREATE TABLE IF NOT EXISTS university_chunks (
     id VARCHAR(36) PRIMARY KEY,
     document_id VARCHAR(36) NOT NULL,
-    university_id VARCHAR(50) DEFAULT 'jaipuria',
+    university_id VARCHAR(50) DEFAULT 'abes',
     chunk_index INT NOT NULL,
     page_number INT NOT NULL,
     content TEXT NOT NULL,

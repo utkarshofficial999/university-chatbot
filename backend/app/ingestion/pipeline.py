@@ -69,7 +69,7 @@ class IngestionPipeline:
         file_path: str,
         title: Optional[str] = None,
         category: str = "General",
-        university_id: str = "jaipuria"
+        university_id: str = "abes"
     ) -> Document:
         filename = os.path.basename(file_path)
         if not title:

@@ -16,51 +16,9 @@ def auto_ingest_if_empty():
     try:
         count = db.query(Document).filter(Document.university_id == settings.DEFAULT_UNIVERSITY_ID).count()
         if count == 0:
-            print("[Auto-Ingestion] Knowledge base has 0 documents. Scanning for policy PDFs...")
-            search_dirs = [os.getcwd(), os.path.dirname(os.getcwd()), "/app", os.path.join("/app", "backend")]
-            pdf_files = []
-            for d in search_dirs:
-                if os.path.isdir(d):
-                    found = glob.glob(os.path.join(d, "*.pdf"))
-                    if found:
-                        pdf_files = found
-                        break
-            if pdf_files:
-                print(f"[Auto-Ingestion] Found {len(pdf_files)} PDFs. Ingesting into knowledge base...")
-                pipeline = IngestionPipeline(db)
-                for fpath in pdf_files:
-                    fname = os.path.basename(fpath)
-                    title = os.path.splitext(fname)[0].replace("-", " ").title()
-                    cat = "General"
-                    fn_lower = fname.lower()
-                    if "academic" in fn_lower or "calendar" in fn_lower or "audit" in fn_lower:
-                        cat = "Academic Regulations"
-                    elif "exam" in fn_lower or "assessment" in fn_lower:
-                        cat = "Examination & Assessment"
-                    elif "hostel" in fn_lower:
-                        cat = "Hostel Regulations"
-                    elif "library" in fn_lower:
-                        cat = "Library Policy"
-                    elif "admission" in fn_lower or "brochure" in fn_lower:
-                        cat = "Admission Policy"
-                    elif "placement" in fn_lower:
-                        cat = "Placement & Internship"
-                    elif "ragging" in fn_lower or "grievance" in fn_lower or "harassment" in fn_lower:
-                        cat = "Discipline & Grievance"
-                    elif "it" in fn_lower or "wheel" in fn_lower or "council" in fn_lower:
-                        cat = "Campus & Facilities"
-
-                    try:
-                        pipeline.ingest_file(
-                            file_path=fpath,
-                            document_title=title,
-                            category=cat,
-                            university_id=settings.DEFAULT_UNIVERSITY_ID,
-                            version_year="2025-26"
-                        )
-                    except Exception as e:
-                        print(f"[Auto-Ingestion] Error ingesting {fname}: {e}")
-                print("[Auto-Ingestion] Knowledge base ingestion complete.")
+            print("[Auto-Ingestion] Knowledge base has 0 documents. Running ABES ingestion...")
+            from backend.run_ingest_abes import run as run_abes_ingest
+            run_abes_ingest()
     except Exception as e:
         print(f"[Auto-Ingestion] Auto-ingest check error: {e}")
     finally:
@@ -82,7 +40,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Official Jaipuria University Knowledge Assistant API with RAG, pgvector support, and multi-tenant foundation.",
+    description="Official ABES Engineering College Knowledge Assistant API with RAG, vector retrieval, and multi-tenant foundation.",
     lifespan=lifespan
 )
 

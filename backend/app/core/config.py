@@ -3,25 +3,23 @@ from typing import List, Optional
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Jaipuria University Knowledge Assistant"
+    PROJECT_NAME: str = "ABES Engineering College AI Knowledge Assistant"
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
     
     # University Multi-Tenant Configuration
-    DEFAULT_UNIVERSITY_ID: str = "jaipuria"
-    DEFAULT_UNIVERSITY_NAME: str = "Jaipuria Institute of Management / University"
+    DEFAULT_UNIVERSITY_ID: str = "abes"
+    DEFAULT_UNIVERSITY_NAME: str = "ABES Engineering College, Ghaziabad"
     
     # Security / Auth
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "jaipuria-super-secret-jwt-key-change-in-prod-2026")
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "abes-super-secret-jwt-key-change-in-prod-2026")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     
     # Database
-    # If DATABASE_URL is set to a postgres url (e.g. postgresql+psycopg://postgres:postgres@localhost:5432/jaipuria_db),
-    # pgvector will be used. Otherwise, SQLite + local vector index will be used.
     DATABASE_URL: Optional[str] = os.getenv(
         "DATABASE_URL", 
-        "sqlite:///./data/jaipuria_assistant.db"
+        "sqlite:///./data/abes_assistant.db"
     )
     
     # LLM Provider: 'gemini', 'ollama', 'openai'
@@ -69,6 +67,10 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive = True
-        env_file = ".env"
+        env_file = (
+            ".env",
+            os.path.join(os.path.dirname(__file__), "..", "..", ".env"),
+            os.path.join(os.path.dirname(__file__), "..", ".env"),
+        )
 
 settings = Settings()

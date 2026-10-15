@@ -36,9 +36,9 @@ export const AuthModal: React.FC = () => {
     setLoading(true);
     try {
       if (roleType === 'admin') {
-        await login('admin@jaipuria.edu', 'jaipuria2026');
+        await login('admin@abes.ac.in', 'abes2026');
       } else {
-        await login('student@jaipuria.edu', 'student2026');
+        await login('student@abes.ac.in', 'student2026');
       }
     } catch (err: any) {
       setError(err.message || 'Demo login failed');
@@ -86,7 +86,7 @@ export const AuthModal: React.FC = () => {
         }}>
           <div>
             <h3 style={{ fontSize: '1.15rem', color: '#fff', fontWeight: 700 }}>
-              {isRegister ? 'Create Jaipuria Account' : 'Jaipuria Authentication'}
+              {isRegister ? 'Create ABES Account' : 'ABES Authentication'}
             </h3>
             <p style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>
               Access authorized policy queries & knowledge admin
@@ -216,7 +216,7 @@ export const AuthModal: React.FC = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="username@jaipuria.edu"
+              placeholder="student@abes.ac.in"
               style={{
                 width: '100%',
                 padding: '9px 12px',

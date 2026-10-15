@@ -52,7 +52,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
               color: '#ffffff',
               letterSpacing: '-0.01em'
             }}>
-              JAIPURIA
+              ABES
             </span>
             <span style={{ 
               fontWeight: 400, 
@@ -69,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
             </span>
           </div>
           <p style={{ fontSize: '0.73rem', color: 'var(--text-muted)' }}>
-            Knowledge Base & Verified University Regulations
+            Knowledge Base & Verified College Regulations (AKTU Code 032)
           </p>
         </div>
       </div>
@@ -137,7 +137,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
           color: 'var(--text-muted)'
         }}>
           <Building2 size={13} color="#38bdf8" />
-          <span>Tenant: <strong style={{ color: '#fff' }}>Jaipuria</strong></span>
+          <span>College: <strong style={{ color: '#fff' }}>ABES Ghaziabad</strong></span>
         </div>
 
         {/* User Profile */}

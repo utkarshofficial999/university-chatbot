@@ -21,7 +21,7 @@ class UserRegister(BaseModel):
     password: str
     full_name: str
     role: Optional[str] = "student"
-    university_id: Optional[str] = "jaipuria"
+    university_id: Optional[str] = "abes"
 
 class TokenResponse(BaseModel):
     access_token: str
