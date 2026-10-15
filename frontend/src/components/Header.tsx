@@ -3,8 +3,6 @@ import {
   ShieldCheck, 
   MessageSquare, 
   LogOut, 
-  Building2,
-  ExternalLink,
   Lock,
   Menu,
   X
@@ -27,63 +25,26 @@ export const Header: React.FC<HeaderProps> = ({
   const { user, logout, openAuthModal } = useAuth();
 
   return (
-    <header style={{ display: 'flex', flexDirection: 'column', zIndex: 40, backgroundColor: '#ffffff' }}>
-      {/* Top Institutional Strip (Minimalist & Clean) */}
-      <div className="header-top-bar" style={{
-        height: '30px',
-        backgroundColor: '#f8fafc',
-        borderBottom: '1px solid #e2e8f0',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 24px',
-        fontSize: '0.74rem',
-        color: '#475569'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-          <span style={{ fontWeight: 600, color: '#0f172a' }}>🏛️ ABES Engineering College</span>
-          <span style={{ color: '#cbd5e1' }}>•</span>
-          <span style={{ color: '#851926', fontWeight: 600 }}>AKTU 032</span>
-          <span className="header-top-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ color: '#cbd5e1' }}>•</span>
-            <span>AICTE Approved</span>
-            <span style={{ color: '#cbd5e1' }}>•</span>
-            <span style={{ color: '#059669', fontWeight: 600 }}>NAAC Accredited</span>
-          </span>
-        </div>
-        
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <a 
-            href="https://www.abes.ac.in" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={{ 
-              color: '#64748b', 
-              textDecoration: 'none', 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '4px',
-              fontSize: '0.72rem',
-              fontWeight: 500
-            }}
-          >
-            abes.ac.in <ExternalLink size={11} />
-          </a>
-        </div>
-      </div>
-
-      {/* Main Navigation Bar */}
+    <header style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      zIndex: 40, 
+      backgroundColor: '#ffffff',
+      flexShrink: 0
+    }}>
+      {/* Clean Main Navigation Bar */}
       <div className="header-main-nav" style={{
-        height: '62px',
+        height: '56px',
         backgroundColor: '#ffffff',
-        borderBottom: '1px solid #e2e8f0',
+        borderBottom: '1px solid #E5E7EB',
+        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.02)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 24px'
+        padding: '0 18px'
       }}>
         {/* Brand & Emblem */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {currentView === 'chat' && onToggleMobileSidebar && (
             <button
               className="mobile-menu-btn"
@@ -99,41 +60,43 @@ export const Header: React.FC<HeaderProps> = ({
             src="/abes_crest.png" 
             alt="ABES Engineering College Crest" 
             style={{
-              height: '38px',
+              height: '32px',
               width: 'auto',
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12))'
+              objectFit: 'contain'
             }}
           />
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className="header-brand-title" style={{ 
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 600, 
-                fontSize: '1.22rem', 
-                color: '#0f172a',
-                letterSpacing: '-0.02em',
-                whiteSpace: 'nowrap'
-              }}>
-                ABES Assistant
-              </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '2px' }}>
-                <span className="online-dot" />
-                <span style={{ fontSize: '0.68rem', color: '#059669', fontWeight: 600 }}>LIVE</span>
-              </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className="header-brand-title" style={{ 
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 650, 
+              fontSize: '1.08rem', 
+              color: '#111827',
+              letterSpacing: '-0.02em',
+              whiteSpace: 'nowrap'
+            }}>
+              ABES Assistant
+            </span>
+            <div style={{ 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '4px', 
+              backgroundColor: '#ECFDF5',
+              border: '1px solid #A7F3D0',
+              borderRadius: '9999px',
+              padding: '1px 6px'
+            }}>
+              <span className="online-dot" />
+              <span style={{ fontSize: '0.64rem', color: '#065F46', fontWeight: 600 }}>LIVE</span>
             </div>
-            <p className="header-brand-subtitle" style={{ fontSize: '0.74rem', color: '#64748b', whiteSpace: 'nowrap' }}>
-              Verified Regulations & Handbooks
-            </p>
           </div>
         </div>
 
-        {/* Minimalist Segmented View Switcher (Notion / Claude style - Desktop only) */}
+        {/* Desktop View Switcher */}
         <div className="desktop-view-switcher" style={{
           display: 'flex',
           alignItems: 'center',
-          backgroundColor: '#f1f5f9',
-          border: '1px solid #e2e8f0',
+          backgroundColor: '#F3F4F6',
+          border: '1px solid #E5E7EB',
           borderRadius: '8px',
           padding: '2px'
         }}>
@@ -149,8 +112,8 @@ export const Header: React.FC<HeaderProps> = ({
               fontSize: '0.82rem',
               fontWeight: 500,
               backgroundColor: currentView === 'chat' ? '#ffffff' : 'transparent',
-              color: currentView === 'chat' ? '#0f172a' : '#64748b',
-              boxShadow: currentView === 'chat' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
+              color: currentView === 'chat' ? '#1F2937' : '#6B7280',
+              boxShadow: currentView === 'chat' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none'
             }}
           >
             <MessageSquare size={14} />
@@ -165,7 +128,7 @@ export const Header: React.FC<HeaderProps> = ({
                 openAuthModal();
               }
             }}
-            title={user?.role === 'admin' ? "Policy Manager Dashboard" : "Admin JWT authentication required"}
+            title={user?.role === 'admin' ? "Policy Manager Dashboard" : "Admin authentication required"}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -176,18 +139,17 @@ export const Header: React.FC<HeaderProps> = ({
               fontSize: '0.82rem',
               fontWeight: 500,
               backgroundColor: currentView === 'admin' ? '#ffffff' : 'transparent',
-              color: currentView === 'admin' ? '#0f172a' : '#64748b',
-              boxShadow: currentView === 'admin' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
+              color: currentView === 'admin' ? '#1F2937' : '#6B7280',
+              boxShadow: currentView === 'admin' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none'
             }}
           >
-            {user?.role === 'admin' ? <ShieldCheck size={14} color="#851926" /> : <Lock size={13} color="#94a3b8" />}
+            {user?.role === 'admin' ? <ShieldCheck size={14} color="#8B1E2D" /> : <Lock size={13} color="#9CA3AF" />}
             <span className="header-view-label">Policy Manager</span>
             {user?.role !== 'admin' && (
               <span style={{
                 fontSize: '0.62rem',
-                backgroundColor: '#f1f5f9',
-                border: '1px solid #cbd5e1',
-                color: '#64748b',
+                backgroundColor: '#E5E7EB',
+                color: '#4B5563',
                 padding: '1px 5px',
                 borderRadius: '4px',
                 fontWeight: 600
@@ -200,21 +162,6 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* User / Tenant Actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div className="header-campus-badge" style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '4px 10px',
-            borderRadius: '6px',
-            backgroundColor: '#f8fafc',
-            border: '1px solid #e2e8f0',
-            fontSize: '0.74rem',
-            color: '#475569'
-          }}>
-            <Building2 size={13} color="#851926" />
-            <span>Campus: <strong style={{ color: '#0f172a' }}>ABES Ghaziabad</strong></span>
-          </div>
-
           {user?.id ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{
@@ -223,15 +170,15 @@ export const Header: React.FC<HeaderProps> = ({
                 gap: '8px',
                 padding: '3px 10px',
                 borderRadius: 'var(--radius-full)',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #e2e8f0'
+                backgroundColor: '#F8F9FB',
+                border: '1px solid #E5E7EB'
               }}>
                 <div style={{
                   width: '24px',
                   height: '24px',
                   borderRadius: '50%',
-                  backgroundColor: user.role === 'admin' ? '#851926' : '#e2e8f0',
-                  color: user.role === 'admin' ? '#ffffff' : '#0f172a',
+                  backgroundColor: user.role === 'admin' ? '#8B1E2D' : '#E5E7EB',
+                  color: user.role === 'admin' ? '#ffffff' : '#1F2937',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -241,10 +188,10 @@ export const Header: React.FC<HeaderProps> = ({
                   {user.full_name?.charAt(0) || 'U'}
                 </div>
                 <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontSize: '0.76rem', fontWeight: 600, color: '#0f172a' }}>
+                  <div style={{ fontSize: '0.76rem', fontWeight: 600, color: '#1F2937' }}>
                     {user.full_name}
                   </div>
-                  <div style={{ fontSize: '0.64rem', color: user.role === 'admin' ? '#851926' : '#64748b', fontWeight: 500 }}>
+                  <div style={{ fontSize: '0.64rem', color: user.role === 'admin' ? '#8B1E2D' : '#6B7280', fontWeight: 500 }}>
                     {user.role.toUpperCase()}
                   </div>
                 </div>
@@ -255,10 +202,10 @@ export const Header: React.FC<HeaderProps> = ({
                 title="Logout"
                 style={{
                   backgroundColor: '#ffffff',
-                  border: '1px solid #e2e8f0',
+                  border: '1px solid #E5E7EB',
                   borderRadius: '6px',
                   padding: '6px',
-                  color: '#64748b',
+                  color: '#6B7280',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
@@ -272,21 +219,21 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={openAuthModal}
               className="header-admin-btn"
               style={{
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
                 gap: '5px',
                 backgroundColor: '#ffffff',
-                border: '1px solid #e2e8f0',
-                color: '#0f172a',
-                padding: '6px 12px',
-                borderRadius: '6px',
-                fontSize: '0.8rem',
+                border: '1px solid #E5E7EB',
+                color: '#1F2937',
+                padding: '5px 11px',
+                borderRadius: '20px',
+                fontSize: '0.78rem',
                 fontWeight: 500,
                 boxShadow: 'var(--shadow-subtle)',
                 whiteSpace: 'nowrap'
               }}
             >
-              <Lock size={13} color="#851926" />
+              <Lock size={12} color="#8B1E2D" />
               <span>Admin<span className="header-admin-login-suffix"> Login</span></span>
             </button>
           )}

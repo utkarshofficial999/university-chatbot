@@ -109,7 +109,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
                 e.currentTarget.style.borderColor = '#e2e8f0';
               }}
             >
-              <Plus size={16} color="#851926" />
+              <Plus size={16} color="#8B1E2D" />
               <span>New Question</span>
             </button>
 
@@ -184,7 +184,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
                   boxShadow: currentView === 'admin' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
                 }}
               >
-                {user?.role === 'admin' ? <ShieldCheck size={13} color="#851926" /> : <Lock size={12} color="#94a3b8" />}
+                {user?.role === 'admin' ? <ShieldCheck size={13} color="#8B1E2D" /> : <Lock size={12} color="#94a3b8" />}
                 <span>Policy Manager</span>
               </button>
             </div>
@@ -230,7 +230,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
           alignItems: 'center',
           gap: '5px'
         }}>
-          <Layers size={12} color="#851926" />
+          <Layers size={12} color="#8B1E2D" />
           Filter by Policy Topic
         </div>
 
@@ -249,7 +249,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
             cursor: 'pointer'
           }}
         >
-          <option value="All">All ABES Policies (212 Chunks)</option>
+          <option value="All">All Policies</option>
           {categories.map((c) => (
             <option key={c.id} value={c.name}>{c.name}</option>
           ))}
@@ -313,7 +313,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden' }}>
-                  <MessageSquare size={14} color={isSelected ? '#851926' : '#94a3b8'} style={{ flexShrink: 0 }} />
+                  <MessageSquare size={14} color={isSelected ? '#8B1E2D' : '#94a3b8'} style={{ flexShrink: 0 }} />
                   <span style={{
                     fontSize: '0.8rem',
                     color: isSelected ? '#0f172a' : '#475569',
@@ -371,7 +371,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
         alignItems: 'center',
         justifyContent: 'space-between'
       }}>
-        <span>Official Knowledge Index</span>
+        <span>Knowledge Index</span>
         <span style={{
           backgroundColor: '#ffffff',
           border: '1px solid #e2e8f0',
@@ -380,7 +380,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
           fontWeight: 600,
           color: '#0f172a'
         }}>
-          {totalIndexedDocs} Sources
+          {totalIndexedDocs} Documents
         </span>
       </div>
     </aside>

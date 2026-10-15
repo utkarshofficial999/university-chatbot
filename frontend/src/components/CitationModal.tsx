@@ -63,7 +63,7 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <FileText size={16} color="#851926" />
+              <FileText size={16} color="#8B1E2D" />
             </div>
             <div>
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.05rem', color: '#0f172a', fontWeight: 600 }}>
@@ -99,7 +99,7 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
             borderRadius: '8px',
             border: '1px solid #e2e8f0'
           }}>
-            <div style={{ fontSize: '0.72rem', color: '#851926', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>
+            <div style={{ fontSize: '0.72rem', color: '#8B1E2D', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>
               {citation.category || 'Official Regulation'}
             </div>
             <h4 style={{ fontSize: '1rem', color: '#0f172a', marginBottom: '8px', fontWeight: 600 }}>
@@ -132,10 +132,10 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
               backgroundColor: '#f8fafc',
               padding: '14px 16px',
               borderRadius: '8px',
-              borderLeft: '3px solid #851926',
+              borderLeft: '3px solid #8B1E2D',
               border: '1px solid #e2e8f0',
               borderLeftWidth: '3px',
-              borderLeftColor: '#851926',
+              borderLeftColor: '#8B1E2D',
               fontSize: '0.88rem',
               color: '#1e293b',
               lineHeight: 1.65,

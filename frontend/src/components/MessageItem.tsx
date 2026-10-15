@@ -4,7 +4,7 @@ import {
   Copy, 
   Check, 
   FileText, 
-  CheckCircle2
+  BookOpen
 } from 'lucide-react';
 import type { Message, Citation } from '../types';
 
@@ -23,31 +23,31 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Preserves natural ChatGPT/Claude markdown structure with headings, paragraphs, and clean lists
+  // Clean and format content for scannable structured markdown
   const formatStructuredContent = (raw: string): string => {
     if (!raw) return '';
     let text = raw;
 
-    // 1. Remove internal metadata artifacts if any leaked into the text
+    // Remove internal metadata artifacts if any leaked into the text
     text = text.replace(/Verification:\s*[\w_]+/gi, '');
     text = text.replace(/\[Document:.*?\]/gi, '');
     text = text.replace(/\/ ?TYPICAL - CONFIRM WITH ABES\]?/gi, '');
     text = text.replace(/\b(VERIFIED\/secondary|VERIFIED|UNAVAILABLE)\b/g, '');
     text = text.replace(/\|\s*Source:[^\n]*/gi, '');
 
-    // 2. Clean dangling incomplete clauses at the end (e.g. "(commonly")
+    // Clean dangling incomplete clauses at the end (e.g. "(commonly")
     text = text.replace(/\([a-zA-Z\s]*$/, '').trim();
 
-    // 3. Remove any previous artificial "Key Policy Detail:" if in stored messages
+    // Remove previous artificial prefix if in stored messages
     text = text.replace(/Key Policy Detail:\s*/gi, '');
 
-    // 4. Fix malformed asterisks like "Reporting Channels:**" -> "**Reporting Channels:**"
+    // Fix malformed asterisks like "Reporting Channels:**" -> "**Reporting Channels:**"
     text = text.replace(/^(\s*[-*•]?\s*)([A-Za-z0-9\s/&,]+):\*\*/gm, '$1**$2:**');
 
-    // 5. Convert raw bullet character '•' to standard markdown list item '- '
+    // Convert raw bullet character '•' to standard markdown list item '- '
     text = text.replace(/^[ \t]*•[ \t]*/gm, '- ');
 
-    // 6. Ensure proper paragraph and heading spacing for Markdown rendering
+    // Normalize markdown linebreaks between sections for scannability
     text = text.replace(/([^\n])\n(###|##) /g, '$1\n\n$2 ');
     text = text.replace(/([^\n])\n(-|\*|\d+\.) /g, '$1\n\n$2 ');
 
@@ -60,32 +60,32 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      margin: '18px 0',
+      margin: '12px 0',
       alignItems: isAssistant ? 'flex-start' : 'flex-end',
       width: '100%'
     }}>
       {isAssistant ? (
-        /* Assistant Message Layout (ChatGPT / Claude Style) */
+        /* Assistant Message Layout */
         <div style={{
           display: 'flex',
-          gap: '14px',
+          gap: '10px',
           width: '100%',
           alignItems: 'flex-start'
         }}>
-          {/* Avatar */}
+          {/* Avatar (Compact 32-34px) */}
           <div style={{
-            width: '28px',
-            height: '28px',
-            borderRadius: '7px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
             backgroundColor: '#ffffff',
-            border: '1px solid #e2e8f0',
+            border: '1px solid #E5E7EB',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
             marginTop: '2px',
             padding: '2px',
-            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.05)'
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
           }}>
             <img 
               src="/abes_crest.png" 
@@ -94,48 +94,65 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
             />
           </div>
 
-          {/* Content Column */}
-          <div style={{ flex: 1, minWidth: 0 }}>
-            {/* Header / Name */}
+          {/* Content Column (Scannable, Never Huge Cards) */}
+          <div style={{ flex: 1, minWidth: 0, maxWidth: '94%' }}>
+            {/* Header: Name + Verified Policy Badge */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
+              flexWrap: 'wrap',
               gap: '6px',
-              marginBottom: '4px'
+              marginBottom: '6px'
             }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#0f172a' }}>
+              <span style={{ fontSize: '0.84rem', fontWeight: 600, color: '#1F2937' }}>
                 ABES Assistant
               </span>
-              <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>•</span>
-              <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Verified Policy</span>
+
+              {/* Compact Verified Policy Badge */}
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                backgroundColor: '#ECFDF5',
+                border: '1px solid #A7F3D0',
+                color: '#065F46',
+                padding: '1.5px 7px',
+                borderRadius: '9999px',
+                fontSize: '11.5px',
+                fontWeight: 500
+              }}>
+                <Check size={11} strokeWidth={2.6} color="#10B981" />
+                <span>Verified Policy</span>
+              </div>
             </div>
 
-            {/* Markdown Body */}
+            {/* Markdown Body (Controlled Spacing, Clear Hierarchy) */}
             <div className="prose">
               <ReactMarkdown>{formattedContent}</ReactMarkdown>
             </div>
 
-            {/* Verified Citations List */}
+            {/* Source / Policy Information Section */}
             {message.citations && message.citations.length > 0 && (
               <div style={{
-                marginTop: '14px',
-                paddingTop: '10px',
-                borderTop: '1px solid #f1f5f9'
+                marginTop: '10px',
+                paddingTop: '8px',
+                borderTop: '1px solid #F3F4F6'
               }}>
+                {/* Source Metadata Header */}
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '5px',
-                  fontSize: '0.74rem',
-                  color: '#475569',
-                  fontWeight: 600,
-                  marginBottom: '8px'
+                  fontSize: '0.72rem',
+                  color: '#6B7280',
+                  marginBottom: '6px'
                 }}>
-                  <CheckCircle2 size={13} color="#059669" />
-                  Official Document Citations ({message.citations.length}):
+                  <BookOpen size={12} color="#8B1E2D" />
+                  <span style={{ fontWeight: 600, color: '#4B5563' }}>Sources</span>
                 </div>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {/* Clickable Citation Chips */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {message.citations.map((c, i) => (
                     <button
                       key={i}
@@ -143,39 +160,40 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
                       style={{
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '6px',
-                        backgroundColor: '#f8fafc',
-                        border: '1px solid #e2e8f0',
-                        padding: '4px 9px',
+                        gap: '5px',
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #E5E7EB',
+                        padding: '3px 8px',
                         borderRadius: '6px',
-                        color: '#334155',
-                        fontSize: '0.76rem',
+                        color: '#374151',
+                        fontSize: '0.74rem',
                         textAlign: 'left',
                         cursor: 'pointer',
-                        transition: 'all 0.15s ease'
+                        transition: 'all 0.15s ease',
+                        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.02)'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#f1f5f9';
-                        e.currentTarget.style.borderColor = '#cbd5e1';
-                        e.currentTarget.style.color = '#0f172a';
+                        e.currentTarget.style.backgroundColor = '#F8F9FB';
+                        e.currentTarget.style.borderColor = '#D1D5DB';
+                        e.currentTarget.style.color = '#111827';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = '#f8fafc';
-                        e.currentTarget.style.borderColor = '#e2e8f0';
-                        e.currentTarget.style.color = '#334155';
+                        e.currentTarget.style.backgroundColor = '#ffffff';
+                        e.currentTarget.style.borderColor = '#E5E7EB';
+                        e.currentTarget.style.color = '#374151';
                       }}
                     >
-                      <FileText size={12} color="#851926" />
-                      <span style={{ fontWeight: 500, maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <FileText size={11} color="#8B1E2D" />
+                      <span style={{ fontWeight: 500, maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {c.document_title}
                       </span>
                       <span style={{ 
-                        color: '#851926', 
-                        backgroundColor: '#fdf2f2', 
-                        border: '1px solid #fecdd3',
-                        padding: '1px 5px', 
+                        color: '#8B1E2D', 
+                        backgroundColor: '#FDF2F4', 
+                        border: '1px solid #FCE7E9',
+                        padding: '1px 4px', 
                         borderRadius: '4px',
-                        fontSize: '0.68rem',
+                        fontSize: '0.66rem',
                         fontWeight: 600 
                       }}>
                         p.{c.page_number}
@@ -190,8 +208,8 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '12px',
-              marginTop: '10px'
+              gap: '8px',
+              marginTop: '8px'
             }}>
               <button
                 onClick={handleCopy}
@@ -199,42 +217,43 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: copied ? '#059669' : '#94a3b8',
+                  color: copied ? '#10B981' : '#9CA3AF',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
-                  fontSize: '0.74rem',
-                  padding: '3px 6px',
+                  fontSize: '0.72rem',
+                  padding: '2px 5px',
                   borderRadius: '4px',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease'
                 }}
                 onMouseEnter={(e) => {
-                  if (!copied) e.currentTarget.style.color = '#0f172a';
+                  if (!copied) e.currentTarget.style.color = '#374151';
                 }}
                 onMouseLeave={(e) => {
-                  if (!copied) e.currentTarget.style.color = '#94a3b8';
+                  if (!copied) e.currentTarget.style.color = '#9CA3AF';
                 }}
               >
-                {copied ? <Check size={13} /> : <Copy size={13} />}
+                {copied ? <Check size={12} /> : <Copy size={12} />}
                 <span>{copied ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
           </div>
         </div>
       ) : (
-        /* User Message Layout (Clean Gray Pill Bubble) */
+        /* User Message Layout (Light Maroon Tint, Scannable) */
         <div style={{
-          maxWidth: '75%',
-          backgroundColor: '#f1f5f9',
-          color: '#0f172a',
-          borderRadius: '18px 18px 4px 18px',
-          padding: '10px 18px',
+          maxWidth: '82%',
+          backgroundColor: '#FDF2F4',
+          border: '1px solid rgba(139, 30, 45, 0.12)',
+          color: '#1F2937',
+          borderRadius: '16px 16px 4px 16px',
+          padding: '10px 14px',
           fontSize: '0.94rem',
-          lineHeight: 1.55,
+          lineHeight: 1.5,
           fontWeight: 450,
           whiteSpace: 'pre-wrap',
-          boxShadow: 'var(--shadow-subtle)'
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)'
         }}>
           {message.content}
         </div>
