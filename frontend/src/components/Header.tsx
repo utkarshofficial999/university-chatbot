@@ -20,137 +20,122 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
   const { user, logout, openAuthModal } = useAuth();
 
   return (
-    <header style={{ display: 'flex', flexDirection: 'column', zIndex: 40 }}>
-      {/* Official Top Institutional Utility Bar (Matching abes.ac.in) */}
+    <header style={{ display: 'flex', flexDirection: 'column', zIndex: 40, backgroundColor: '#ffffff' }}>
+      {/* Top Institutional Strip (Minimalist & Clean) */}
       <div style={{
-        height: '28px',
-        backgroundColor: '#551e1d',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        height: '30px',
+        backgroundColor: '#f8fafc',
+        borderBottom: '1px solid #e2e8f0',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '0 24px',
-        fontSize: '0.72rem',
-        color: '#f8fafc',
-        letterSpacing: '0.02em'
+        fontSize: '0.74rem',
+        color: '#475569'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span>🏛️ <strong>ABES Engineering College, Ghaziabad</strong></span>
-          <span style={{ color: 'rgba(255, 255, 255, 0.4)' }}>|</span>
-          <span style={{ color: '#fed7aa', fontWeight: 600 }}>AKTU College Code: 032</span>
-          <span style={{ color: 'rgba(255, 255, 255, 0.4)' }}>|</span>
-          <span style={{ color: '#e2e8f0' }}>Approved by AICTE, New Delhi</span>
-          <span style={{ color: 'rgba(255, 255, 255, 0.4)' }}>|</span>
-          <span style={{ color: '#86efac', fontWeight: 600 }}>NAAC Accredited</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <span style={{ fontWeight: 600, color: '#0f172a' }}>🏛️ ABES Engineering College, Ghaziabad</span>
+          <span style={{ color: '#cbd5e1' }}>•</span>
+          <span style={{ color: '#851926', fontWeight: 600 }}>AKTU Code: 032</span>
+          <span style={{ color: '#cbd5e1' }}>•</span>
+          <span>AICTE Approved</span>
+          <span style={{ color: '#cbd5e1' }}>•</span>
+          <span style={{ color: '#059669', fontWeight: 600 }}>NAAC Accredited</span>
         </div>
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <a 
             href="https://www.abes.ac.in" 
             target="_blank" 
             rel="noopener noreferrer"
             style={{ 
-              color: '#fed7aa', 
+              color: '#64748b', 
               textDecoration: 'none', 
               display: 'flex', 
               alignItems: 'center', 
               gap: '4px',
-              fontSize: '0.71rem',
-              fontWeight: 600
+              fontSize: '0.72rem',
+              fontWeight: 500
             }}
           >
-            Official Website <ExternalLink size={11} />
+            abes.ac.in <ExternalLink size={11} />
           </a>
         </div>
       </div>
 
-      {/* Main Navigation Header */}
+      {/* Main Navigation Bar */}
       <div style={{
-        height: '64px',
-        backgroundColor: 'rgba(0, 33, 71, 0.95)',
-        backdropFilter: 'blur(16px)',
-        borderBottom: '1px solid rgba(118, 43, 42, 0.4)',
+        height: '62px',
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e2e8f0',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '0 24px'
       }}>
         {/* Brand & Emblem */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
-            width: '44px',
-            height: '44px',
-            borderRadius: '12px',
-            background: 'linear-gradient(135deg, #762b2a 0%, #4a1514 100%)',
-            border: '2px solid #e5a958',
+            width: '38px',
+            height: '38px',
+            borderRadius: '10px',
+            background: 'linear-gradient(135deg, #851926 0%, #55121a 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 16px rgba(118, 43, 42, 0.5)'
+            boxShadow: '0 2px 8px rgba(133, 25, 38, 0.2)'
           }}>
-            <GraduationCap size={24} color="#ffffff" />
+            <GraduationCap size={20} color="#ffffff" />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ 
-                fontWeight: 800, 
-                fontSize: '1.2rem', 
-                color: '#ffffff',
-                letterSpacing: '-0.01em'
-              }}>
-                ABES
-              </span>
-              <span style={{ 
+                fontFamily: 'var(--font-serif)',
                 fontWeight: 600, 
-                fontSize: '0.76rem', 
-                color: '#ffffff',
-                textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                background: '#762b2a',
-                padding: '2px 8px',
-                borderRadius: '4px',
-                border: '1px solid rgba(229, 169, 88, 0.4)'
+                fontSize: '1.25rem', 
+                color: '#0f172a',
+                letterSpacing: '-0.02em'
               }}>
-                AI Campus Assistant
+                ABES College Assistant
               </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '4px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '2px' }}>
                 <span className="online-dot" />
-                <span style={{ fontSize: '0.7rem', color: '#10b981', fontWeight: 600 }}>ONLINE</span>
+                <span style={{ fontSize: '0.68rem', color: '#059669', fontWeight: 600 }}>LIVE</span>
               </div>
             </div>
-            <p style={{ fontSize: '0.74rem', color: '#cbd5e1' }}>
-              Student Regulations, Academics, Hostel & Campus Guidance
+            <p style={{ fontSize: '0.75rem', color: '#64748b' }}>
+              Verified Regulations, Handbooks & Student Guidance
             </p>
           </div>
         </div>
 
-        {/* View Switcher */}
+        {/* Minimalist Segmented View Switcher (Notion / Claude style) */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          background: 'rgba(6, 14, 26, 0.85)',
-          border: '1px solid rgba(118, 43, 42, 0.4)',
-          borderRadius: 'var(--radius-full)',
-          padding: '3px'
+          backgroundColor: '#f1f5f9',
+          border: '1px solid #e2e8f0',
+          borderRadius: '8px',
+          padding: '2px'
         }}>
           <button
             onClick={() => onViewChange('chat')}
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '7px',
-              padding: '7px 16px',
-              borderRadius: 'var(--radius-full)',
+              gap: '6px',
+              padding: '6px 14px',
+              borderRadius: '6px',
               border: 'none',
-              fontSize: '0.84rem',
-              fontWeight: 600,
-              background: currentView === 'chat' ? 'linear-gradient(135deg, #762b2a, #983837)' : 'transparent',
-              color: currentView === 'chat' ? '#ffffff' : 'var(--text-muted)',
-              boxShadow: currentView === 'chat' ? '0 2px 10px rgba(118, 43, 42, 0.5)' : 'none'
+              fontSize: '0.82rem',
+              fontWeight: 500,
+              backgroundColor: currentView === 'chat' ? '#ffffff' : 'transparent',
+              color: currentView === 'chat' ? '#0f172a' : '#64748b',
+              boxShadow: currentView === 'chat' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
             }}
           >
-            <MessageSquare size={15} />
-            Student Assistant
+            <MessageSquare size={14} />
+            Student Chat
           </button>
 
           <button
@@ -165,81 +150,82 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '7px',
-              padding: '7px 16px',
-              borderRadius: 'var(--radius-full)',
+              gap: '6px',
+              padding: '6px 14px',
+              borderRadius: '6px',
               border: 'none',
-              fontSize: '0.84rem',
-              fontWeight: 600,
-              background: currentView === 'admin' ? 'linear-gradient(135deg, #762b2a, #983837)' : 'transparent',
-              color: currentView === 'admin' ? '#ffffff' : (user?.role === 'admin' ? 'var(--text-muted)' : '#94a3b8'),
-              boxShadow: currentView === 'admin' ? '0 2px 10px rgba(118, 43, 42, 0.5)' : 'none'
+              fontSize: '0.82rem',
+              fontWeight: 500,
+              backgroundColor: currentView === 'admin' ? '#ffffff' : 'transparent',
+              color: currentView === 'admin' ? '#0f172a' : '#64748b',
+              boxShadow: currentView === 'admin' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
             }}
           >
-            {user?.role === 'admin' ? <ShieldCheck size={15} /> : <Lock size={14} color="#e5a958" />}
+            {user?.role === 'admin' ? <ShieldCheck size={14} color="#851926" /> : <Lock size={13} color="#94a3b8" />}
             <span>Policy Manager</span>
             {user?.role !== 'admin' && (
               <span style={{
-                fontSize: '0.65rem',
-                background: 'rgba(229, 169, 88, 0.2)',
-                color: '#e5a958',
+                fontSize: '0.62rem',
+                backgroundColor: '#f1f5f9',
+                border: '1px solid #cbd5e1',
+                color: '#64748b',
                 padding: '1px 5px',
                 borderRadius: '4px',
-                fontWeight: 700
+                fontWeight: 600
               }}>
-                LOCKED
+                LOCK
               </span>
             )}
           </button>
         </div>
 
         {/* User / Tenant Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
-            padding: '5px 12px',
-            borderRadius: 'var(--radius-sm)',
-            background: 'rgba(255, 255, 255, 0.06)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            fontSize: '0.76rem',
-            color: '#e2e8f0'
+            padding: '4px 10px',
+            borderRadius: '6px',
+            backgroundColor: '#f8fafc',
+            border: '1px solid #e2e8f0',
+            fontSize: '0.74rem',
+            color: '#475569'
           }}>
-            <Building2 size={13} color="#e5a958" />
-            <span>Campus: <strong style={{ color: '#fff' }}>ABES EC (032)</strong></span>
+            <Building2 size={13} color="#851926" />
+            <span>Campus: <strong style={{ color: '#0f172a' }}>ABES Ghaziabad</strong></span>
           </div>
 
           {user?.id ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '4px 10px',
+                padding: '3px 10px',
                 borderRadius: 'var(--radius-full)',
-                background: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.15)'
+                backgroundColor: '#f8fafc',
+                border: '1px solid #e2e8f0'
               }}>
                 <div style={{
-                  width: '26px',
-                  height: '26px',
+                  width: '24px',
+                  height: '24px',
                   borderRadius: '50%',
-                  background: user.role === 'admin' ? '#e5a958' : '#762b2a',
-                  color: user.role === 'admin' ? '#070d19' : '#fff',
+                  backgroundColor: user.role === 'admin' ? '#851926' : '#e2e8f0',
+                  color: user.role === 'admin' ? '#ffffff' : '#0f172a',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '0.75rem',
-                  fontWeight: 700
+                  fontSize: '0.72rem',
+                  fontWeight: 600
                 }}>
                   {user.full_name?.charAt(0) || 'U'}
                 </div>
                 <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#fff' }}>
+                  <div style={{ fontSize: '0.76rem', fontWeight: 600, color: '#0f172a' }}>
                     {user.full_name}
                   </div>
-                  <div style={{ fontSize: '0.68rem', color: user.role === 'admin' ? '#fed7aa' : '#94a3b8' }}>
+                  <div style={{ fontSize: '0.64rem', color: user.role === 'admin' ? '#851926' : '#64748b', fontWeight: 500 }}>
                     {user.role.toUpperCase()}
                   </div>
                 </div>
@@ -249,14 +235,17 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
                 onClick={logout}
                 title="Logout"
                 style={{
-                  background: 'transparent',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  borderRadius: '8px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '6px',
                   padding: '6px',
-                  color: 'var(--text-muted)'
+                  color: '#64748b',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
-                <LogOut size={16} />
+                <LogOut size={14} />
               </button>
             </div>
           ) : (
@@ -266,18 +255,18 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                background: 'linear-gradient(135deg, #762b2a 0%, #581d1c 100%)',
-                border: '1px solid #e5a958',
-                color: '#ffffff',
-                padding: '7px 15px',
-                borderRadius: 'var(--radius-sm)',
-                fontSize: '0.82rem',
-                fontWeight: 600,
-                boxShadow: '0 2px 10px rgba(118, 43, 42, 0.4)'
+                backgroundColor: '#ffffff',
+                border: '1px solid #e2e8f0',
+                color: '#0f172a',
+                padding: '6px 14px',
+                borderRadius: '6px',
+                fontSize: '0.8rem',
+                fontWeight: 500,
+                boxShadow: 'var(--shadow-subtle)'
               }}
             >
-              <LogIn size={15} />
-              Portal Login
+              <LogIn size={14} />
+              Sign In
             </button>
           )}
         </div>

@@ -21,8 +21,8 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: 'rgba(5, 10, 20, 0.75)',
-      backdropFilter: 'blur(8px)',
+      backgroundColor: 'rgba(15, 23, 42, 0.45)',
+      backdropFilter: 'blur(4px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -30,13 +30,13 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
       padding: '20px'
     }}>
       <div 
-        className="glass-panel" 
         style={{
           width: '100%',
           maxWidth: '560px',
-          backgroundColor: '#0c172c',
-          border: '1px solid rgba(229, 169, 88, 0.3)',
-          boxShadow: 'var(--shadow-lg), var(--shadow-glow)',
+          backgroundColor: '#ffffff',
+          borderRadius: '12px',
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 20px 35px -5px rgba(0, 0, 0, 0.1), 0 10px 15px -5px rgba(0, 0, 0, 0.04)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column'
@@ -44,31 +44,32 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
       >
         {/* Modal Header */}
         <div style={{
-          padding: '18px 24px',
-          borderBottom: '1px solid var(--border-light)',
+          padding: '16px 20px',
+          borderBottom: '1px solid #e2e8f0',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'rgba(17, 31, 56, 0.6)'
+          backgroundColor: '#f8fafc'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
-              width: '34px',
-              height: '34px',
+              width: '32px',
+              height: '32px',
               borderRadius: '8px',
-              background: 'rgba(229, 169, 88, 0.15)',
+              backgroundColor: '#fdf2f2',
+              border: '1px solid #fecdd3',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <FileText size={18} color="var(--accent-gold)" />
+              <FileText size={16} color="#851926" />
             </div>
             <div>
-              <h3 style={{ fontSize: '1rem', color: '#fff', fontWeight: 600 }}>
-                Official Document Source
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.05rem', color: '#0f172a', fontWeight: 600 }}>
+                Verified Document Source
               </h3>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                Verified ABES Engineering College Regulatory Context
+              <p style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                Official ABES Engineering College Knowledge Context
               </p>
             </div>
           </div>
@@ -78,9 +79,10 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
             style={{
               background: 'transparent',
               border: 'none',
-              color: 'var(--text-muted)',
+              color: '#64748b',
               padding: '6px',
-              borderRadius: '6px'
+              borderRadius: '6px',
+              cursor: 'pointer'
             }}
           >
             <X size={18} />
@@ -88,23 +90,23 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
         </div>
 
         {/* Modal Body */}
-        <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+        <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {/* Document Title & Meta */}
           <div style={{
-            background: 'rgba(13, 25, 46, 0.7)',
-            padding: '16px',
-            borderRadius: '10px',
-            border: '1px solid var(--border-light)'
+            backgroundColor: '#f8fafc',
+            padding: '14px 16px',
+            borderRadius: '8px',
+            border: '1px solid #e2e8f0'
           }}>
-            <div style={{ fontSize: '0.72rem', color: 'var(--accent-gold)', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>
-              {citation.category || 'Official Policy'}
+            <div style={{ fontSize: '0.72rem', color: '#851926', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>
+              {citation.category || 'Official Regulation'}
             </div>
-            <h4 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '10px' }}>
+            <h4 style={{ fontSize: '1rem', color: '#0f172a', marginBottom: '8px', fontWeight: 600 }}>
               {citation.document_title}
             </h4>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', fontSize: '0.8rem' }}>
-              <div className="badge badge-gold">
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', fontSize: '0.78rem' }}>
+              <div className="badge badge-maroon">
                 <BookmarkCheck size={12} />
                 Page {citation.page_number}
               </div>
@@ -122,19 +124,23 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
 
           {/* Excerpt Section */}
           <div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '6px' }}>
-              EXTRACTED OFFICIAL PASSAGE:
+            <div style={{ fontSize: '0.76rem', color: '#475569', fontWeight: 600, marginBottom: '6px', textTransform: 'uppercase' }}>
+              Official Extracted Reference:
             </div>
             <div style={{
-              background: 'rgba(6, 12, 23, 0.9)',
+              backgroundColor: '#f8fafc',
               padding: '14px 16px',
               borderRadius: '8px',
-              borderLeft: '3px solid var(--accent-gold)',
-              fontSize: '0.86rem',
-              color: '#e2e8f0',
-              lineHeight: 1.6,
-              maxHeight: '220px',
-              overflowY: 'auto'
+              borderLeft: '3px solid #851926',
+              border: '1px solid #e2e8f0',
+              borderLeftWidth: '3px',
+              borderLeftColor: '#851926',
+              fontSize: '0.88rem',
+              color: '#1e293b',
+              lineHeight: 1.65,
+              maxHeight: '200px',
+              overflowY: 'auto',
+              fontFamily: 'var(--font-sans)'
             }}>
               "{citation.snippet}"
             </div>
@@ -143,27 +149,29 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
 
         {/* Modal Footer */}
         <div style={{
-          padding: '16px 24px',
-          borderTop: '1px solid var(--border-light)',
+          padding: '14px 20px',
+          borderTop: '1px solid #e2e8f0',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          background: 'rgba(17, 31, 56, 0.4)'
+          backgroundColor: '#f8fafc'
         }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-            Filename: {citation.filename}
+          <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
+            File: {citation.filename}
           </span>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
             <button
               onClick={onClose}
               style={{
-                background: 'rgba(255, 255, 255, 0.06)',
-                border: '1px solid var(--border-light)',
-                color: 'var(--text-main)',
-                padding: '8px 16px',
-                borderRadius: '8px',
-                fontSize: '0.84rem'
+                backgroundColor: '#ffffff',
+                border: '1px solid #e2e8f0',
+                color: '#334155',
+                padding: '7px 14px',
+                borderRadius: '6px',
+                fontSize: '0.82rem',
+                fontWeight: 500,
+                cursor: 'pointer'
               }}
             >
               Close
@@ -176,17 +184,17 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
-                background: 'var(--accent-gold)',
-                color: '#070d19',
+                gap: '5px',
+                backgroundColor: '#0f172a',
+                color: '#ffffff',
                 textDecoration: 'none',
-                padding: '8px 16px',
-                borderRadius: '8px',
-                fontSize: '0.84rem',
-                fontWeight: 600
+                padding: '7px 14px',
+                borderRadius: '6px',
+                fontSize: '0.82rem',
+                fontWeight: 500
               }}
             >
-              <ExternalLink size={14} />
+              <ExternalLink size={13} />
               Open Original PDF
             </a>
           </div>

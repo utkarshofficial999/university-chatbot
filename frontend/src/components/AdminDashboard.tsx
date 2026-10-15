@@ -21,7 +21,7 @@ export const AdminDashboard: React.FC = () => {
   const [syncing, setSyncing] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>('Academic Regulations');
+  const [selectedCategory, setSelectedCategory] = useState<string>('Academic & Curriculum');
   const [customTitle, setCustomTitle] = useState('');
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -78,11 +78,13 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleDelete = async (id: string, title: string) => {
-    if (!window.confirm(`Are you sure you want to delete and un-index "${title}"?`)) return;
+    if (!window.confirm(`Are you sure you want to delete '${title}'? This will remove its vectors from Pinecone.`)) {
+      return;
+    }
     try {
       await ApiClient.deleteDocument(id);
-      setMessage({ type: 'success', text: `Deleted document "${title}"` });
-      setDocuments(documents.filter(d => d.id !== id));
+      setMessage({ type: 'success', text: `Deleted '${title}' successfully` });
+      await fetchDashboardData();
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message || 'Delete failed' });
     }
@@ -90,9 +92,8 @@ export const AdminDashboard: React.FC = () => {
 
   const handleReindex = async (id: string, title: string) => {
     try {
-      setMessage({ type: 'success', text: `Re-indexing "${title}"...` });
-      await ApiClient.reindexDocument(id);
-      setMessage({ type: 'success', text: `Successfully re-indexed "${title}"` });
+      const res = await ApiClient.reindexDocument(id);
+      setMessage({ type: 'success', text: res.message || `Re-indexed '${title}' successfully` });
       await fetchDashboardData();
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message || 'Re-index failed' });
@@ -103,26 +104,28 @@ export const AdminDashboard: React.FC = () => {
     <div style={{
       flex: 1,
       overflowY: 'auto',
-      padding: '30px 40px',
-      backgroundColor: 'transparent'
+      padding: '28px 36px',
+      backgroundColor: '#ffffff'
     }}>
-      {/* Title & Actions Bar */}
+      {/* Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '28px'
+        marginBottom: '26px',
+        borderBottom: '1px solid #e2e8f0',
+        paddingBottom: '16px'
       }}>
         <div>
-          <h2 style={{ fontSize: '1.6rem', color: '#fff', fontWeight: 700 }}>
-            ABES Knowledge Base Administration
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.75rem', color: '#0f172a', fontWeight: 600 }}>
+            Policy Management & Knowledge Controls
           </h2>
-          <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>
-            Manage policy documents, monitor vector embeddings, and re-index regulatory materials.
+          <p style={{ fontSize: '0.86rem', color: '#64748b' }}>
+            Admin dashboard for ABES Engineering College policy vectors, ingestion pipelines, and retrieval diagnostics.
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '10px' }}>
           <button
             onClick={handleSyncLocal}
             disabled={syncing}
@@ -130,17 +133,18 @@ export const AdminDashboard: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              backgroundColor: 'rgba(229, 169, 88, 0.15)',
-              border: '1px solid var(--accent-gold)',
-              color: 'var(--accent-gold)',
-              borderRadius: '8px',
-              padding: '9px 16px',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              cursor: syncing ? 'not-allowed' : 'pointer'
+              backgroundColor: '#851926',
+              border: 'none',
+              color: '#ffffff',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              fontSize: '0.84rem',
+              fontWeight: 500,
+              cursor: syncing ? 'not-allowed' : 'pointer',
+              boxShadow: 'var(--shadow-subtle)'
             }}
           >
-            <FolderSync size={16} className={syncing ? 'pulse-dot' : ''} />
+            <FolderSync size={15} />
             {syncing ? 'Syncing ABES Documents...' : 'Sync All ABES Documents'}
           </button>
 
@@ -148,14 +152,15 @@ export const AdminDashboard: React.FC = () => {
             onClick={fetchDashboardData}
             title="Refresh metrics"
             style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid var(--border-light)',
-              color: 'var(--text-muted)',
-              borderRadius: '8px',
-              padding: '9px 12px'
+              backgroundColor: '#ffffff',
+              border: '1px solid #e2e8f0',
+              color: '#475569',
+              borderRadius: '6px',
+              padding: '8px 12px',
+              cursor: 'pointer'
             }}
           >
-            <RefreshCw size={16} />
+            <RefreshCw size={15} />
           </button>
         </div>
       </div>
@@ -163,16 +168,16 @@ export const AdminDashboard: React.FC = () => {
       {/* Notifications */}
       {message && (
         <div style={{
-          padding: '12px 18px',
+          padding: '12px 16px',
           borderRadius: '8px',
           marginBottom: '20px',
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
-          fontSize: '0.88rem',
-          backgroundColor: message.type === 'success' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(244, 63, 94, 0.15)',
-          border: `1px solid ${message.type === 'success' ? 'rgba(16, 185, 129, 0.4)' : 'rgba(244, 63, 94, 0.4)'}`,
-          color: message.type === 'success' ? '#34d399' : '#fb7185'
+          fontSize: '0.86rem',
+          backgroundColor: message.type === 'success' ? '#ecfdf5' : '#fef2f2',
+          border: `1px solid ${message.type === 'success' ? '#a7f3d0' : '#fecdd3'}`,
+          color: message.type === 'success' ? '#065f46' : '#b91c1c'
         }}>
           {message.type === 'success' ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
           <span>{message.text}</span>
@@ -182,75 +187,105 @@ export const AdminDashboard: React.FC = () => {
       {/* Metrics Cards */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '16px',
-        marginBottom: '30px'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+        gap: '14px',
+        marginBottom: '26px'
       }}>
-        <div className="glass-panel" style={{ padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-dim)', marginBottom: '10px' }}>
-            <span style={{ fontSize: '0.78rem', textTransform: 'uppercase', fontWeight: 600 }}>Indexed Documents</span>
-            <FileText size={18} color="var(--accent-gold)" />
+        <div style={{
+          backgroundColor: '#ffffff',
+          borderRadius: '10px',
+          border: '1px solid #e2e8f0',
+          padding: '18px',
+          boxShadow: 'var(--shadow-subtle)'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', fontWeight: 600 }}>Active Documents</span>
+            <FileText size={17} color="#851926" />
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 700, color: '#fff' }}>
+          <div style={{ fontSize: '1.65rem', fontWeight: 700, color: '#0f172a' }}>
             {status?.total_documents ?? 0}
           </div>
-          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Official ABES Documents
+          <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px' }}>
+            Verified ABES Sources
           </div>
         </div>
 
-        <div className="glass-panel" style={{ padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-dim)', marginBottom: '10px' }}>
-            <span style={{ fontSize: '0.78rem', textTransform: 'uppercase', fontWeight: 600 }}>Semantic Chunks</span>
-            <Database size={18} color="#38bdf8" />
+        <div style={{
+          backgroundColor: '#ffffff',
+          borderRadius: '10px',
+          border: '1px solid #e2e8f0',
+          padding: '18px',
+          boxShadow: 'var(--shadow-subtle)'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', fontWeight: 600 }}>Semantic Vectors</span>
+            <Database size={17} color="#0284c7" />
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 700, color: '#fff' }}>
+          <div style={{ fontSize: '1.65rem', fontWeight: 700, color: '#0f172a' }}>
             {status?.total_chunks ?? 0}
           </div>
-          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Indexed vectors ready for retrieval
+          <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px' }}>
+            Pinecone 384-dim Chunks
           </div>
         </div>
 
-        <div className="glass-panel" style={{ padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-dim)', marginBottom: '10px' }}>
-            <span style={{ fontSize: '0.78rem', textTransform: 'uppercase', fontWeight: 600 }}>Vector & Database</span>
-            <Layers size={18} color="#10b981" />
+        <div style={{
+          backgroundColor: '#ffffff',
+          borderRadius: '10px',
+          border: '1px solid #e2e8f0',
+          padding: '18px',
+          boxShadow: 'var(--shadow-subtle)'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', fontWeight: 600 }}>Vector Index</span>
+            <Layers size={17} color="#059669" />
           </div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff' }}>
-            {status?.database_type || 'PostgreSQL (pgvector)'}
+          <div style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a' }}>
+            {status?.database_type || 'Pinecone Serverless'}
           </div>
-          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Dimension: 384 ({status?.embedding_model || 'bge-small-en-v1.5'})
+          <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px' }}>
+            Model: {status?.embedding_model || 'bge-small-en-v1.5'}
           </div>
         </div>
 
-        <div className="glass-panel" style={{ padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-dim)', marginBottom: '10px' }}>
-            <span style={{ fontSize: '0.78rem', textTransform: 'uppercase', fontWeight: 600 }}>LLM Provider</span>
-            <Cpu size={18} color="var(--accent-gold)" />
+        <div style={{
+          backgroundColor: '#ffffff',
+          borderRadius: '10px',
+          border: '1px solid #e2e8f0',
+          padding: '18px',
+          boxShadow: 'var(--shadow-subtle)'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', fontWeight: 600 }}>LLM Engine</span>
+            <Cpu size={17} color="#b45309" />
           </div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff' }}>
-            {status?.llm_provider?.toUpperCase() || 'OLLAMA'}
+          <div style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a' }}>
+            {status?.llm_provider?.toUpperCase() || 'GEMINI'}
           </div>
-          <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Google Gemini Cloud (High Availability)
+          <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px' }}>
+            Gemini 2.5 Flash Lite Streaming
           </div>
         </div>
       </div>
 
       {/* Upload Document Section */}
-      <div className="glass-panel" style={{ padding: '24px', marginBottom: '30px' }}>
-        <h3 style={{ fontSize: '1.1rem', color: '#fff', fontWeight: 600, marginBottom: '6px' }}>
+      <div style={{
+        backgroundColor: '#f8fafc',
+        borderRadius: '10px',
+        border: '1px solid #e2e8f0',
+        padding: '20px 22px',
+        marginBottom: '26px'
+      }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: '#0f172a', fontWeight: 600, marginBottom: '4px' }}>
           Upload New Policy Document
         </h3>
-        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '18px' }}>
-          Upload an official ABES PDF. The ingestion pipeline will extract pages, generate semantic chunks, compute embeddings, and store them into the vector database.
+        <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '16px' }}>
+          Upload an official ABES PDF circular or handbook. The pipeline extracts text, builds chunks, generates embeddings, and upserts them into Pinecone.
         </p>
 
-        <form onSubmit={handleUpload} style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', alignItems: 'flex-end' }}>
+        <form onSubmit={handleUpload} style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'flex-end' }}>
           <div style={{ flex: '1 1 240px' }}>
-            <label style={{ display: 'block', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
               Select PDF File
             </label>
             <input
@@ -260,18 +295,18 @@ export const AdminDashboard: React.FC = () => {
               required
               style={{
                 width: '100%',
-                padding: '8px 12px',
-                borderRadius: '8px',
-                border: '1px solid var(--border-light)',
-                background: 'rgba(13, 25, 46, 0.8)',
-                color: '#fff',
+                padding: '7px 10px',
+                borderRadius: '6px',
+                border: '1px solid #cbd5e1',
+                backgroundColor: '#ffffff',
+                color: '#0f172a',
                 fontSize: '0.82rem'
               }}
             />
           </div>
 
           <div style={{ flex: '1 1 200px' }}>
-            <label style={{ display: 'block', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
               Policy Category
             </label>
             <select
@@ -279,11 +314,11 @@ export const AdminDashboard: React.FC = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
               style={{
                 width: '100%',
-                padding: '9px 12px',
-                borderRadius: '8px',
-                border: '1px solid var(--border-light)',
-                background: 'rgba(13, 25, 46, 0.8)',
-                color: '#fff',
+                padding: '8px 10px',
+                borderRadius: '6px',
+                border: '1px solid #cbd5e1',
+                backgroundColor: '#ffffff',
+                color: '#0f172a',
                 fontSize: '0.84rem'
               }}
             >
@@ -294,21 +329,21 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           <div style={{ flex: '1 1 220px' }}>
-            <label style={{ display: 'block', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
               Custom Title (Optional)
             </label>
             <input
               type="text"
-              placeholder="e.g. Revised Examination Policy 2026"
+              placeholder="e.g. Revised Exam Circular 2026"
               value={customTitle}
               onChange={(e) => setCustomTitle(e.target.value)}
               style={{
                 width: '100%',
-                padding: '8px 12px',
-                borderRadius: '8px',
-                border: '1px solid var(--border-light)',
-                background: 'rgba(13, 25, 46, 0.8)',
-                color: '#fff',
+                padding: '7px 10px',
+                borderRadius: '6px',
+                border: '1px solid #cbd5e1',
+                backgroundColor: '#ffffff',
+                color: '#0f172a',
                 fontSize: '0.84rem'
               }}
             />
@@ -318,117 +353,126 @@ export const AdminDashboard: React.FC = () => {
             type="submit"
             disabled={!selectedFile || uploading}
             style={{
-              padding: '9px 22px',
-              borderRadius: '8px',
-              background: 'var(--accent-gold)',
-              color: '#070d19',
-              fontWeight: 700,
+              padding: '8px 18px',
+              borderRadius: '6px',
+              backgroundColor: '#0f172a',
+              color: '#ffffff',
+              fontWeight: 600,
               border: 'none',
-              fontSize: '0.86rem',
+              fontSize: '0.84rem',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
+              gap: '6px',
               cursor: !selectedFile || uploading ? 'not-allowed' : 'pointer'
             }}
           >
-            <Upload size={16} />
-            {uploading ? 'Processing & Embedding...' : 'Upload & Ingest'}
+            <Upload size={15} />
+            {uploading ? 'Processing...' : 'Upload & Index'}
           </button>
         </form>
       </div>
 
       {/* Document Catalog Table */}
-      <div className="glass-panel" style={{ padding: '24px' }}>
-        <h3 style={{ fontSize: '1.1rem', color: '#fff', fontWeight: 600, marginBottom: '16px' }}>
+      <div style={{
+        backgroundColor: '#ffffff',
+        borderRadius: '10px',
+        border: '1px solid #e2e8f0',
+        padding: '20px 22px',
+        boxShadow: 'var(--shadow-subtle)'
+      }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: '#0f172a', fontWeight: 600, marginBottom: '14px' }}>
           Indexed Document Registry ({documents.length})
         </h3>
 
         {documents.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '30px', color: 'var(--text-dim)' }}>
-            No documents indexed yet. Click "Sync All ABES Documents" to automatically ingest materials.
+          <div style={{ textAlign: 'center', padding: '24px', color: '#94a3b8', fontSize: '0.86rem' }}>
+            No documents indexed yet. Click "Sync All ABES Documents" to automatically ingest policies.
           </div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.84rem' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--border-light)', color: 'var(--text-dim)' }}>
-                  <th style={{ padding: '10px 12px' }}>DOCUMENT TITLE</th>
-                  <th style={{ padding: '10px 12px' }}>CATEGORY</th>
-                  <th style={{ padding: '10px 12px' }}>VERSION</th>
-                  <th style={{ padding: '10px 12px' }}>PAGES</th>
-                  <th style={{ padding: '10px 12px' }}>CHUNKS</th>
-                  <th style={{ padding: '10px 12px' }}>STATUS</th>
-                  <th style={{ padding: '10px 12px', textAlign: 'right' }}>ACTIONS</th>
+                <tr style={{ borderBottom: '1px solid #e2e8f0', color: '#64748b' }}>
+                  <th style={{ padding: '8px 10px', fontWeight: 600 }}>DOCUMENT TITLE</th>
+                  <th style={{ padding: '8px 10px', fontWeight: 600 }}>CATEGORY</th>
+                  <th style={{ padding: '8px 10px', fontWeight: 600 }}>VERSION</th>
+                  <th style={{ padding: '8px 10px', fontWeight: 600 }}>PAGES</th>
+                  <th style={{ padding: '8px 10px', fontWeight: 600 }}>CHUNKS</th>
+                  <th style={{ padding: '8px 10px', fontWeight: 600 }}>STATUS</th>
+                  <th style={{ padding: '8px 10px', fontWeight: 600, textAlign: 'right' }}>ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
                 {documents.map((doc) => (
-                  <tr key={doc.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
-                    <td style={{ padding: '12px' }}>
-                      <div style={{ fontWeight: 600, color: '#fff' }}>{doc.title}</div>
-                      <div style={{ fontSize: '0.74rem', color: 'var(--text-dim)' }}>{doc.filename}</div>
+                  <tr key={doc.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                    <td style={{ padding: '10px' }}>
+                      <div style={{ fontWeight: 600, color: '#0f172a' }}>{doc.title}</div>
+                      <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{doc.filename}</div>
                     </td>
-                    <td style={{ padding: '12px' }}>
-                      <span className="badge badge-gold">{doc.category}</span>
+                    <td style={{ padding: '10px' }}>
+                      <span className="badge badge-maroon">{doc.category}</span>
                     </td>
-                    <td style={{ padding: '12px', color: 'var(--accent-blue)' }}>
+                    <td style={{ padding: '10px', color: '#0284c7' }}>
                       AY {doc.version_year || '2025-26'}
                     </td>
-                    <td style={{ padding: '12px', color: 'var(--text-muted)' }}>
+                    <td style={{ padding: '10px', color: '#475569' }}>
                       {doc.total_pages}
                     </td>
-                    <td style={{ padding: '12px', fontWeight: 600, color: 'var(--accent-gold)' }}>
+                    <td style={{ padding: '10px', fontWeight: 600, color: '#851926' }}>
                       {doc.total_chunks}
                     </td>
-                    <td style={{ padding: '12px' }}>
+                    <td style={{ padding: '10px' }}>
                       <span className={`badge ${doc.status === 'indexed' ? 'badge-emerald' : 'badge-blue'}`}>
                         {doc.status.toUpperCase()}
                       </span>
                     </td>
-                    <td style={{ padding: '12px', textAlign: 'right' }}>
-                      <div style={{ display: 'inline-flex', gap: '8px' }}>
+                    <td style={{ padding: '10px', textAlign: 'right' }}>
+                      <div style={{ display: 'inline-flex', gap: '6px' }}>
                         <a
                           href={ApiClient.getDocumentFileUrl(doc.id)}
                           target="_blank"
                           rel="noreferrer"
                           title="View PDF"
                           style={{
-                            background: 'rgba(255, 255, 255, 0.05)',
-                            padding: '6px',
-                            borderRadius: '6px',
-                            color: 'var(--text-muted)',
+                            backgroundColor: '#f8fafc',
+                            border: '1px solid #e2e8f0',
+                            padding: '5px',
+                            borderRadius: '5px',
+                            color: '#475569',
                             display: 'inline-flex'
                           }}
                         >
-                          <FileText size={15} />
+                          <FileText size={14} />
                         </a>
 
                         <button
                           onClick={() => handleReindex(doc.id, doc.title)}
                           title="Re-index document"
                           style={{
-                            background: 'rgba(255, 255, 255, 0.05)',
-                            border: 'none',
-                            padding: '6px',
-                            borderRadius: '6px',
-                            color: 'var(--text-muted)'
+                            backgroundColor: '#f8fafc',
+                            border: '1px solid #e2e8f0',
+                            padding: '5px',
+                            borderRadius: '5px',
+                            color: '#475569',
+                            cursor: 'pointer'
                           }}
                         >
-                          <RefreshCw size={15} />
+                          <RefreshCw size={14} />
                         </button>
 
                         <button
                           onClick={() => handleDelete(doc.id, doc.title)}
                           title="Delete document"
                           style={{
-                            background: 'rgba(244, 63, 94, 0.1)',
-                            border: 'none',
-                            padding: '6px',
-                            borderRadius: '6px',
-                            color: 'var(--accent-rose)'
+                            backgroundColor: '#fef2f2',
+                            border: '1px solid #fecdd3',
+                            padding: '5px',
+                            borderRadius: '5px',
+                            color: '#dc2626',
+                            cursor: 'pointer'
                           }}
                         >
-                          <Trash2 size={15} />
+                          <Trash2 size={14} />
                         </button>
                       </div>
                     </td>

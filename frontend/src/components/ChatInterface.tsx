@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Send, 
+  ArrowUp, 
   GraduationCap, 
   BookOpen, 
   Home, 
@@ -46,24 +46,24 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const starterPrompts = [
     {
-      title: "Exam Attendance Rules",
+      title: "Attendance Regulations",
       prompt: "What is the minimum attendance required to appear in semester exams at ABES?",
-      icon: <GraduationCap size={16} color="#e5a958" />
+      icon: <GraduationCap size={15} color="#851926" />
     },
     {
-      title: "Programmes & College Code",
+      title: "Programmes & Intake",
       prompt: "What are the B.Tech programmes offered and what is the college code for ABES?",
-      icon: <BookOpen size={16} color="#38bdf8" />
+      icon: <BookOpen size={15} color="#0284c7" />
     },
     {
       title: "Hostel Rules & Curfew",
       prompt: "What are the hostel rules, night-out leaves, and curfew timings at ABES?",
-      icon: <Home size={16} color="#10b981" />
+      icon: <Home size={15} color="#059669" />
     },
     {
       title: "Anti-Ragging & Helplines",
-      prompt: "What is the anti-ragging policy, grievance mechanism, and helpline numbers?",
-      icon: <ShieldAlert size={16} color="#f43f5e" />
+      prompt: "What is the official anti-ragging policy, grievance mechanism, and helpline?",
+      icon: <ShieldAlert size={15} color="#dc2626" />
     }
   ];
 
@@ -73,242 +73,260 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       flexDirection: 'column',
       height: '100%',
       flex: 1,
-      backgroundColor: 'transparent',
+      backgroundColor: '#ffffff',
       position: 'relative'
     }}>
-      {/* Messages Scroll Area */}
+      {/* Messages Scroll Area (Centered ChatGPT / Claude reading column) */}
       <div style={{
         flex: 1,
         overflowY: 'auto',
-        padding: '24px 32px',
+        padding: '24px 20px',
         display: 'flex',
         flexDirection: 'column'
       }}>
-        {messages.length === 0 ? (
-          <div style={{
-            margin: 'auto',
-            maxWidth: '700px',
-            textAlign: 'center',
-            padding: '20px 10px'
-          }}>
-            {/* College Crest Emblem */}
+        <div style={{
+          maxWidth: '780px',
+          width: '100%',
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
+          {messages.length === 0 ? (
             <div style={{
-              width: '64px',
-              height: '64px',
-              borderRadius: '18px',
-              background: 'linear-gradient(135deg, #762b2a 0%, #4a1514 100%)',
-              border: '2px solid #e5a958',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px auto',
-              boxShadow: '0 0 25px rgba(118, 43, 42, 0.45)'
+              margin: 'auto',
+              textAlign: 'center',
+              padding: '40px 10px 20px 10px'
             }}>
-              <GraduationCap size={34} color="#ffffff" />
-            </div>
+              {/* Institutional Crest */}
+              <div style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #851926 0%, #55121a 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px auto',
+                boxShadow: '0 4px 14px rgba(133, 25, 38, 0.25)'
+              }}>
+                <GraduationCap size={28} color="#ffffff" />
+              </div>
 
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: 'rgba(118, 43, 42, 0.25)',
-              border: '1px solid rgba(118, 43, 42, 0.5)',
-              padding: '3px 12px',
-              borderRadius: 'var(--radius-full)',
-              fontSize: '0.75rem',
-              color: '#fca5a5',
-              fontWeight: 600,
-              marginBottom: '12px'
-            }}>
-              <Sparkles size={12} color="#e5a958" />
-              Official Campus AI Assistant • AKTU Code 032
-            </div>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                padding: '3px 12px',
+                borderRadius: 'var(--radius-full)',
+                fontSize: '0.74rem',
+                color: '#475569',
+                fontWeight: 500,
+                marginBottom: '14px'
+              }}>
+                <Sparkles size={12} color="#851926" />
+                ABES Engineering College • AKTU Code 032
+              </div>
 
-            <h2 style={{ fontSize: '1.85rem', color: '#fff', fontWeight: 700, marginBottom: '8px' }}>
-              Welcome to ABES Engineering College
-            </h2>
+              <h2 style={{ 
+                fontFamily: 'var(--font-serif)',
+                fontSize: '2.1rem', 
+                color: '#0f172a', 
+                fontWeight: 600, 
+                marginBottom: '10px',
+                letterSpacing: '-0.02em'
+              }}>
+                How can I help you today?
+              </h2>
 
-            <p style={{ fontSize: '0.94rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: '28px', maxWidth: '580px', margin: '0 auto 28px auto' }}>
-              Hello! I am your AI campus advisor. Ask me anything about courses, academic regulations, examination criteria, hostel policies, or fee details.
-            </p>
+              <p style={{ 
+                fontSize: '0.96rem', 
+                color: '#64748b', 
+                lineHeight: 1.6, 
+                marginBottom: '32px', 
+                maxWidth: '560px', 
+                margin: '0 auto 32px auto' 
+              }}>
+                Ask any question about academic guidelines, autonomous regulations, hostel rules, fees, or examination policies.
+              </p>
 
-            {/* Quick Questions Grid */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '12px',
-              textAlign: 'left'
-            }}>
-              {starterPrompts.map((p, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => onSendMessage(p.prompt)}
-                  style={{
-                    padding: '14px 16px',
-                    borderRadius: '12px',
-                    backgroundColor: 'rgba(12, 29, 54, 0.85)',
-                    border: '1px solid rgba(118, 43, 42, 0.35)',
-                    backdropFilter: 'blur(10px)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '6px',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    textAlign: 'left'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#e5a958';
-                    e.currentTarget.style.backgroundColor = 'rgba(18, 42, 76, 0.95)';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.4)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(118, 43, 42, 0.35)';
-                    e.currentTarget.style.backgroundColor = 'rgba(12, 29, 54, 0.85)';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {p.icon}
-                    <span style={{ fontSize: '0.84rem', fontWeight: 600, color: '#fff' }}>
-                      {p.title}
+              {/* Starter Question Cards */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '12px',
+                textAlign: 'left'
+              }}>
+                {starterPrompts.map((p, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => onSendMessage(p.prompt)}
+                    style={{
+                      padding: '14px 16px',
+                      borderRadius: '10px',
+                      backgroundColor: '#ffffff',
+                      border: '1px solid #e2e8f0',
+                      boxShadow: 'var(--shadow-subtle)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '5px',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'all 0.15s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#cbd5e1';
+                      e.currentTarget.style.backgroundColor = '#f8fafc';
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.boxShadow = 'var(--shadow-card)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = '#e2e8f0';
+                      e.currentTarget.style.backgroundColor = '#ffffff';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = 'var(--shadow-subtle)';
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {p.icon}
+                      <span style={{ fontSize: '0.84rem', fontWeight: 600, color: '#0f172a' }}>
+                        {p.title}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.45 }}>
+                      "{p.prompt}"
                     </span>
-                  </div>
-                  <span style={{ fontSize: '0.78rem', color: '#94a3b8', lineHeight: 1.4 }}>
-                    "{p.prompt}"
-                  </span>
-                </button>
-              ))}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ) : (
-          messages.map((m) => (
-            <MessageItem
-              key={m.id}
-              message={m}
-              onCitationClick={onCitationClick}
-            />
-          ))
-        )}
+          ) : (
+            messages.map((m) => (
+              <MessageItem
+                key={m.id}
+                message={m}
+                onCitationClick={onCitationClick}
+              />
+            ))
+          )}
 
-        {/* Realistic Chatbot Typing / Thinking Indicator */}
-        {isLoading && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            padding: '12px 18px',
-            margin: '12px 0',
-            maxWidth: '340px',
-            background: 'rgba(12, 29, 54, 0.9)',
-            borderRadius: '16px',
-            border: '1px solid rgba(118, 43, 42, 0.4)',
-            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)'
-          }}>
-            <div className="typing-indicator" style={{ display: 'flex', alignItems: 'center' }}>
-              <span />
-              <span />
-              <span />
-            </div>
-            <span style={{ fontSize: '0.84rem', color: '#fed7aa', fontWeight: 500 }}>
-              Checking official ABES records...
-            </span>
-          </div>
-        )}
-
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input Form Bar */}
-      <div style={{
-        padding: '16px 32px 20px 32px',
-        backgroundColor: 'rgba(6, 14, 26, 0.92)',
-        borderTop: '1px solid rgba(118, 43, 42, 0.3)',
-        backdropFilter: 'blur(16px)'
-      }}>
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            maxWidth: '920px',
-            margin: '0 auto',
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            backgroundColor: 'rgba(10, 24, 44, 0.9)',
-            borderRadius: '16px',
-            border: '1px solid rgba(118, 43, 42, 0.45)',
-            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.45)',
-            padding: '6px 8px 6px 16px'
-          }}
-        >
-          <input
-            type="text"
-            placeholder={
-              selectedCategory !== 'All' 
-                ? `Ask anything about ${selectedCategory}...`
-                : "Ask anything about ABES rules, programmes, attendance, hostel curfew, exams..."
-            }
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            disabled={isLoading}
-            style={{
-              flex: 1,
-              background: 'transparent',
-              border: 'none',
-              outline: 'none',
-              color: '#fff',
-              fontSize: '0.92rem',
-              padding: '10px 8px'
-            }}
-          />
-
-          {selectedCategory !== 'All' && (
+          {/* Minimalist Typing Indicator */}
+          {isLoading && (
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              fontSize: '0.72rem',
-              color: '#fed7aa',
-              background: 'rgba(118, 43, 42, 0.35)',
-              border: '1px solid rgba(118, 43, 42, 0.6)',
-              padding: '4px 10px',
-              borderRadius: '6px',
-              marginRight: '8px'
+              gap: '10px',
+              padding: '10px 16px',
+              margin: '12px 0',
+              maxWidth: '300px',
+              backgroundColor: '#f8fafc',
+              borderRadius: '10px',
+              border: '1px solid #e2e8f0'
             }}>
-              {selectedCategory}
+              <div className="typing-indicator" style={{ display: 'flex', alignItems: 'center' }}>
+                <span />
+                <span />
+                <span />
+              </div>
+              <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 500 }}>
+                Consulting official ABES handbooks...
+              </span>
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={!input.trim() || isLoading}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      {/* Floating ChatGPT / Claude style Input Bar */}
+      <div style={{
+        padding: '12px 24px 20px 24px',
+        backgroundColor: '#ffffff',
+        borderTop: '1px solid #f1f5f9'
+      }}>
+        <div style={{ maxWidth: '780px', margin: '0 auto' }}>
+          <form
+            onSubmit={handleSubmit}
             style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '12px',
-              border: 'none',
-              background: input.trim() && !isLoading ? 'linear-gradient(135deg, #762b2a 0%, #983837 100%)' : 'rgba(255, 255, 255, 0.08)',
-              color: input.trim() && !isLoading ? '#ffffff' : 'var(--text-dim)',
+              position: 'relative',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
-              transition: 'all 0.2s ease',
-              flexShrink: 0,
-              boxShadow: input.trim() && !isLoading ? '0 2px 10px rgba(118, 43, 42, 0.5)' : 'none'
+              backgroundColor: '#ffffff',
+              borderRadius: '24px',
+              border: '1px solid #cbd5e1',
+              boxShadow: 'var(--shadow-float)',
+              padding: '6px 8px 6px 18px',
+              transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
             }}
           >
-            <Send size={18} />
-          </button>
-        </form>
+            <input
+              type="text"
+              placeholder={
+                selectedCategory !== 'All' 
+                  ? `Ask about ${selectedCategory}...`
+                  : "Ask a question about ABES policies, attendance, fees, hostel, syllabus..."
+              }
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={isLoading}
+              style={{
+                flex: 1,
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                color: '#0f172a',
+                fontSize: '0.94rem',
+                padding: '8px 4px'
+              }}
+            />
 
-        <div style={{
-          textAlign: 'center',
-          marginTop: '8px',
-          fontSize: '0.73rem',
-          color: '#64748b'
-        }}>
-          Official AI Campus Assistant for ABES Engineering College (AKTU Code: 032). Responses are verified from institutional handbooks.
+            {selectedCategory !== 'All' && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                fontSize: '0.72rem',
+                color: '#851926',
+                backgroundColor: '#fdf2f2',
+                border: '1px solid #fecdd3',
+                padding: '3px 8px',
+                borderRadius: '6px',
+                marginRight: '6px'
+              }}>
+                {selectedCategory}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={!input.trim() || isLoading}
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                border: 'none',
+                backgroundColor: input.trim() && !isLoading ? '#0f172a' : '#f1f5f9',
+                color: input.trim() && !isLoading ? '#ffffff' : '#94a3b8',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
+                transition: 'all 0.15s ease',
+                flexShrink: 0
+              }}
+            >
+              <ArrowUp size={18} />
+            </button>
+          </form>
+
+          <div style={{
+            textAlign: 'center',
+            marginTop: '8px',
+            fontSize: '0.72rem',
+            color: '#94a3b8'
+          }}>
+            ABES Campus AI Assistant answers from official verified handbooks (AKTU Code 032).
+          </div>
         </div>
       </div>
     </div>

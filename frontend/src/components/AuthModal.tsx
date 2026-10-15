@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, GraduationCap, ShieldCheck } from 'lucide-react';
+import { X, ShieldCheck, GraduationCap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const AuthModal: React.FC = () => {
@@ -18,6 +18,7 @@ export const AuthModal: React.FC = () => {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
     try {
       if (isRegister) {
         await register(email, password, fullName, role);
@@ -54,8 +55,8 @@ export const AuthModal: React.FC = () => {
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: 'rgba(5, 10, 20, 0.8)',
-      backdropFilter: 'blur(10px)',
+      backgroundColor: 'rgba(15, 23, 42, 0.45)',
+      backdropFilter: 'blur(4px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -63,13 +64,13 @@ export const AuthModal: React.FC = () => {
       padding: '20px'
     }}>
       <div 
-        className="glass-panel"
         style={{
           width: '100%',
-          maxWidth: '440px',
-          backgroundColor: '#0c172c',
-          border: '1px solid rgba(229, 169, 88, 0.35)',
-          boxShadow: 'var(--shadow-lg), var(--shadow-glow)',
+          maxWidth: '430px',
+          backgroundColor: '#ffffff',
+          borderRadius: '12px',
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.12)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column'
@@ -77,19 +78,19 @@ export const AuthModal: React.FC = () => {
       >
         {/* Header */}
         <div style={{
-          padding: '20px 24px',
-          borderBottom: '1px solid var(--border-light)',
+          padding: '18px 22px',
+          borderBottom: '1px solid #e2e8f0',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          background: 'rgba(17, 31, 56, 0.6)'
+          backgroundColor: '#f8fafc'
         }}>
           <div>
-            <h3 style={{ fontSize: '1.15rem', color: '#fff', fontWeight: 700 }}>
-              {isRegister ? 'Create ABES Account' : 'ABES Authentication'}
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', color: '#0f172a', fontWeight: 600 }}>
+              {isRegister ? 'Register Account' : 'Sign In'}
             </h3>
-            <p style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>
-              Access authorized policy queries & knowledge admin
+            <p style={{ fontSize: '0.76rem', color: '#64748b' }}>
+              ABES College Assistant & Policy Manager
             </p>
           </div>
 
@@ -98,8 +99,9 @@ export const AuthModal: React.FC = () => {
             style={{
               background: 'transparent',
               border: 'none',
-              color: 'var(--text-muted)',
-              padding: '4px'
+              color: '#64748b',
+              padding: '4px',
+              cursor: 'pointer'
             }}
           >
             <X size={18} />
@@ -107,11 +109,11 @@ export const AuthModal: React.FC = () => {
         </div>
 
         {/* Quick Demo Login Cards */}
-        <div style={{ padding: '20px 24px 0 24px' }}>
-          <div style={{ fontSize: '0.72rem', color: 'var(--accent-gold)', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
+        <div style={{ padding: '18px 22px 0 22px' }}>
+          <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
             One-Click Verified Authentication:
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
             <button
               type="button"
               onClick={() => handleQuickDemo('utkarsh')}
@@ -121,16 +123,17 @@ export const AuthModal: React.FC = () => {
                 gap: '8px',
                 padding: '9px 12px',
                 borderRadius: '8px',
-                background: 'linear-gradient(135deg, rgba(118, 43, 42, 0.4) 0%, rgba(118, 43, 42, 0.2) 100%)',
-                border: '1px solid #e5a958',
-                color: '#fed7aa',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                cursor: 'pointer'
+                backgroundColor: '#fdf2f2',
+                border: '1px solid #fecdd3',
+                color: '#851926',
+                fontSize: '0.76rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                textAlign: 'left'
               }}
             >
-              <ShieldCheck size={16} color="#e5a958" />
-              <span>Utkarsh (Admin 24B0101464)</span>
+              <ShieldCheck size={16} color="#851926" />
+              <span>Utkarsh (Admin)</span>
             </button>
 
             <button
@@ -142,12 +145,13 @@ export const AuthModal: React.FC = () => {
                 gap: '8px',
                 padding: '9px 12px',
                 borderRadius: '8px',
-                background: 'rgba(56, 189, 248, 0.1)',
-                border: '1px solid rgba(56, 189, 248, 0.3)',
-                color: '#38bdf8',
-                fontSize: '0.78rem',
+                backgroundColor: '#f0f9ff',
+                border: '1px solid #bae6fd',
+                color: '#0369a1',
+                fontSize: '0.76rem',
                 fontWeight: 600,
-                cursor: 'pointer'
+                cursor: 'pointer',
+                textAlign: 'left'
               }}
             >
               <GraduationCap size={16} />
@@ -161,25 +165,25 @@ export const AuthModal: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           gap: '12px',
-          padding: '16px 24px',
-          color: 'var(--text-dim)',
-          fontSize: '0.75rem'
+          padding: '14px 22px',
+          color: '#94a3b8',
+          fontSize: '0.72rem'
         }}>
-          <div style={{ flex: 1, height: '1px', background: 'var(--border-light)' }} />
-          <span>or enter credentials</span>
-          <div style={{ flex: 1, height: '1px', background: 'var(--border-light)' }} />
+          <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }} />
+          <span>or sign in with email</span>
+          <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }} />
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ padding: '0 24px 24px 24px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <form onSubmit={handleSubmit} style={{ padding: '0 22px 22px 22px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {error && (
             <div style={{
-              padding: '10px 14px',
+              padding: '10px 12px',
               borderRadius: '6px',
-              background: 'rgba(244, 63, 94, 0.15)',
-              border: '1px solid rgba(244, 63, 94, 0.4)',
-              color: '#fb7185',
-              fontSize: '0.8rem'
+              backgroundColor: '#fef2f2',
+              border: '1px solid #fecdd3',
+              color: '#b91c1c',
+              fontSize: '0.78rem'
             }}>
               {error}
             </div>
@@ -187,7 +191,7 @@ export const AuthModal: React.FC = () => {
 
           {isRegister && (
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
                 Full Name
               </label>
               <input
@@ -198,41 +202,43 @@ export const AuthModal: React.FC = () => {
                 placeholder="Dr. Rajesh Kumar / Sneha Sharma"
                 style={{
                   width: '100%',
-                  padding: '9px 12px',
-                  borderRadius: '8px',
-                  background: 'rgba(13, 25, 46, 0.8)',
-                  border: '1px solid var(--border-light)',
-                  color: '#fff',
-                  fontSize: '0.85rem'
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #cbd5e1',
+                  color: '#0f172a',
+                  fontSize: '0.85rem',
+                  outline: 'none'
                 }}
               />
             </div>
           )}
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
-              University Email
+            <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
+              Email
             </label>
             <input
-              type="email"
+              type="text"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="student@abes.ac.in"
+              placeholder="utkarsh@24b0101464@abes.ac.in"
               style={{
                 width: '100%',
-                padding: '9px 12px',
-                borderRadius: '8px',
-                background: 'rgba(13, 25, 46, 0.8)',
-                border: '1px solid var(--border-light)',
-                color: '#fff',
-                fontSize: '0.85rem'
+                padding: '8px 12px',
+                borderRadius: '6px',
+                backgroundColor: '#ffffff',
+                border: '1px solid #cbd5e1',
+                color: '#0f172a',
+                fontSize: '0.85rem',
+                outline: 'none'
               }}
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+            <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
               Password
             </label>
             <input
@@ -243,19 +249,20 @@ export const AuthModal: React.FC = () => {
               placeholder="••••••••"
               style={{
                 width: '100%',
-                padding: '9px 12px',
-                borderRadius: '8px',
-                background: 'rgba(13, 25, 46, 0.8)',
-                border: '1px solid var(--border-light)',
-                color: '#fff',
-                fontSize: '0.85rem'
+                padding: '8px 12px',
+                borderRadius: '6px',
+                backgroundColor: '#ffffff',
+                border: '1px solid #cbd5e1',
+                color: '#0f172a',
+                fontSize: '0.85rem',
+                outline: 'none'
               }}
             />
           </div>
 
           {isRegister && (
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.76rem', color: '#475569', marginBottom: '4px', fontWeight: 500 }}>
                 Role
               </label>
               <select
@@ -263,12 +270,13 @@ export const AuthModal: React.FC = () => {
                 onChange={(e) => setRole(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '9px 12px',
-                  borderRadius: '8px',
-                  background: 'rgba(13, 25, 46, 0.8)',
-                  border: '1px solid var(--border-light)',
-                  color: '#fff',
-                  fontSize: '0.85rem'
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #cbd5e1',
+                  color: '#0f172a',
+                  fontSize: '0.85rem',
+                  outline: 'none'
                 }}
               >
                 <option value="student">Student</option>
@@ -282,21 +290,21 @@ export const AuthModal: React.FC = () => {
             type="submit"
             disabled={loading}
             style={{
-              marginTop: '6px',
-              padding: '11px',
-              borderRadius: '8px',
-              background: 'linear-gradient(135deg, var(--accent-gold) 0%, #c88937 100%)',
-              color: '#070d19',
-              fontWeight: 700,
+              marginTop: '4px',
+              padding: '10px',
+              borderRadius: '6px',
+              backgroundColor: '#0f172a',
+              color: '#ffffff',
+              fontWeight: 600,
               border: 'none',
-              fontSize: '0.9rem',
+              fontSize: '0.88rem',
               cursor: loading ? 'not-allowed' : 'pointer'
             }}
           >
             {loading ? 'Authenticating...' : isRegister ? 'Register Account' : 'Sign In'}
           </button>
 
-          <div style={{ textAlign: 'center', marginTop: '6px' }}>
+          <div style={{ textAlign: 'center', marginTop: '4px' }}>
             <button
               type="button"
               onClick={() => {
@@ -306,8 +314,8 @@ export const AuthModal: React.FC = () => {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: 'var(--accent-gold)',
-                fontSize: '0.78rem',
+                color: '#64748b',
+                fontSize: '0.76rem',
                 cursor: 'pointer'
               }}
             >
