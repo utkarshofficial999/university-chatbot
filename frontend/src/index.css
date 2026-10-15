@@ -217,11 +217,21 @@ input, textarea, select {
 }
 
 .prose h3 {
-  font-size: 1.18rem;
+  font-size: 1.2rem;
+  color: #851926;
+  margin-top: 1.4rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .prose h4 {
   font-size: 1.05rem;
+  color: #0f172a;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
 }
 
 .prose strong {
@@ -229,37 +239,39 @@ input, textarea, select {
   font-weight: 600;
 }
 
-.prose ul, .prose ol {
-  margin: 1.15rem 0 1.35rem 0;
-  padding-left: 0;
-  list-style: none;
+/* Elegant, Natural Lists (Claude / ChatGPT style) */
+.prose ul {
+  margin: 0.8rem 0 1.2rem 0;
+  padding-left: 1.35rem;
+  list-style-type: disc;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.4rem;
+}
+
+.prose ol {
+  margin: 0.8rem 0 1.2rem 0;
+  padding-left: 1.35rem;
+  list-style-type: decimal;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .prose li {
-  position: relative;
-  padding: 11px 16px 11px 18px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-left: 3.5px solid var(--abes-maroon);
-  border-radius: 6px;
   line-height: 1.72;
   color: #334155;
   font-size: 0.95rem;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  padding: 1px 0;
 }
 
-.prose li:hover {
-  background-color: #f1f5f9;
-  border-color: #cbd5e1;
+.prose li::marker {
+  color: var(--abes-maroon);
 }
 
 .prose li strong {
   color: #0f172a;
   font-weight: 600;
-  margin-right: 4px;
 }
 
 .prose code {
