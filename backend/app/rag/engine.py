@@ -18,13 +18,13 @@ class RAGEngine:
         query: str,
         university_id: str = "abes",
         category: Optional[str] = None,
-        top_k: int = 4
+        top_k: int = 5
     ) -> List[Dict[str, Any]]:
         # 1. Hybrid Search (Vector + BM25)
         candidates = self.search_engine.search(
             query=query,
-            top_k_vector=8,
-            top_k_bm25=8,
+            top_k_vector=16,
+            top_k_bm25=16,
             university_id=university_id,
             category=category
         )

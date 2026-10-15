@@ -79,6 +79,28 @@ def health_check():
         "embedding_provider": settings.EMBEDDING_PROVIDER
     }
 
+@app.get("/api/v1/debug-llm")
+async def debug_llm():
+    import os
+    from backend.app.rag.llm_client import llm_client
+    debug_info = {}
+    gemini_key = (os.getenv("GEMINI_API_KEY") or llm_client.gemini_key or "").strip()
+    debug_info["key_present"] = bool(gemini_key)
+    debug_info["key_prefix"] = gemini_key[:10] if gemini_key else ""
+    try:
+        from google import genai
+        client = genai.Client(api_key=gemini_key)
+        resp = await client.aio.models.generate_content(
+            model="gemini-3.5-flash-lite",
+            contents="Say hello in 3 words"
+        )
+        debug_info["gemini_status"] = "OK"
+        debug_info["gemini_output"] = resp.text
+    except Exception as e:
+        debug_info["gemini_status"] = "ERROR"
+        debug_info["gemini_error"] = str(e)
+    return debug_info
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("backend.app.main:app", host="0.0.0.0", port=8000, reload=True)

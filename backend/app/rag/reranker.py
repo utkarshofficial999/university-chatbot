@@ -48,4 +48,14 @@ class Reranker:
             })
 
         reranked.sort(key=lambda x: x["confidence_score"], reverse=True)
-        return reranked[:top_k]
+
+        # Deduplicate identical or near-identical chunks from repeated ingestion runs
+        deduped = []
+        seen_texts = set()
+        for c in reranked:
+            norm = "".join(c.get("content", "").split())[:90].lower()
+            if norm and norm not in seen_texts:
+                seen_texts.add(norm)
+                deduped.append(c)
+
+        return deduped[:top_k]
