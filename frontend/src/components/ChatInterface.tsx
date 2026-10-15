@@ -99,17 +99,27 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             }}>
               {/* Institutional Crest */}
               <div style={{
-                width: '56px',
-                height: '56px',
-                borderRadius: '14px',
-                background: 'linear-gradient(135deg, #851926 0%, #55121a 100%)',
+                width: '68px',
+                height: '68px',
+                borderRadius: '16px',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 16px auto',
-                boxShadow: '0 4px 14px rgba(133, 25, 38, 0.25)'
+                padding: '8px',
+                boxShadow: '0 6px 16px rgba(133, 25, 38, 0.12)'
               }}>
-                <GraduationCap size={28} color="#ffffff" />
+                <img 
+                  src="/abes_crest.png" 
+                  alt="ABES Engineering College Crest" 
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain'
+                  }}
+                />
               </div>
 
               <div style={{

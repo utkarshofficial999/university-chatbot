@@ -1,6 +1,5 @@
 import React from 'react';
 import { 
-  GraduationCap, 
   ShieldCheck, 
   MessageSquare, 
   LogOut, 
@@ -74,18 +73,16 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
       }}>
         {/* Brand & Emblem */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '38px',
-            height: '38px',
-            borderRadius: '10px',
-            background: 'linear-gradient(135deg, #851926 0%, #55121a 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 2px 8px rgba(133, 25, 38, 0.2)'
-          }}>
-            <GraduationCap size={20} color="#ffffff" />
-          </div>
+          <img 
+            src="/abes_crest.png" 
+            alt="ABES Engineering College Crest" 
+            style={{
+              height: '40px',
+              width: 'auto',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12))'
+            }}
+          />
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ 

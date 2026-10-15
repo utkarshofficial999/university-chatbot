@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShieldCheck, Lock, AlertCircle } from 'lucide-react';
+import { X, Lock, AlertCircle, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const AuthModal: React.FC = () => {
@@ -68,16 +68,22 @@ export const AuthModal: React.FC = () => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
-              width: '32px',
-              height: '32px',
+              width: '34px',
+              height: '34px',
               borderRadius: '8px',
-              backgroundColor: '#fdf2f2',
-              border: '1px solid #fecdd3',
+              backgroundColor: '#ffffff',
+              border: '1px solid #e2e8f0',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              padding: '3px',
+              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)'
             }}>
-              <ShieldCheck size={18} color="#851926" />
+              <img 
+                src="/abes_crest.png" 
+                alt="ABES Crest" 
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+              />
             </div>
             <div>
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.12rem', color: '#0f172a', fontWeight: 600 }}>

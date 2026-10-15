@@ -116,13 +116,25 @@ export const AdminDashboard: React.FC = () => {
         borderBottom: '1px solid #e2e8f0',
         paddingBottom: '16px'
       }}>
-        <div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.75rem', color: '#0f172a', fontWeight: 600 }}>
-            Policy Management & Knowledge Controls
-          </h2>
-          <p style={{ fontSize: '0.86rem', color: '#64748b' }}>
-            Admin dashboard for ABES Engineering College policy vectors, ingestion pipelines, and retrieval diagnostics.
-          </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <img 
+            src="/abes_crest.png" 
+            alt="ABES Crest" 
+            style={{
+              width: '42px',
+              height: '42px',
+              objectFit: 'contain',
+              flexShrink: 0
+            }}
+          />
+          <div>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.75rem', color: '#0f172a', fontWeight: 600 }}>
+              Policy Management & Knowledge Controls
+            </h2>
+            <p style={{ fontSize: '0.86rem', color: '#64748b' }}>
+              Admin dashboard for ABES Engineering College policy vectors, ingestion pipelines, and retrieval diagnostics.
+            </p>
+          </div>
         </div>
 
         <div style={{ display: 'flex', gap: '10px' }}>

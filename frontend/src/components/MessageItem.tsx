@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { 
-  GraduationCap, 
   Copy, 
   Check, 
   FileText, 
@@ -120,16 +119,22 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message, onCitationCli
           <div style={{
             width: '28px',
             height: '28px',
-            borderRadius: '8px',
-            backgroundColor: '#851926',
+            borderRadius: '7px',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e2e8f0',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
             marginTop: '2px',
-            boxShadow: '0 2px 6px rgba(133, 25, 38, 0.2)'
+            padding: '2px',
+            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.05)'
           }}>
-            <GraduationCap size={15} color="#ffffff" />
+            <img 
+              src="/abes_crest.png" 
+              alt="ABES" 
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+            />
           </div>
 
           {/* Content Column */}
