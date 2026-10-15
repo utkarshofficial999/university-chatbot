@@ -30,6 +30,7 @@ export const CitationModal: React.FC<CitationModalProps> = ({ citation, onClose 
       padding: '20px'
     }}>
       <div 
+        className="citation-modal-content"
         style={{
           width: '100%',
           maxWidth: '560px',

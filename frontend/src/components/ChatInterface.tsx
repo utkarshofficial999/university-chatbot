@@ -77,7 +77,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       position: 'relative'
     }}>
       {/* Messages Scroll Area (Centered ChatGPT / Claude reading column) */}
-      <div style={{
+      <div className="chat-scroll-area" style={{
         flex: 1,
         overflowY: 'auto',
         padding: '24px 20px',
@@ -141,7 +141,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 ABES Engineering College • AKTU Code 032
               </div>
 
-              <h2 style={{ 
+              <h2 className="chat-hero-title" style={{ 
                 fontFamily: 'var(--font-serif)',
                 fontSize: '2.1rem', 
                 color: '#0f172a', 
@@ -152,7 +152,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 How can I help you today?
               </h2>
 
-              <p style={{ 
+              <p className="chat-hero-subtitle" style={{ 
                 fontSize: '0.92rem', 
                 color: '#64748b', 
                 lineHeight: 1.5, 
@@ -163,8 +163,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 Ask any question about academic guidelines, autonomous regulations, hostel rules, fees, or examination policies.
               </p>
 
-              {/* Starter Question Cards (2x2 Grid) */}
-              <div style={{
+              {/* Starter Question Cards (Responsive Grid) */}
+              <div className="chat-starter-grid" style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
                 gap: '10px',
@@ -252,7 +252,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
 
       {/* Floating ChatGPT / Claude style Input Bar */}
-      <div style={{
+      <div className="chat-input-bar" style={{
         padding: '12px 24px 20px 24px',
         backgroundColor: '#ffffff',
         borderTop: '1px solid #f1f5f9'
@@ -273,6 +273,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             }}
           >
             <input
+              className="chat-input-field"
               type="text"
               placeholder={
                 selectedCategory !== 'All' 

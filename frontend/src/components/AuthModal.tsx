@@ -45,6 +45,7 @@ export const AuthModal: React.FC = () => {
       padding: '20px'
     }}>
       <div 
+        className="citation-modal-content"
         style={{
           width: '100%',
           maxWidth: '400px',

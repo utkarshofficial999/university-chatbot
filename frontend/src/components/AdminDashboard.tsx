@@ -108,7 +108,7 @@ export const AdminDashboard: React.FC = () => {
       backgroundColor: '#ffffff'
     }}>
       {/* Header */}
-      <div style={{
+      <div className="admin-header-row" style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',

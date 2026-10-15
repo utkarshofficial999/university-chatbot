@@ -4,7 +4,8 @@ import {
   MessageSquare, 
   Trash2, 
   Search, 
-  Layers
+  Layers,
+  X
 } from 'lucide-react';
 import type { Conversation, Category } from '../types';
 
@@ -18,6 +19,8 @@ interface ConversationSidebarProps {
   selectedCategory: string;
   onSelectCategory: (category: string) => void;
   totalIndexedDocs: number;
+  isOpenMobile?: boolean;
+  onCloseMobile?: () => void;
 }
 
 export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
@@ -29,7 +32,9 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
   categories,
   selectedCategory,
   onSelectCategory,
-  totalIndexedDocs
+  totalIndexedDocs,
+  isOpenMobile,
+  onCloseMobile
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -37,48 +42,80 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
     c.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleSelect = (id: string) => {
+    onSelectConversation(id);
+    onCloseMobile?.();
+  };
+
+  const handleNew = () => {
+    onNewConversation();
+    onCloseMobile?.();
+  };
+
   return (
-    <aside style={{
-      width: '270px',
-      height: '100%',
-      backgroundColor: '#f8fafc',
-      borderRight: '1px solid #e2e8f0',
-      display: 'flex',
-      flexDirection: 'column',
-      flexShrink: 0
-    }}>
-      {/* Top Action: New Chat Button (Minimalist ChatGPT / Claude style) */}
-      <div style={{ padding: '16px 14px 10px 14px' }}>
-        <button
-          onClick={onNewConversation}
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            backgroundColor: '#ffffff',
-            color: '#0f172a',
-            border: '1px solid #e2e8f0',
-            borderRadius: '8px',
-            padding: '9px 14px',
-            fontSize: '0.86rem',
-            fontWeight: 500,
-            boxShadow: 'var(--shadow-subtle)',
-            transition: 'all 0.15s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#f1f5f9';
-            e.currentTarget.style.borderColor = '#cbd5e1';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#ffffff';
-            e.currentTarget.style.borderColor = '#e2e8f0';
-          }}
-        >
-          <Plus size={16} color="#851926" />
-          <span>New Question</span>
-        </button>
+    <>
+      {/* Mobile Backdrop */}
+      {isOpenMobile && (
+        <div 
+          className="sidebar-backdrop"
+          onClick={onCloseMobile}
+        />
+      )}
+
+      <aside className={`app-sidebar ${isOpenMobile ? 'open' : ''}`} style={{
+        width: '270px',
+        height: '100%',
+        backgroundColor: '#f8fafc',
+        borderRight: '1px solid #e2e8f0',
+        display: 'flex',
+        flexDirection: 'column',
+        flexShrink: 0
+      }}>
+        {/* Top Header & Actions */}
+        <div style={{ padding: '16px 14px 10px 14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button
+              onClick={handleNew}
+              style={{
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                backgroundColor: '#ffffff',
+                color: '#0f172a',
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px',
+                padding: '9px 14px',
+                fontSize: '0.86rem',
+                fontWeight: 500,
+                boxShadow: 'var(--shadow-subtle)',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#f1f5f9';
+                e.currentTarget.style.borderColor = '#cbd5e1';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#ffffff';
+                e.currentTarget.style.borderColor = '#e2e8f0';
+              }}
+            >
+              <Plus size={16} color="#851926" />
+              <span>New Question</span>
+            </button>
+
+            {onCloseMobile && (
+              <button
+                className="sidebar-close-btn"
+                onClick={onCloseMobile}
+                title="Close sidebar"
+                aria-label="Close sidebar"
+              >
+                <X size={18} />
+              </button>
+            )}
+          </div>
 
         {/* Minimal Search Bar */}
         <div style={{
@@ -182,7 +219,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
             return (
               <div
                 key={conv.id}
-                onClick={() => onSelectConversation(conv.id)}
+                onClick={() => handleSelect(conv.id)}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -274,5 +311,6 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
         </span>
       </div>
     </aside>
+  </>
   );
 };

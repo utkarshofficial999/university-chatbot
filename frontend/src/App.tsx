@@ -21,6 +21,7 @@ export const AppContent: React.FC = () => {
   const [totalIndexedDocs, setTotalIndexedDocs] = useState<number>(20);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeCitation, setActiveCitation] = useState<Citation | null>(null);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
 
   useEffect(() => {
     loadInitialData();
@@ -154,7 +155,15 @@ export const AppContent: React.FC = () => {
 
   return (
     <div className="app-container">
-      <Header currentView={currentView} onViewChange={setCurrentView} />
+      <Header 
+        currentView={currentView} 
+        onViewChange={(view) => {
+          setCurrentView(view);
+          setIsMobileSidebarOpen(false);
+        }}
+        onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+        isMobileSidebarOpen={isMobileSidebarOpen}
+      />
 
       <main className="main-layout">
         {currentView === 'chat' ? (
@@ -169,6 +178,8 @@ export const AppContent: React.FC = () => {
               selectedCategory={selectedCategory}
               onSelectCategory={setSelectedCategory}
               totalIndexedDocs={totalIndexedDocs}
+              isOpenMobile={isMobileSidebarOpen}
+              onCloseMobile={() => setIsMobileSidebarOpen(false)}
             />
 
             <ChatInterface

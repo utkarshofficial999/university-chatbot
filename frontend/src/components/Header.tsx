@@ -5,22 +5,31 @@ import {
   LogOut, 
   Building2,
   ExternalLink,
-  Lock
+  Lock,
+  Menu,
+  X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
   currentView: 'chat' | 'admin';
   onViewChange: (view: 'chat' | 'admin') => void;
+  onToggleMobileSidebar?: () => void;
+  isMobileSidebarOpen?: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => {
+export const Header: React.FC<HeaderProps> = ({ 
+  currentView, 
+  onViewChange,
+  onToggleMobileSidebar,
+  isMobileSidebarOpen
+}) => {
   const { user, logout, openAuthModal } = useAuth();
 
   return (
     <header style={{ display: 'flex', flexDirection: 'column', zIndex: 40, backgroundColor: '#ffffff' }}>
       {/* Top Institutional Strip (Minimalist & Clean) */}
-      <div style={{
+      <div className="header-top-bar" style={{
         height: '30px',
         backgroundColor: '#f8fafc',
         borderBottom: '1px solid #e2e8f0',
@@ -31,14 +40,16 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
         fontSize: '0.74rem',
         color: '#475569'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <span style={{ fontWeight: 600, color: '#0f172a' }}>🏛️ ABES Engineering College, Ghaziabad</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+          <span style={{ fontWeight: 600, color: '#0f172a' }}>🏛️ ABES Engineering College</span>
           <span style={{ color: '#cbd5e1' }}>•</span>
-          <span style={{ color: '#851926', fontWeight: 600 }}>AKTU Code: 032</span>
-          <span style={{ color: '#cbd5e1' }}>•</span>
-          <span>AICTE Approved</span>
-          <span style={{ color: '#cbd5e1' }}>•</span>
-          <span style={{ color: '#059669', fontWeight: 600 }}>NAAC Accredited</span>
+          <span style={{ color: '#851926', fontWeight: 600 }}>AKTU 032</span>
+          <span className="header-top-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ color: '#cbd5e1' }}>•</span>
+            <span>AICTE Approved</span>
+            <span style={{ color: '#cbd5e1' }}>•</span>
+            <span style={{ color: '#059669', fontWeight: 600 }}>NAAC Accredited</span>
+          </span>
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -62,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
       </div>
 
       {/* Main Navigation Bar */}
-      <div style={{
+      <div className="header-main-nav" style={{
         height: '62px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #e2e8f0',
@@ -72,12 +83,23 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
         padding: '0 24px'
       }}>
         {/* Brand & Emblem */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {currentView === 'chat' && onToggleMobileSidebar && (
+            <button
+              className="mobile-menu-btn"
+              onClick={onToggleMobileSidebar}
+              title={isMobileSidebarOpen ? "Close menu" : "Open menu"}
+              aria-label="Toggle Navigation"
+            >
+              {isMobileSidebarOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          )}
+
           <img 
             src="/abes_crest.png" 
             alt="ABES Engineering College Crest" 
             style={{
-              height: '40px',
+              height: '38px',
               width: 'auto',
               objectFit: 'contain',
               filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12))'
@@ -85,22 +107,23 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
           />
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ 
+              <span className="header-brand-title" style={{ 
                 fontFamily: 'var(--font-serif)',
                 fontWeight: 600, 
-                fontSize: '1.25rem', 
+                fontSize: '1.22rem', 
                 color: '#0f172a',
-                letterSpacing: '-0.02em'
+                letterSpacing: '-0.02em',
+                whiteSpace: 'nowrap'
               }}>
-                ABES College Assistant
+                ABES Assistant
               </span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '2px' }}>
                 <span className="online-dot" />
                 <span style={{ fontSize: '0.68rem', color: '#059669', fontWeight: 600 }}>LIVE</span>
               </div>
             </div>
-            <p style={{ fontSize: '0.75rem', color: '#64748b' }}>
-              Verified Regulations, Handbooks & Student Guidance
+            <p className="header-brand-subtitle" style={{ fontSize: '0.74rem', color: '#64748b', whiteSpace: 'nowrap' }}>
+              Verified Regulations & Handbooks
             </p>
           </div>
         </div>
@@ -120,7 +143,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '6px 14px',
+              padding: '6px 12px',
               borderRadius: '6px',
               border: 'none',
               fontSize: '0.82rem',
@@ -131,7 +154,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
             }}
           >
             <MessageSquare size={14} />
-            Student Chat
+            <span className="header-view-label">Student Chat</span>
           </button>
 
           <button
@@ -147,7 +170,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '6px 14px',
+              padding: '6px 12px',
               borderRadius: '6px',
               border: 'none',
               fontSize: '0.82rem',
@@ -158,7 +181,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
             }}
           >
             {user?.role === 'admin' ? <ShieldCheck size={14} color="#851926" /> : <Lock size={13} color="#94a3b8" />}
-            <span>Policy Manager</span>
+            <span className="header-view-label">Policy Manager</span>
             {user?.role !== 'admin' && (
               <span style={{
                 fontSize: '0.62rem',
@@ -176,8 +199,8 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => 
         </div>
 
         {/* User / Tenant Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="header-campus-badge" style={{
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
