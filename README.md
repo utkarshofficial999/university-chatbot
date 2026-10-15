@@ -115,7 +115,7 @@ Accurate Answers + Interactive Page-Level Citations
 ### 2. Backend Setup
 ```powershell
 # Navigate to project root
-cd "e:\jaipuria college policies"
+cd "e:\abes college"
 
 # Activate virtual environment
 .\backend_venv\Scripts\activate
