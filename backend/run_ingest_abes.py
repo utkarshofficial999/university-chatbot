@@ -144,7 +144,7 @@ def run():
     # 3. Ingest ABES_Student_Handbook.pdf
     handbook_path = os.path.join(workspace_dir, "ABES_Student_Handbook.pdf")
     if os.path.exists(handbook_path):
-        print("\n[3/3] Processing ABES_Student_Handbook.pdf (41 pages)...")
+        print("\n[3/4] Processing ABES_Student_Handbook.pdf (41 pages)...")
         doc = pipeline.process_pdf(
             file_path=handbook_path,
             title="ABES Student Information & Policy Handbook",
@@ -152,6 +152,19 @@ def run():
             university_id=univ_id
         )
         print(f"[OK] Ingested ABES_Student_Handbook.pdf (Chunks: {len(doc.chunks)})")
+        total_chunks += len(doc.chunks)
+
+    # 4. Ingest ABES Detailed Student Handbook (Unofficial, v2.0)
+    v2_handbook_path = os.path.join(workspace_dir, "ABES Engineering College, Ghaziabad - Detailed Student Handbook (Unofficial, v2.0).pdf")
+    if os.path.exists(v2_handbook_path):
+        print("\n[4/4] Processing ABES Detailed Student Handbook (Unofficial, v2.0) (89 pages)...")
+        doc = pipeline.process_pdf(
+            file_path=v2_handbook_path,
+            title="ABES Detailed Student Handbook (v2.0)",
+            category="Student Regulations",
+            university_id=univ_id
+        )
+        print(f"[OK] Ingested ABES Detailed Student Handbook v2.0 (Chunks: {len(doc.chunks)})")
         total_chunks += len(doc.chunks)
 
     db.close()
