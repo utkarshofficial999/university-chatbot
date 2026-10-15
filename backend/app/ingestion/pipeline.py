@@ -27,6 +27,7 @@ def get_fastembed_model():
 def generate_embeddings(texts: List[str]) -> List[List[float]]:
     """
     Generates dense embeddings for a list of strings using FastEmbed or fallback.
+    Batches in chunks of 32 to prevent high memory usage and timeouts.
     """
     if not texts:
         return []
@@ -34,8 +35,13 @@ def generate_embeddings(texts: List[str]) -> List[List[float]]:
     model = get_fastembed_model()
     if model is not None:
         try:
-            embeddings_generator = model.embed(texts)
-            return [list(emb) for emb in embeddings_generator]
+            all_embs = []
+            batch_size = 32
+            for i in range(0, len(texts), batch_size):
+                batch = texts[i:i + batch_size]
+                embeddings_generator = model.embed(batch, batch_size=batch_size)
+                all_embs.extend([list(emb) for emb in embeddings_generator])
+            return all_embs
         except Exception as e:
             print(f"[Embedding] Fastembed generation error: {e}")
 

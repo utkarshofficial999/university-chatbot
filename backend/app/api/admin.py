@@ -1,6 +1,7 @@
 import os
 import shutil
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, status
+import uuid
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, BackgroundTasks, status
 from pydantic import BaseModel
 from typing import Optional, List
 from sqlalchemy.orm import Session
@@ -13,6 +14,53 @@ from backend.app.core.config import settings
 from backend.app.api.auth import require_admin
 
 router = APIRouter(prefix="/admin", tags=["Admin Dashboard"])
+
+def process_sync_in_background(found_pdfs: List[tuple]):
+    """Background worker to extract, chunk, and embed policy documents without HTTP timeout."""
+    from backend.app.db.session import SessionLocal
+    db = SessionLocal()
+    pipeline = IngestionPipeline(db)
+    category_map = {
+        "handbook": "Student Regulations",
+        "reference": "Quick Reference & Guide",
+        "academic": "Academic & Curriculum",
+        "examination": "Examination & Evaluation",
+        "assessment": "Examination & Evaluation",
+        "calendar": "Academic & Curriculum",
+        "hostel": "Hostel & Facilities",
+        "library": "Campus & Facilities",
+        "admission": "Admission & Programmes",
+        "placement": "Placements & Career",
+        "anti-ragging": "Discipline & Anti-Ragging",
+        "grievance": "Discipline & Anti-Ragging"
+    }
+    try:
+        for full_path, fname in found_pdfs:
+            cat = "General"
+            fname_lower = fname.lower()
+            for kw, mapped_cat in category_map.items():
+                if kw in fname_lower:
+                    cat = mapped_cat
+                    break
+            
+            title = fname.replace(".pdf", "").replace("-", " ").replace("_", " ").title()
+            try:
+                pipeline.process_pdf(
+                    file_path=full_path,
+                    title=title,
+                    category=cat,
+                    university_id="abes"
+                )
+                print(f"[Sync Background] Successfully processed and indexed '{fname}'")
+            except Exception as e:
+                print(f"[Sync Background] Error processing '{fname}': {e}")
+                # Mark as failed in DB if crashed
+                doc = db.query(Document).filter(Document.filename == fname).first()
+                if doc:
+                    doc.status = "failed"
+                    db.commit()
+    finally:
+        db.close()
 
 class CategoryCreate(BaseModel):
     name: str
@@ -153,13 +201,14 @@ def add_category(
 
 @router.post("/sync-local")
 def sync_local_abes_policies(
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     admin_user = Depends(require_admin)
 ):
     """
-    Scans the workspace directory for the official ABES PDFs and ingests them into the knowledge base.
+    Scans the workspace directory for the official ABES PDFs, creates document records,
+    and runs the extraction and embedding in the background to prevent HTTP timeouts.
     """
-    # Look in the parent dir or current dir for .pdf files
     search_dirs = [
         settings.POLICIES_SOURCE_DIR,
         os.path.abspath(os.path.join(settings.POLICIES_SOURCE_DIR, "..")),
@@ -178,55 +227,34 @@ def sync_local_abes_policies(
     if not found_pdfs:
         return {"status": "warning", "message": "No PDF files found to ingest", "indexed_count": 0}
 
-    # Intelligent categorization mapping based on policy filename
-    category_map = {
-        "handbook": "Student Regulations",
-        "reference": "Quick Reference & Guide",
-        "academic": "Academic & Curriculum",
-        "examination": "Examination & Evaluation",
-        "assessment": "Examination & Evaluation",
-        "calendar": "Academic & Curriculum",
-        "hostel": "Hostel & Facilities",
-        "library": "Campus & Facilities",
-        "admission": "Admission & Programmes",
-        "placement": "Placements & Career",
-        "anti-ragging": "Discipline & Anti-Ragging",
-        "grievance": "Discipline & Anti-Ragging"
-    }
-
-    pipeline = IngestionPipeline(db)
-    indexed_docs = []
-
+    # Pre-register document records in DB with 'processing' status so they immediately appear in dashboard
     for full_path, fname in found_pdfs:
-        cat = "General"
-        fname_lower = fname.lower()
-        for kw, mapped_cat in category_map.items():
-            if kw in fname_lower:
-                cat = mapped_cat
-                break
-        
         title = fname.replace(".pdf", "").replace("-", " ").replace("_", " ").title()
-        
-        try:
-            doc = pipeline.process_pdf(
-                file_path=full_path,
+        doc = db.query(Document).filter(
+            Document.filename == fname,
+            Document.university_id == "abes"
+        ).first()
+        if not doc:
+            doc = Document(
+                id=str(uuid.uuid4()),
                 title=title,
-                category=cat,
+                filename=fname,
+                category="Student Regulations" if "handbook" in fname.lower() else "Academic & Curriculum",
+                file_path=full_path,
+                file_size=os.path.getsize(full_path) if os.path.exists(full_path) else 0,
+                status="processing",
                 university_id="abes"
             )
-            indexed_docs.append({
-                "filename": fname,
-                "title": doc.title,
-                "category": doc.category,
-                "chunks": doc.total_chunks,
-                "pages": doc.total_pages
-            })
-        except Exception as e:
-            print(f"[Sync Local] Error processing {fname}: {e}")
+            db.add(doc)
+        else:
+            doc.status = "processing"
+    db.commit()
+
+    # Delegate heavy parsing & embedding to background task
+    background_tasks.add_task(process_sync_in_background, found_pdfs)
 
     return {
         "status": "success",
-        "message": f"Successfully synchronized and indexed {len(indexed_docs)} ABES policy documents",
-        "indexed_count": len(indexed_docs),
-        "documents": indexed_docs
+        "message": f"Started background indexing for {len(found_pdfs)} documents. They will appear as 'PROCESSING' and turn to 'INDEXED' automatically. Click Refresh in a few moments.",
+        "indexed_count": len(found_pdfs)
     }
