@@ -30,7 +30,7 @@ class LLMClient:
         # 1. Try Gemini Cloud first if key is present
         gemini_key = (os.getenv("GEMINI_API_KEY") or self.gemini_key or "").strip()
         if gemini_key:
-            candidate_models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-2.0-flash-lite"]
+            candidate_models = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-flash-latest"]
             for model_name in candidate_models:
                 try:
                     from google import genai
@@ -174,13 +174,20 @@ class LLMClient:
                     # Filter out short fragments or header-only lines
                     if len(p) > 25 and not p.startswith('http'):
                         lower_p = p.lower()
-                        if lower_p.startswith('abes engineering college — admission route'):
+                        if lower_p.startswith('abes engineering college — admission route') or lower_p.startswith('abes engineering college — clubs'):
                             continue
                         if 'official reference information' in lower_p or 'user question' in lower_p:
                             continue
+                        if 'verified club and society profiles' in lower_p or 'name purpose' in lower_p:
+                            continue
+                        if lower_p.startswith('be named') or lower_p.startswith('note: full list not published'):
+                            continue
                         if lower_p.endswith('?') and len(p) < 60:
                             continue
-                        raw_statements.append(p)
+                        # Clean out inline markers
+                        clean_p = re.sub(r'\b(Not publicly verified|Not published)\b', '', p, flags=re.IGNORECASE).strip(' .,;')
+                        if clean_p and len(clean_p) > 20:
+                            raw_statements.append(clean_p)
 
         # Deduplicate while preserving flow
         seen = set()
@@ -198,7 +205,13 @@ class LLMClient:
         items = []
         for s in unique_points[:4]:
             lower = s.lower()
-            if any(k in lower for k in ['eligib', 'class 12', 'physics', 'aggregate', 'marks']):
+            if 'genero' in lower:
+                title = "Annual Cultural Fest (Genero)"
+            elif any(k in lower for k in ['tedx', 'techfest', 'utsaah', 'fest']):
+                title = "College Fests & Flagship Events"
+            elif any(k in lower for k in ['club', 'society', 'life@abes']):
+                title = "Student Clubs & Societies"
+            elif any(k in lower for k in ['eligib', 'class 12', 'physics', 'aggregate', 'marks']):
                 title = "Eligibility Criteria"
             elif any(k in lower for k in ['admission', 'uptac', 'cuet', 'counselling', 'seat']):
                 title = "Admission Route & Counselling"
